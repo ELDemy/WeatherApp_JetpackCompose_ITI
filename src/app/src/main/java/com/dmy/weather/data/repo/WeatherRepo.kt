@@ -1,36 +1,78 @@
 package com.dmy.weather.data.repo
 
+import android.content.Context
 import android.util.Log
 import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.model.CityModel
+import com.dmy.weather.data.model.HourlyForecastModel
+import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.utils.exceptions.NullDataException
+import com.dmy.weather.utils.mapFailure
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class WeatherRepo {
+class WeatherRepo(context: Context) {
     companion object {
         private const val TAG = "WeatherRepo"
         private val weatherRemoteDataSource = WeatherRemoteDataSource()
         private val geocodingRemoteDataSource = GeocodingRemoteDataSource()
     }
 
-    suspend fun getCurrentWeather(city: String) {
-        val weatherDTO = weatherRemoteDataSource.getCurrentWeather(city)
-        val weatherModel = weatherDTO?.toModel()
+    suspend fun getCurrentWeather(city: String): Result<WeatherModel> {
+        return runCatching {
+            val weatherDTO = weatherRemoteDataSource.getCurrentWeather(city)
+                ?: throw NullDataException()
 
-        Log.i(TAG, "weatherDTO: $weatherDTO")
-        Log.i(TAG, "weatherModel: $weatherModel")
+            val weatherModel = weatherDTO.toModel()
+
+            Log.i(TAG, "weatherDTO: $weatherDTO")
+            Log.i(TAG, "weatherModel: $weatherModel")
+
+            return Result.success(weatherModel)
+        }.mapFailure()
+    }
+
+
+    suspend fun getCurrentWeather(long: String, lat: String): Result<WeatherModel> {
+        return runCatching {
+            val weatherDTO = weatherRemoteDataSource.getCurrentWeather(long, lat)
+                ?: throw NullDataException()
+
+            val weatherModel = weatherDTO.toModel()
+
+            Log.i(TAG, "weatherDTO: $weatherDTO")
+            Log.i(TAG, "weatherModel: $weatherModel")
+            return Result.success(weatherModel)
+        }.mapFailure()
+    }
+
+    suspend fun getHourlyForecast(city: String): Result<HourlyForecastModel> {
+        return runCatching {
+            val hourlyForecastDTO =
+                weatherRemoteDataSource.getHourlyForecast(city) ?: throw NullDataException()
+            val hourlyForecastModel = hourlyForecastDTO.toModel()
+
+            Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
+            Log.i(TAG, "hourlyForecastModel: $hourlyForecastModel")
+
+            return Result.success(hourlyForecastModel)
+        }.mapFailure()
 
     }
 
-    suspend fun getCurrentWeather(long: String, lat: String) {
-        val weatherDTO = weatherRemoteDataSource.getCurrentWeather(long, lat)
-        val weatherModel = weatherDTO?.toModel()
+    suspend fun getHourlyForecast(long: String, lat: String): Result<HourlyForecastModel> {
+        return runCatching {
+            val hourlyForecastDTO =
+                weatherRemoteDataSource.getHourlyForecast(long, lat) ?: throw NullDataException()
+            
+            val hourlyForecastModel = hourlyForecastDTO.toModel()
 
-        Log.i(TAG, "weatherDTO: $weatherDTO")
-        Log.i(TAG, "weatherModel: $weatherModel")
-
+            Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
+            Log.i(TAG, "hourlyForecastModel: $hourlyForecastModel")
+            return Result.success(hourlyForecastModel)
+        }.mapFailure()
     }
 
     suspend fun getDailyForecast(city: String) {
@@ -67,21 +109,6 @@ class WeatherRepo {
         Log.i(TAG, "weatherModel: $dailyForecastModel")
     }
 
-    suspend fun getHourlyForecast(city: String) {
-        val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(city)
-        val hourlyForecastModel = hourlyForecastDTO?.toModel()
-
-        Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
-        Log.i(TAG, "hourlyForecastModel: $hourlyForecastModel")
-    }
-
-    suspend fun getHourlyForecast(long: String, lat: String) {
-        val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(long, lat)
-        val hourlyForecastModel = hourlyForecastDTO?.toModel()
-
-        Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
-        Log.i(TAG, "hourlyForecastModel: $hourlyForecastModel")
-    }
 
     fun getGeocodingCityInfoByCity(city: String) {
         GlobalScope.launch {
@@ -105,6 +132,5 @@ class WeatherRepo {
 
         return cityModel
     }
-
-
 }
+
