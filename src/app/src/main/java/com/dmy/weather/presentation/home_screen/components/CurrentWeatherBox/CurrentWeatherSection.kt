@@ -1,0 +1,156 @@
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import com.dmy.weather.R.color
+import com.dmy.weather.R.drawable
+import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.presentation.components.MyErrorComponent
+import com.dmy.weather.presentation.components.MyLoadingComponent
+import com.dmy.weather.presentation.home_screen.UiState
+
+
+@Composable
+fun CurrentWeatherSection(state: UiState<WeatherModel>) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(
+                        colorResource(color.blue_grad1),
+                        colorResource(color.blue_primary),
+                        colorResource(color.blue_grad3),
+                    )
+                )
+            )
+            .defaultMinSize(minHeight = 200.dp)
+            .padding(vertical = 36.dp, horizontal = 24.dp),
+    ) {
+        CompositionLocalProvider(LocalContentColor provides Color.White) {
+            when {
+                state.isLoading -> MyLoadingComponent(color = color.white)
+                state.data != null -> WeatherContent(state.data)
+                state.error != null -> MyErrorComponent(state.error)
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeatherContent(weather: WeatherModel) {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+
+        DataRow(icon = drawable.location, text = "${weather.cityName}, ${weather.country}")
+
+        DataRow(icon = drawable.calendar, text = weather.time)
+
+        Spacer(Modifier.height(12.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = weather.temperature,
+                fontSize = 64.sp,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 64.sp
+            )
+            AsyncImage(
+                model = weather.iconUrl,
+                contentDescription = "Weather condition icon",
+                modifier = Modifier.size(72.dp)
+            )
+        }
+
+        Text(
+            text = weather.description,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+        )
+
+        Spacer(Modifier.height(12.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            WeatherStatChip(label = "H", value = weather.max)
+            WeatherStatChip(label = "L", value = weather.min)
+            WeatherStatChip(label = "Feels", value = weather.feelsLike)
+        }
+    }
+}
+
+@Composable
+private fun WeatherStatChip(label: String, value: String) {
+    Surface(
+        shape = RoundedCornerShape(50),
+        color = Color.White.copy(alpha = 0.2f),
+        tonalElevation = 50.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = value,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Composable
+fun DataRow(icon: Int, text: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+        )
+        Text(
+            text = text,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}

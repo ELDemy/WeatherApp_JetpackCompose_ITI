@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dmy.weather.data.repo.WeatherRepo
 
+@Suppress("UNCHECKED_CAST")
 class HomeVMFactory(
     private val context: Context
 ) : ViewModelProvider.Factory {

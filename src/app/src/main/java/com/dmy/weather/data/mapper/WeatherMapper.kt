@@ -8,11 +8,17 @@ fun WeatherDTO.toModel(): WeatherModel {
 
     return WeatherModel(
         cityName = name ?: "Unknown Location",
-        temperature = main?.temp,
-        description = condition?.description?.replaceFirstChar { it.uppercase() }
-            ?: "No Description",
+        country = sys?.country ?: "Unknown Country",
+        time = "LocalDateTime.now().toLocalTime().",
+        temperature = main?.temp.toTemp(),
+        feelsLike = main?.feelsLike.toTemp(),
+        min = main?.tempMin.toTemp(),
+        max = main?.tempMax.toTemp(),
+        description = condition?.description?.replaceFirstChar { it.uppercase() } ?: "UnKnown",
         iconUrl = iconMapper(condition?.icon),
-        humidity = "${main?.humidity ?: 0}%",
-        pressure = "${main?.pressure ?: 0} hPa"
+        humidity = main?.humidity.toHumidity(),
+        pressure = main?.pressure.toPressure(),
+        windSpeed = wind?.speed.toSpeed(),
+        clouds = clouds?.all.toClouds(),
     )
 }

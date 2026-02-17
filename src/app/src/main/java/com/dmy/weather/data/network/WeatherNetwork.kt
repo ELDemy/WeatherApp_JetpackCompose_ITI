@@ -16,8 +16,8 @@ object WeatherNetwork {
             val original = chain.request()
             val url = original.url.newBuilder()
                 .addQueryParameter("appid", BuildConfig.WEATHER_API_KEY)
-//                .addQueryParameter("lang", DEFAULT_LANG)
-//                .addQueryParameter("units", DEFAULT_UNITS)
+                .addQueryParameter("lang", DEFAULT_LANG)
+                .addQueryParameter("units", DEFAULT_UNITS)
                 .build()
 
             chain.proceed(original.newBuilder().url(url).build())
