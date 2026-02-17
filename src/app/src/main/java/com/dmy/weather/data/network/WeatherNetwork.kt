@@ -8,11 +8,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 object WeatherNetwork {
     private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
 
+    private val lang = "en"
+    private val units = "metric"
+
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val original = chain.request()
             val url = original.url.newBuilder()
                 .addQueryParameter("appid", BuildConfig.WEATHER_API_KEY)
+                .addQueryParameter("lang", "en")
+                .addQueryParameter("units", "metric")
                 .build()
 
             chain.proceed(original.newBuilder().url(url).build())
