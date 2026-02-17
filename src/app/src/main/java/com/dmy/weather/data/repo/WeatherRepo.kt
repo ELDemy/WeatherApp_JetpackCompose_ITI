@@ -1,13 +1,18 @@
 package com.dmy.weather.data.repo
 
 import android.util.Log
+import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
 import com.dmy.weather.data.mapper.toModel
+import com.dmy.weather.data.model.CityModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class WeatherRepo {
     companion object {
         private const val TAG = "WeatherRepo"
         private val weatherRemoteDataSource = WeatherRemoteDataSource()
+        private val geocodingRemoteDataSource = GeocodingRemoteDataSource()
     }
 
     suspend fun getCurrentWeather(city: String) {
@@ -77,4 +82,29 @@ class WeatherRepo {
         Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
         Log.i(TAG, "hourlyForecastModel: $hourlyForecastModel")
     }
+
+    fun getGeocodingCityInfoByCity(city: String) {
+        GlobalScope.launch {
+
+            val geocodingCityDTO = geocodingRemoteDataSource.getGeocodingCityByCity(city)
+            val cityModel = geocodingCityDTO?.toModel()
+
+            Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
+            Log.i(TAG, "cityModel: $cityModel")
+
+//            return cityModel
+        }
+    }
+
+    suspend fun getGeocodingCityInfoByCoord(long: String, lat: String): CityModel? {
+        val geocodingCityDTO = geocodingRemoteDataSource.getGeocodingCityByCoord(long, lat)
+        val cityModel = geocodingCityDTO?.toModel()
+
+        Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
+        Log.i(TAG, "cityModel: $cityModel")
+
+        return cityModel
+    }
+
+
 }

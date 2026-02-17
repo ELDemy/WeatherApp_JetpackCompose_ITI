@@ -37,7 +37,9 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier.clickable(onClick = {
-            WeatherRepo().getHourlyForecast("Cairo")
+
+            WeatherRepo().getGeocodingCityInfoByCity("Cairo")
+
         })
     )
 }

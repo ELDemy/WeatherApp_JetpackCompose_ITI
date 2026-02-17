@@ -8,37 +8,37 @@ import retrofit2.http.Query
 
 interface WeatherService {
 
-    @GET("weather")
+    @GET("data/2.5/weather")
     suspend fun getCurrentWeather(
         @Query("q") city: String,
     ): WeatherDTO?
 
-    @GET("weather")
+    @GET("data/2.5/weather")
     suspend fun getCurrentWeather(
         @Query("lon") lon: String,
         @Query("lat") lat: String,
     ): WeatherDTO?
 
-    @GET("forecast/hourly")
+    @GET("data/2.5/forecast/hourly")
     suspend fun getHourlyForecast(
         @Query("q") city: String,
         @Query("cnt") count: Int = 24,
     ): HourlyForecastDTO?
 
-    @GET("forecast/hourly")
+    @GET("data/2.5/forecast/hourly")
     suspend fun getHourlyForecast(
         @Query("lon") lon: String,
         @Query("lat") lat: String,
         @Query("cnt") count: Int = 24,
     ): HourlyForecastDTO?
 
-    @GET("forecast/daily")
+    @GET("data/2.5/forecast/daily")
     suspend fun getDailyForecast(
         @Query("q") city: String,
         @Query("cnt") count: Int = 7,
     ): DailyForecastDTO?
 
-    @GET("forecast/daily")
+    @GET("data/2.5/forecast/daily")
     suspend fun getDailyForecast(
         @Query("lon") lon: String,
         @Query("lat") lat: String,
@@ -46,13 +46,13 @@ interface WeatherService {
     ): DailyForecastDTO?
 
 
-    @GET("forecast/climate")
+    @GET("data/2.5/forecast/climate")
     suspend fun getClimateForecast(
         @Query("q") city: String,
         @Query("cnt") count: Int = 12,
     ): DailyForecastDTO?
 
-    @GET("forecast/climate")
+    @GET("data/2.5/forecast/climate")
     suspend fun getClimateForecast(
         @Query("lon") lon: String,
         @Query("lat") lat: String,
