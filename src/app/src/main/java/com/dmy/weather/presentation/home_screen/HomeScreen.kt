@@ -28,7 +28,7 @@ fun HomeScreen(navController: NavController, modifier: Modifier) {
             .verticalScroll(rememberScrollState())
     ) {
         CurrentWeatherSection(state = uiState.currentWeather)
-        HourlyForecast(state = uiState.hourlyForecast)
+        HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
         WeatherDetails(state = uiState.currentWeather)
     }
 }

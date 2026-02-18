@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,21 +24,22 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.dmy.weather.R.color
 import com.dmy.weather.data.model.HourlyForecastModel
+import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.UiState
 
 @Composable
-fun HourlyForecast(state: UiState<HourlyForecastModel>) {
+fun HourlyForecast(state: UiState<HourlyForecastModel>, weather: WeatherModel?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 20.dp),
+            .padding(vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        SectionTitleText("Forecast")
+        SectionTitleText("Forecast", modifier = Modifier.padding(horizontal = 24.dp))
         when {
-            state.data != null -> HourlyListItems(state.data)
+            state.data != null -> HourlyListItems(state.data, weather)
             state.isLoading -> MyLoadingComponent()
             state.error != null -> MyErrorComponent(state.error)
         }
@@ -49,13 +49,27 @@ fun HourlyForecast(state: UiState<HourlyForecastModel>) {
 @Composable
 fun HourlyListItems(
     hourlyForecast: HourlyForecastModel,
+    weather: WeatherModel?,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(horizontal = 2.dp) // avoids clipping the border shadow
+        contentPadding = PaddingValues(start = 12.dp, end = 24.dp),
     ) {
+        if (weather != null) {
+            item {
+                HourDetailCard(
+                    time = "Now",
+                    temp = weather.temperature,
+                    description = weather.description,
+                    clouds = weather.clouds,
+                    icon = weather.iconUrl,
+                )
+            }
+        }
         items(hourlyForecast.hourlyItems) { item ->
             HourDetailCard(
                 time = item.time,
@@ -79,7 +93,6 @@ fun HourDetailCard(
 ) {
     Column(
         modifier = modifier
-            .width(90.dp)
             .border(
                 width = 1.dp,
                 color = colorResource(color.lightBlue_border),
@@ -87,7 +100,7 @@ fun HourDetailCard(
             )
             .clip(RoundedCornerShape(16.dp))
             .background(colorResource(color.lightBlue_background))
-            .padding(vertical = 16.dp),
+            .padding(vertical = 12.dp, horizontal = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
