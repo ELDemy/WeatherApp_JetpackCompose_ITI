@@ -39,12 +39,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             .padding(horizontal = 24.dp, vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            text = "Weather Details",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = colorResource(color.text_primary)
-        )
+        SectionTitleText("Details")
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             DetailCard(

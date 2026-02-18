@@ -1,7 +1,7 @@
 package com.dmy.weather.data.mapper
 
 fun Double?.toTemp(): String {
-    return "${this?.toInt() ?: ""} °C"
+    return "${this?.toInt() ?: ""}°"
 }
 
 fun Int?.toHumidity(): String {

@@ -2,6 +2,7 @@ package com.dmy.weather.data.mapper
 
 import com.dmy.weather.data.dto.WeatherDTO
 import com.dmy.weather.data.model.WeatherModel
+import java.util.Date
 
 fun WeatherDTO.toModel(): WeatherModel {
     val condition = weather?.firstOrNull()
@@ -9,7 +10,7 @@ fun WeatherDTO.toModel(): WeatherModel {
     return WeatherModel(
         cityName = name ?: "Unknown Location",
         country = sys?.country ?: "Unknown Country",
-        time = "LocalDateTime.now().toLocalTime().",
+        time = dt?.getTimeInFullDate() ?: Date().time.getTimeInFullDate(),
         temperature = main?.temp.toTemp(),
         feelsLike = main?.feelsLike.toTemp(),
         min = main?.tempMin.toTemp(),

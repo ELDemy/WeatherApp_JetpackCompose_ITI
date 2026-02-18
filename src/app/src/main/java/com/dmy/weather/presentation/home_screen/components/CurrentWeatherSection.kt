@@ -69,9 +69,8 @@ fun CurrentWeatherSection(state: UiState<WeatherModel>) {
 private fun WeatherContent(weather: WeatherModel) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
 
-        DataRow(icon = drawable.location, text = "${weather.cityName}, ${weather.country}")
-
-        DataRow(icon = drawable.calendar, text = weather.time)
+        LocationInfo(text = "${weather.cityName}, ${weather.country}")
+        DateInfo(text = weather.time)
 
         Spacer(Modifier.height(12.dp))
 
@@ -83,7 +82,7 @@ private fun WeatherContent(weather: WeatherModel) {
             Text(
                 text = weather.temperature,
                 fontSize = 64.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
             )
             AsyncImage(
                 model = weather.iconUrl,
@@ -105,6 +104,48 @@ private fun WeatherContent(weather: WeatherModel) {
             WeatherStatChip(label = "L", value = weather.min)
             WeatherStatChip(label = "Feels", value = weather.feelsLike)
         }
+    }
+}
+
+@Composable
+fun LocationInfo(text: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Icon(
+            painter = painterResource(drawable.location),
+            contentDescription = null,
+            modifier = Modifier.size(20.dp),
+        )
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+fun DateInfo(text: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Icon(
+            painter = painterResource(drawable.calendar),
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+        )
+        Text(
+            text = text,
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -134,27 +175,6 @@ private fun WeatherStatChip(label: String, value: String) {
     }
 }
 
-@Composable
-fun DataRow(icon: Int, text: String, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            modifier = Modifier.size(16.dp),
-        )
-        Text(
-            text = text,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

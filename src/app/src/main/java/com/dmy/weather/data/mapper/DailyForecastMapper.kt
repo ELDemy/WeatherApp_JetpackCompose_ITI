@@ -11,7 +11,7 @@ fun DailyForecastDTO.toModel(): DailyForecastModel {
         cityName = city?.name ?: "Unknown Location",
         forecasts = list?.map { item ->
             DailyWeatherModel(
-                dateTime = getTimeInHours(item.dt),
+                dateTime = item.dt.getTimeInFullDate(),
                 tempDay = item.temp?.day?.roundToInt() ?: 0,
                 tempMin = item.temp?.min?.roundToInt() ?: 0,
                 tempMax = item.temp?.max?.roundToInt() ?: 0,

@@ -27,5 +27,8 @@
     <color name="grey_grad1">#90A1B9</color>
     <color name="grey_grad2">#6A7282</color>
 
+    <color name="lightBlue_background">#EFF6FF</color>
+    <color name="lightBlue_border">#DBEAFE</color>
+    <color name="lightBlue_grad2">#00BC7D</color>
 
 </resources>

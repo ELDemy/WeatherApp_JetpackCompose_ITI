@@ -6,15 +6,17 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
-fun getTimeInHours(time: Long): String {
-    val pattern = "EEEE, MMM d"
+fun Long.getTimeInHours(): String {
+    return getTime(this, "h a")
+}
 
+fun Long.getTimeInFullDate(): String {
+    return getTime(this, "EEEE, MMMM d, YYYY • h:mm a")
+}
+
+private fun getTime(time: Long, pattern: String): String {
     val instant = Instant.ofEpochSecond(time)
     val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())
 
     return instant.atZone(ZoneId.systemDefault()).format(formatter)
-}
-
-fun getTimeInHours(time: String): String {
-    return time.substringAfter(" ").substringBeforeLast(":")
 }

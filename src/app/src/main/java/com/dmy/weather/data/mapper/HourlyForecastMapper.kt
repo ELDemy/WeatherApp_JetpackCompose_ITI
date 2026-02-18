@@ -8,14 +8,13 @@ import com.dmy.weather.data.model.HourlyWeatherModel
 fun HourlyForecastDTO.toModel(): HourlyForecastModel {
     val items = list?.map { item ->
         val condition = item.weather?.firstOrNull()
-
-        val hour = item.dtTxt?.substringAfter(" ")?.substringBeforeLast(":") ?: "00:00"
-
+        
         HourlyWeatherModel(
-            time = hour,
-            temperature = item.main?.temp,
+            time = item.dt.getTimeInHours(),
+            temperature = item.main?.temp.toTemp(),
             iconUrl = iconMapper(condition?.icon),
-            description = condition?.description ?: ""
+            description = condition?.description ?: "",
+            clouds = (item.clouds?.all).toClouds()
         )
     } ?: emptyList()
 
