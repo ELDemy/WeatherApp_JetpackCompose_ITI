@@ -25,6 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -56,8 +57,8 @@ fun CurrentWeatherSection(state: UiState<WeatherModel>) {
     ) {
         CompositionLocalProvider(LocalContentColor provides Color.White) {
             when {
-                state.isLoading -> MyLoadingComponent(color = color.white)
                 state.data != null -> WeatherContent(state.data)
+                state.isLoading -> MyLoadingComponent(color = color.white)
                 state.error != null -> MyErrorComponent(state.error)
             }
         }
@@ -75,14 +76,14 @@ private fun WeatherContent(weather: WeatherModel) {
         Spacer(Modifier.height(12.dp))
 
         Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = weather.temperature,
                 fontSize = 64.sp,
                 fontWeight = FontWeight.Bold,
-                lineHeight = 64.sp
             )
             AsyncImage(
                 model = weather.iconUrl,
@@ -94,10 +95,10 @@ private fun WeatherContent(weather: WeatherModel) {
         Text(
             text = weather.description,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(6.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             WeatherStatChip(label = "H", value = weather.max)
@@ -153,4 +154,10 @@ fun DataRow(icon: Int, text: String, modifier: Modifier = Modifier) {
             overflow = TextOverflow.Ellipsis
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CurrentWeatherSectionPreview() {
+    CurrentWeatherSection(UiState())
 }

@@ -12,19 +12,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.dmy.weather.presentation.home_screen.components.WeatherDetails
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, modifier: Modifier) {
     val viewModel: HomeVM =
         viewModel(factory = HomeVMFactory(LocalContext.current))
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         CurrentWeatherSection(state = uiState.currentWeather)
+        WeatherDetails(state = uiState.currentWeather)
     }
 }
+

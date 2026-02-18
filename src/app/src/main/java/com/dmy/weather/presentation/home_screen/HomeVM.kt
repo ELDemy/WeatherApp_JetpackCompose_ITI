@@ -25,7 +25,7 @@ class HomeVM(val weatherRepo: WeatherRepo) : ViewModel() {
     fun loadWeatherData() {
         viewModelScope.launch(SupervisorJob()) {
             launch { loadCurrentWeather() }
-            launch { loadHourlyForecast() }
+//            launch { loadHourlyForecast() }
         }
     }
 

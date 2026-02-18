@@ -1,10 +1,13 @@
 package com.dmy.weather.presentation.my_app
 
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dmy.weather.R
 import com.dmy.weather.presentation.home_screen.HomeScreen
 
 @Composable
@@ -16,7 +19,7 @@ fun WeatherApp(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         composable<NavScreens.HomeScreen> {
-            HomeScreen(navController)
+            HomeScreen(navController, Modifier.background(color = colorResource(R.color.white)))
         }
 
     }
