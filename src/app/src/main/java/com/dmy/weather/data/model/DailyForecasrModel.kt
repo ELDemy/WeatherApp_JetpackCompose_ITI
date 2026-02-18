@@ -7,13 +7,13 @@ data class DailyForecastModel(
 
 data class DailyWeatherModel(
     val dateTime: String,
-    val tempDay: Int,
-    val tempMin: Int,
-    val tempMax: Int,
+    val tempDay: String,
+    val tempMin: String,
+    val tempMax: String,
     val condition: String,
     val description: String,
-    val icon: String,
-    val humidity: Int,
-    val windSpeed: Double,
-    val rainChance: Int // Percentage 0-100
+    val icon: String?,
+    val humidity: String,
+    val windSpeed: String,
+    val rainChance: String
 )

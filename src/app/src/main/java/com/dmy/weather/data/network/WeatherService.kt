@@ -35,14 +35,14 @@ interface WeatherService {
     @GET("data/2.5/forecast/daily")
     suspend fun getDailyForecast(
         @Query("q") city: String,
-        @Query("cnt") count: Int = 7,
+        @Query("cnt") count: Int = 5,
     ): DailyForecastDTO?
 
     @GET("data/2.5/forecast/daily")
     suspend fun getDailyForecast(
         @Query("lon") lon: String,
         @Query("lat") lat: String,
-        @Query("cnt") count: Int = 7,
+        @Query("cnt") count: Int = 5,
     ): DailyForecastDTO?
 
 

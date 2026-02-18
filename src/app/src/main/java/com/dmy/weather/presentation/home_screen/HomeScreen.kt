@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.dmy.weather.presentation.home_screen.components.DailyForecast
 import com.dmy.weather.presentation.home_screen.components.HourlyForecast
 import com.dmy.weather.presentation.home_screen.components.WeatherDetails
 
@@ -27,8 +28,9 @@ fun HomeScreen(navController: NavController, modifier: Modifier) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        CurrentWeatherSection(state = uiState.currentWeather)
+        CurrentWeatherSection(state = uiState.currentWeather, uiState.dailyForecast.data)
         HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
+        DailyForecast(state = uiState.dailyForecast)
         WeatherDetails(state = uiState.currentWeather)
     }
 }

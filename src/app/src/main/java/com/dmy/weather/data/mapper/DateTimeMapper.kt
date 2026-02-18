@@ -14,6 +14,10 @@ fun Long.getTimeInFullDate(): String {
     return getTime(this, "EEEE, MMMM d, YYYY • h:mm a")
 }
 
+fun Long.getTimeInDayOfTheWeek(): String {
+    return getTime(this, "EEEE")
+}
+
 private fun getTime(time: Long, pattern: String): String {
     val instant = Instant.ofEpochSecond(time)
     val formatter = DateTimeFormatter.ofPattern(pattern, Locale.getDefault())

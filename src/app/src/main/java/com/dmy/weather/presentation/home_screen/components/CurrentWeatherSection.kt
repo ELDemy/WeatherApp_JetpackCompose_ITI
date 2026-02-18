@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
+import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
@@ -38,7 +39,7 @@ import com.dmy.weather.presentation.home_screen.UiState
 
 
 @Composable
-fun CurrentWeatherSection(state: UiState<WeatherModel>) {
+fun CurrentWeatherSection(state: UiState<WeatherModel>, dayForecast: DailyForecastModel?) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -57,7 +58,7 @@ fun CurrentWeatherSection(state: UiState<WeatherModel>) {
     ) {
         CompositionLocalProvider(LocalContentColor provides Color.White) {
             when {
-                state.data != null -> WeatherContent(state.data)
+                state.data != null -> WeatherContent(state.data, dayForecast)
                 state.isLoading -> MyLoadingComponent(color = color.white)
                 state.error != null -> MyErrorComponent(state.error)
             }
@@ -66,7 +67,7 @@ fun CurrentWeatherSection(state: UiState<WeatherModel>) {
 }
 
 @Composable
-private fun WeatherContent(weather: WeatherModel) {
+private fun WeatherContent(weather: WeatherModel, dayForecast: DailyForecastModel?) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
 
         LocationInfo(text = "${weather.cityName}, ${weather.country}")
@@ -99,9 +100,11 @@ private fun WeatherContent(weather: WeatherModel) {
 
         Spacer(Modifier.height(6.dp))
 
+        val low = dayForecast?.forecasts?.firstOrNull()?.tempMin ?: weather.min
+        val high = dayForecast?.forecasts?.firstOrNull()?.tempMax ?: weather.max
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            WeatherStatChip(label = "H", value = weather.max)
-            WeatherStatChip(label = "L", value = weather.min)
+            WeatherStatChip(label = "H", value = high)
+            WeatherStatChip(label = "L", value = low)
             WeatherStatChip(label = "Feels", value = weather.feelsLike)
         }
     }
@@ -179,5 +182,5 @@ private fun WeatherStatChip(label: String, value: String) {
 @Preview(showBackground = true)
 @Composable
 fun CurrentWeatherSectionPreview() {
-    CurrentWeatherSection(UiState())
+    CurrentWeatherSection(UiState(),null)
 }

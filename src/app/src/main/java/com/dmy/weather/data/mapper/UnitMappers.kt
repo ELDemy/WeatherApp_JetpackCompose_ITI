@@ -8,6 +8,10 @@ fun Int?.toHumidity(): String {
     return "${this ?: ""} %"
 }
 
+fun Double?.toRain(): String {
+    return "${this ?: ""} %"
+}
+
 fun Int?.toPressure(): String {
     return "${this ?: ""} hPa"
 }

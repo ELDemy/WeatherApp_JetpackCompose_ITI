@@ -26,6 +26,7 @@ class HomeVM(val weatherRepo: WeatherRepo) : ViewModel() {
         viewModelScope.launch(SupervisorJob()) {
             launch { loadCurrentWeather() }
             launch { loadHourlyForecast() }
+            launch { loadDailyForecast() }
         }
     }
 
@@ -57,6 +58,28 @@ class HomeVM(val weatherRepo: WeatherRepo) : ViewModel() {
         _uiState.update {
             it.copy(
                 hourlyForecast = result.fold(
+                    onSuccess = { model ->
+                        UiState(isLoading = false, data = model)
+                    },
+                    onFailure = { error ->
+                        UiState(
+                            isLoading = false,
+                            error = error.message ?: "Unknown Error"
+                        )
+                    }
+                )
+            )
+        }
+    }
+
+    private suspend fun loadDailyForecast() {
+        _uiState.update { it.copy(dailyForecast = UiState(isLoading = true)) }
+
+        val result = weatherRepo.getDailyForecast("Cairo")
+
+        _uiState.update {
+            it.copy(
+                dailyForecast = result.fold(
                     onSuccess = { model ->
                         UiState(isLoading = false, data = model)
                     },

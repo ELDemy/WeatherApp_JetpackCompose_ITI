@@ -29,6 +29,7 @@
 
     <color name="lightBlue_background">#EFF6FF</color>
     <color name="lightBlue_border">#DBEAFE</color>
-    <color name="lightBlue_grad2">#00BC7D</color>
+
+    <color name="orange_grad1">#FF8904</color>
 
 </resources>
