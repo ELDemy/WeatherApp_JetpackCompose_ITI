@@ -5,4 +5,13 @@ import kotlinx.serialization.Serializable
 sealed class NavScreens {
     @Serializable
     object HomeScreen : NavScreens()
+
+    @Serializable
+    object SearchScreen : NavScreens()
+
+    @Serializable
+    object SettingsScreen : NavScreens()
+
+    @Serializable
+    object FavoritesScreen : NavScreens()
 }

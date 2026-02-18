@@ -1,28 +1,59 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.dmy.weather.presentation.my_app
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dmy.weather.R
 import com.dmy.weather.presentation.home_screen.HomeScreen
+import com.dmy.weather.presentation.my_app.top_bar.AppBar
+import com.dmy.weather.presentation.settings_screen.SettingsScreen
 
 @Composable
-fun WeatherApp(modifier: Modifier = Modifier) {
+fun WeatherApp() {
     val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = NavScreens.HomeScreen,
-        modifier = modifier
-    ) {
-        composable<NavScreens.HomeScreen> {
-            HomeScreen(navController, Modifier.background(color = colorResource(R.color.white)))
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
+    val modifier = Modifier
+        .fillMaxSize()
+        .background(color = colorResource(R.color.white))
+
+    Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = { AppBar(navController, scrollBehavior) }
+    )
+    { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = NavScreens.HomeScreen,
+            modifier = modifier.padding(innerPadding)
+        ) {
+            composable<NavScreens.HomeScreen> {
+                HomeScreen(navController, modifier)
+            }
+            composable<NavScreens.SettingsScreen> {
+                SettingsScreen(navController, modifier)
+            }
         }
 
     }
-
 }
 
+@Preview(showBackground = true)
+@Composable
+fun WeatherAppPreview(modifier: Modifier = Modifier) {
+    WeatherApp()
+}
