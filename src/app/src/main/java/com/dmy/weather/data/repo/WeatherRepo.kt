@@ -1,6 +1,5 @@
 package com.dmy.weather.data.repo
 
-import android.content.Context
 import android.util.Log
 import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
@@ -14,11 +13,12 @@ import com.dmy.weather.utils.mapFailure
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class WeatherRepo(context: Context) {
+class WeatherRepo(
+    val weatherRemoteDataSource: WeatherRemoteDataSource,
+    val geocodingRemoteDataSource: GeocodingRemoteDataSource
+) {
     companion object {
         private const val TAG = "WeatherRepo"
-        private val weatherRemoteDataSource = WeatherRemoteDataSource()
-        private val geocodingRemoteDataSource = GeocodingRemoteDataSource()
     }
 
     suspend fun getCurrentWeather(city: String): Result<WeatherModel> {

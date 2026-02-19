@@ -2,21 +2,32 @@ package com.dmy.weather.presentation.home_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.data.repo.WeatherRepo
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeVM(val weatherRepo: WeatherRepo) : ViewModel() {
+class HomeVM(val weatherRepo: WeatherRepo, val settingsRepository: SettingsRepository) :
+    ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState
 
     init {
         loadWeatherData()
+        viewModelScope.launch {
+            settingsRepository.settingsFlow
+                .distinctUntilChanged()
+                .collect {
+                    loadWeatherData()
+                }
+        }
     }
+
 
     companion object {
         private const val TAG = "HomeViewModel"

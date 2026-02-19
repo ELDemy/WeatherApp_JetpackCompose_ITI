@@ -1,31 +1,29 @@
 package com.dmy.weather.data.network
 
 import com.dmy.weather.BuildConfig
+import com.dmy.weather.data.repo.SettingsRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object WeatherNetwork {
-    private const val BASE_URL = "https://api.openweathermap.org/"
-
-    private const val DEFAULT_LANG = "en"
-    private const val DEFAULT_UNITS = "metric"
-
+class WeatherNetwork(private val settingsRepository: SettingsRepository) {
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
-            val original = chain.request()
-            val url = original.url.newBuilder()
+ 
+            val settings = runBlocking { settingsRepository.settingsFlow.first() }
+            val url = chain.request().url.newBuilder()
                 .addQueryParameter("appid", BuildConfig.WEATHER_API_KEY)
-                .addQueryParameter("lang", DEFAULT_LANG)
-                .addQueryParameter("units", DEFAULT_UNITS)
+                .addQueryParameter("lang", settings.lang)
+                .addQueryParameter("units", settings.unit?.display)
                 .build()
-
-            chain.proceed(original.newBuilder().url(url).build())
+            chain.proceed(chain.request().newBuilder().url(url).build())
         }
         .build()
 
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.openweathermap.org/")
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

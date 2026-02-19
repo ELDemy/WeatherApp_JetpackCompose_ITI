@@ -45,15 +45,30 @@ fun AppBar(
         }
 
         currentDestination?.hasRoute<NavScreens.SettingsScreen>() == true -> {
-            DefaultTopBar(navController, "Settings", icon = Icons.Filled.Settings)
+            DefaultTopBar(
+                navController,
+                "Settings",
+                icon = Icons.Filled.Settings,
+                scrollBehavior
+            )
         }
 
         currentDestination?.hasRoute<NavScreens.FavoritesScreen>() == true -> {
-            DefaultTopBar(navController, "Saved Locations", icon = Icons.Filled.Favorite)
+            DefaultTopBar(
+                navController,
+                "Saved Locations",
+                icon = Icons.Filled.Favorite,
+                scrollBehavior
+            )
         }
 
         currentDestination?.hasRoute<NavScreens.SearchScreen>() == true -> {
-            DefaultTopBar(navController, "Search Location", icon = Icons.Filled.Search)
+            DefaultTopBar(
+                navController,
+                "Search Location",
+                icon = Icons.Filled.Search,
+                scrollBehavior
+            )
         }
     }
 }
