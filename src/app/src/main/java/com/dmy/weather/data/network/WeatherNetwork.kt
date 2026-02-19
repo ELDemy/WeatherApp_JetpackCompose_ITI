@@ -15,7 +15,7 @@ class WeatherNetwork(private val settingsRepository: SettingsRepository) {
             val settings = runBlocking { settingsRepository.settingsFlow.first() }
             val url = chain.request().url.newBuilder()
                 .addQueryParameter("appid", BuildConfig.WEATHER_API_KEY)
-                .addQueryParameter("lang", settings.lang)
+                .addQueryParameter("lang", settings.lang?.apiCode)
                 .addQueryParameter("units", settings.unit?.display)
                 .build()
             chain.proceed(chain.request().newBuilder().url(url).build())

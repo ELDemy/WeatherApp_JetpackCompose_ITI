@@ -70,5 +70,23 @@ fun AppBar(
                 scrollBehavior
             )
         }
+
+//        currentDestination?.hasRoute<NavScreens.LanguageSelectionScreen>() == true -> {
+//            LaunchedEffect(Unit) {
+//                scrollBehavior.state.heightOffset = 0f
+//                scrollBehavior.state.contentOffset = 0f
+//            }
+//            SearchAppbar(
+//                navController,
+//                "Search Location",
+//                icon = Icons.Filled.Search,
+//                scrollBehavior
+//            )
+//        }
+
+        else -> {
+            ShrinkAppBar()
+        }
     }
 }
+

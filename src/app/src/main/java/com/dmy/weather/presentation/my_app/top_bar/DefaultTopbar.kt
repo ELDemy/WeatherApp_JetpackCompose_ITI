@@ -17,14 +17,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
 
-// TODO: Remove the scrollBehavior from here
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTopBar(
     navController: NavController,
     title: String,
     icon: ImageVector,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior?
 ) {
     TopAppBar(
         scrollBehavior = scrollBehavior,

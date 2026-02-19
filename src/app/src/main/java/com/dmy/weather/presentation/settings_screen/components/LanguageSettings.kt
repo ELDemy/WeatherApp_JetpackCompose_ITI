@@ -5,15 +5,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.dmy.weather.data.enums.AppLanguage
+import com.dmy.weather.presentation.my_app.NavScreens
 import com.dmy.weather.presentation.settings_screen.SettingsVM
 
 @Composable
-fun LanguageSettings(lang: String, viewModel: SettingsVM, navController: NavController) {
+fun LanguageSettings(lang: AppLanguage, viewModel: SettingsVM, navController: NavController) {
     CustomSettingItem(
-        title = lang,
+        title = lang.displayName,
         subtitle = "Current language",
         backgroundGradient = listOf(Color(0xFFFEF3C7), Color(0xFFFEF3C7)),
-        onClick = { /* navigate to Languages */ }
+        onClick = { navController.navigate(NavScreens.LanguageSelectionScreen) }
     ) {
         Text("🌐", fontSize = 24.sp)
     }

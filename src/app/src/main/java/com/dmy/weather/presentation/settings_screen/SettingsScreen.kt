@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.dmy.weather.data.enums.AppLanguage
 import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.presentation.settings_screen.components.AlertSettingCard
@@ -40,7 +41,7 @@ fun SettingsScreen(navController: NavController, modifier: Modifier = Modifier) 
 
         UnitSystemSettings(viewModel, uiState.unit ?: UnitSystem.METRIC)
 
-        LanguageSettings(uiState.lang ?: "English", viewModel, navController)
+        LanguageSettings(uiState.lang ?: AppLanguage.DEFAULT, viewModel, navController)
 
         AlertSettingCard(viewModel, navController)
     }

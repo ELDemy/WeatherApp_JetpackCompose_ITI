@@ -9,9 +9,14 @@ sealed class NavScreens {
     @Serializable
     object SearchScreen : NavScreens()
 
+
+    @Serializable
+    object FavoritesScreen : NavScreens()
+
+
     @Serializable
     object SettingsScreen : NavScreens()
 
     @Serializable
-    object FavoritesScreen : NavScreens()
+    object LanguageSelectionScreen : NavScreens()
 }

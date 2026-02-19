@@ -10,6 +10,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.dmy.weather.data.enums.AppLanguage
 import com.dmy.weather.presentation.my_app.WeatherApp
 import com.dmy.weather.presentation.settings_screen.SettingsVM
 import com.dmy.weather.ui.theme.WeatherTheme
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsVM.settingsState.collect { settings ->
-                    applyLocale(settings.lang ?: "en")
+                    applyLocale(settings.lang?.apiCode ?: AppLanguage.DEFAULT.apiCode)
                 }
             }
         }

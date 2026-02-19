@@ -16,8 +16,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(navController: NavController, modifier: Modifier) {
-//    val viewModel: HomeVM =
-//        viewModel(factory = HomeVMFactory(LocalContext.current))
     val viewModel: HomeVM = koinViewModel<HomeVM>()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -27,9 +25,12 @@ fun HomeScreen(navController: NavController, modifier: Modifier) {
             .verticalScroll(rememberScrollState())
     ) {
         CurrentWeatherSection(state = uiState.currentWeather, uiState.dailyForecast.data)
+
         HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
-        DailyForecast(state = uiState.dailyForecast)
+
         WeatherDetails(state = uiState.currentWeather)
+
+        DailyForecast(state = uiState.dailyForecast)
     }
 }
 
