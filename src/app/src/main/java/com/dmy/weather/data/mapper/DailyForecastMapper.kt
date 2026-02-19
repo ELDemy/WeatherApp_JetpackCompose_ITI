@@ -2,10 +2,11 @@ package com.dmy.weather.data.mapper
 
 
 import com.dmy.weather.data.dto.DailyForecastDTO
+import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.DailyWeatherModel
 
-fun DailyForecastDTO.toModel(): DailyForecastModel {
+fun DailyForecastDTO.toModel(unit: UnitSystem): DailyForecastModel {
     return DailyForecastModel(
         cityName = city?.name ?: "Unknown Location",
         forecasts = list?.map { item ->
@@ -18,7 +19,7 @@ fun DailyForecastDTO.toModel(): DailyForecastModel {
                 description = item.weather?.firstOrNull()?.description ?: "",
                 icon = iconMapper(item.weather?.firstOrNull()?.icon),
                 humidity = item.humidity.toHumidity(),
-                windSpeed = item.speed.toSpeed(),
+                windSpeed = item.speed.toSpeed(unit),
                 rainChance = item.pop.toRain()
             )
         } ?: emptyList()

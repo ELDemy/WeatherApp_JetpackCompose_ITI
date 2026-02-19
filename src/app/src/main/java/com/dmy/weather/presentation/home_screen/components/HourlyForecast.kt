@@ -63,7 +63,8 @@ fun HourlyListItems(
             item {
                 HourDetailCard(
                     time = "Now",
-                    temp = weather.temperature,
+                    // to remove the temp unit to be like the others
+                    temp = weather.temperature.dropLast(1),
                     description = weather.description,
                     clouds = weather.clouds,
                     icon = weather.iconUrl,

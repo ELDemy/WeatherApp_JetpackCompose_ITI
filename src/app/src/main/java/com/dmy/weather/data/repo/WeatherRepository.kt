@@ -13,20 +13,24 @@ import com.dmy.weather.utils.mapFailure
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class WeatherRepo(
+class WeatherRepository(
     val weatherRemoteDataSource: WeatherRemoteDataSource,
-    val geocodingRemoteDataSource: GeocodingRemoteDataSource
+    val geocodingRemoteDataSource: GeocodingRemoteDataSource,
+    val settingsRepository: SettingsRepository,
 ) {
     companion object {
         private const val TAG = "WeatherRepo"
     }
 
+
     suspend fun getCurrentWeather(city: String): Result<WeatherModel> {
         return runCatching {
+
             val weatherDTO = weatherRemoteDataSource.getCurrentWeather(city)
                 ?: throw NullDataException()
 
-            val weatherModel = weatherDTO.toModel()
+            val unit = settingsRepository.getUnit()
+            val weatherModel = weatherDTO.toModel(unit)
 
             Log.i(TAG, "weatherDTO: $weatherDTO")
             Log.i(TAG, "weatherModel: $weatherModel")
@@ -41,7 +45,8 @@ class WeatherRepo(
             val weatherDTO = weatherRemoteDataSource.getCurrentWeather(long, lat)
                 ?: throw NullDataException()
 
-            val weatherModel = weatherDTO.toModel()
+            val unit = settingsRepository.getUnit()
+            val weatherModel = weatherDTO.toModel(unit)
 
             Log.i(TAG, "weatherDTO: $weatherDTO")
             Log.i(TAG, "weatherModel: $weatherModel")
@@ -81,7 +86,7 @@ class WeatherRepo(
             val dailyForecastDTO = weatherRemoteDataSource.getDailyForecast(city)
                 ?: throw NullDataException()
 
-            val dailyForecastModel = dailyForecastDTO.toModel()
+            val dailyForecastModel = dailyForecastDTO.toModel(settingsRepository.getUnit())
 
             Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
             Log.i(TAG, "weatherModel: $dailyForecastModel")
@@ -93,7 +98,7 @@ class WeatherRepo(
         return runCatching {
             val dailyForecastDTO = weatherRemoteDataSource.getDailyForecast(long, lat)
                 ?: throw NullDataException()
-            val dailyForecastModel = dailyForecastDTO.toModel()
+            val dailyForecastModel = dailyForecastDTO.toModel(settingsRepository.getUnit())
 
             Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
             Log.i(TAG, "weatherModel: $dailyForecastModel")
@@ -103,7 +108,7 @@ class WeatherRepo(
 
     suspend fun getClimateForecast(city: String) {
         val dailyForecastDTO = weatherRemoteDataSource.getClimateForecast(city)
-        val dailyForecastModel = dailyForecastDTO?.toModel()
+        val dailyForecastModel = dailyForecastDTO?.toModel(settingsRepository.getUnit())
 
         Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
         Log.i(TAG, "weatherModel: $dailyForecastModel")
@@ -111,7 +116,7 @@ class WeatherRepo(
 
     suspend fun getClimateForecast(long: String, lat: String) {
         val dailyForecastDTO = weatherRemoteDataSource.getClimateForecast(long, lat)
-        val dailyForecastModel = dailyForecastDTO?.toModel()
+        val dailyForecastModel = dailyForecastDTO?.toModel(settingsRepository.getUnit())
 
         Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
         Log.i(TAG, "weatherModel: $dailyForecastModel")

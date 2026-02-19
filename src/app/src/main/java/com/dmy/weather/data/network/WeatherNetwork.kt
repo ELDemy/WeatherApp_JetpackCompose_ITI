@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class WeatherNetwork(private val settingsRepository: SettingsRepository) {
     private val client = OkHttpClient.Builder()
         .addInterceptor { chain ->
- 
+
             val settings = runBlocking { settingsRepository.settingsFlow.first() }
             val url = chain.request().url.newBuilder()
                 .addQueryParameter("appid", BuildConfig.WEATHER_API_KEY)

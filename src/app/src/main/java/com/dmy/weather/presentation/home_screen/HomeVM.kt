@@ -3,7 +3,7 @@ package com.dmy.weather.presentation.home_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.repo.SettingsRepository
-import com.dmy.weather.data.repo.WeatherRepo
+import com.dmy.weather.data.repo.WeatherRepository
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeVM(val weatherRepo: WeatherRepo, val settingsRepository: SettingsRepository) :
+class HomeVM(val weatherRepository: WeatherRepository, val settingsRepository: SettingsRepository) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -44,7 +44,7 @@ class HomeVM(val weatherRepo: WeatherRepo, val settingsRepository: SettingsRepos
     private suspend fun loadCurrentWeather() {
         _uiState.update { it.copy(currentWeather = UiState(isLoading = true)) }
 
-        val result = weatherRepo.getCurrentWeather("Cairo")
+        val result = weatherRepository.getCurrentWeather("Cairo")
 
         _uiState.update {
             it.copy(
@@ -64,7 +64,7 @@ class HomeVM(val weatherRepo: WeatherRepo, val settingsRepository: SettingsRepos
     private suspend fun loadHourlyForecast() {
         _uiState.update { it.copy(hourlyForecast = UiState(isLoading = true)) }
 
-        val result = weatherRepo.getHourlyForecast("Cairo")
+        val result = weatherRepository.getHourlyForecast("Cairo")
 
         _uiState.update {
             it.copy(
@@ -86,7 +86,7 @@ class HomeVM(val weatherRepo: WeatherRepo, val settingsRepository: SettingsRepos
     private suspend fun loadDailyForecast() {
         _uiState.update { it.copy(dailyForecast = UiState(isLoading = true)) }
 
-        val result = weatherRepo.getDailyForecast("Cairo")
+        val result = weatherRepository.getDailyForecast("Cairo")
 
         _uiState.update {
             it.copy(
