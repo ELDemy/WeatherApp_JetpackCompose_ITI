@@ -2,7 +2,22 @@
     <string name="app_name" translatable="false">Weather</string>
     <string name="Selected_Language">Selected Language</string>
     <string name="Select_Language">Select Language</string>
-    <string name="Search_Languages">Search Languages...</string>
+    <string name="Search_Languages">Search Languages…</string>
     <string name="All_Languages">All Languages</string>
     <string name="Selected_Location">Selected Location</string>
+    <string name="Now">now</string>
+    <string name="Forecast">Forecast</string>
+    <string name="Details">Details</string>
+    <string name="Wind_Speed">Wind Speed</string>
+    <string name="Humidity">Humidity</string>
+    <string name="Clouds">Clouds</string>
+    <string name="Pressure">Pressure</string>
+    <string name="Next_Days_Forecast">Next Days Forecast</string>
+    <string name="Today">Today</string>
+    <string name="hPa">hPa</string>
+    <string name="C">C</string>
+    <string name="F">F</string>
+    <string name="K">K</string>
+    <string name="m_s">m/s</string>
+    <string name="mil_h">mil/h</string>
 </resources>

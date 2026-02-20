@@ -39,7 +39,7 @@ fun WeatherApp() {
     { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavScreens.SettingsScreen,
+            startDestination = NavScreens.HomeScreen,
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavScreens.HomeScreen> {

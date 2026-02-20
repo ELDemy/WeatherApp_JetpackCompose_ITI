@@ -17,11 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.WeatherModel
@@ -37,7 +39,7 @@ fun HourlyForecast(state: UiState<HourlyForecastModel>, weather: WeatherModel?) 
             .padding(vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        SectionTitleText("Forecast", modifier = Modifier.padding(horizontal = 24.dp))
+        SectionTitleText(stringResource(R.string.Forecast), modifier = Modifier.padding(horizontal = 24.dp))
         when {
             state.data != null -> HourlyListItems(state.data, weather)
             state.isLoading -> MyLoadingComponent()
@@ -62,8 +64,7 @@ fun HourlyListItems(
         if (weather != null) {
             item {
                 HourDetailCard(
-                    time = "Now",
-                    // to remove the temp unit to be like the others
+                    time = stringResource(R.string.Now),
                     temp = weather.temperature.dropLast(1),
                     description = weather.description,
                     clouds = weather.clouds,

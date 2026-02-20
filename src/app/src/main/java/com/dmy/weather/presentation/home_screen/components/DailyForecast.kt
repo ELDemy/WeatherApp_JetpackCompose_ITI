@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.DailyWeatherModel
@@ -35,7 +37,7 @@ fun DailyForecast(state: UiState<DailyForecastModel>) {
             .padding(vertical = 20.dp, horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        SectionTitleText("Next Days Forecast")
+        SectionTitleText(stringResource(R.string.Next_Days_Forecast))
         when {
             state.data != null -> DailyListItems(state.data)
             state.isLoading -> MyLoadingComponent()
@@ -80,7 +82,7 @@ fun DailyForecastItem(weather: DailyWeatherModel, index: Int) {
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
-                text = if (index == 0) "Today" else weather.dateTime,
+                text = if (index == 0) stringResource(R.string.Today) else weather.dateTime,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(color.text_primary)

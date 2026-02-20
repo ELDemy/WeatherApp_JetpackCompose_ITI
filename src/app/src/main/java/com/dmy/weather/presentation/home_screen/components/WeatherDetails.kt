@@ -21,9 +21,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
 import com.dmy.weather.data.model.WeatherModel
@@ -39,12 +41,12 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             .padding(horizontal = 24.dp, vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        SectionTitleText("Details")
+        SectionTitleText(stringResource(R.string.Details))
 
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             DetailCard(
                 modifier = Modifier.weight(1f),
-                title = "Humidity",
+                title = stringResource(R.string.Humidity),
                 data = weather?.humidity,
                 icon = drawable.humidity,
                 gradientColors = listOf(
@@ -55,7 +57,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             )
             DetailCard(
                 modifier = Modifier.weight(1f),
-                title = "Wind Speed",
+                title = stringResource(R.string.Wind_Speed),
                 data = weather?.windSpeed,
                 icon = drawable.wind,
                 gradientColors = listOf(
@@ -69,7 +71,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             DetailCard(
                 modifier = Modifier.weight(1f),
-                title = "Pressure",
+                title = stringResource(R.string.Pressure),
                 data = weather?.pressure,
                 icon = drawable.pressure,
                 gradientColors = listOf(
@@ -80,7 +82,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             )
             DetailCard(
                 modifier = Modifier.weight(1f),
-                title = "Clouds",
+                title = stringResource(R.string.Clouds),
                 data = weather?.clouds,
                 icon = drawable.cloud,
                 gradientColors = listOf(

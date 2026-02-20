@@ -5,4 +5,16 @@
     <string name="Search_Languages">بحث اللغات...</string>
     <string name="All_Languages">كل اللغاب</string>
     <string name="Selected_Location">المكان المختار</string>
+    <string name="Now">الآن</string>
+    <string name="Forecast">الطقس</string>
+    <string name="Details">ظروف الطقس</string>
+    <string name="Wind_Speed">سرعة الرياح</string>
+    <string name="Humidity">الرطوبه</string>
+    <string name="Clouds">الغيوم</string>
+    <string name="Pressure">الضغط</string>
+    <string name="Next_Days_Forecast">طقس الأيام القادمة</string>
+    <string name="Today">اليوم</string>
+    <string name="hPa">هكت</string>
+    <string name="C">س</string>
+    <string name="m_s">م/س</string>
 </resources>

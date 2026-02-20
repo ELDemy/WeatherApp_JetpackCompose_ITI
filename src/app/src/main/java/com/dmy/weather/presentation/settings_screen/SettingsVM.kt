@@ -48,10 +48,11 @@ class SettingsVM(private val settingsRepo: SettingsRepository) : ViewModel() {
     fun updateLanguage(lang: AppLanguage) {
         viewModelScope.launch {
             settingsRepo.saveSettings(settingsState.value.copy(lang = lang))
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.forLanguageTags(lang.apiCode)
+            )
         }
-        AppCompatDelegate.setApplicationLocales(
-            LocaleListCompat.forLanguageTags(lang.apiCode)
-        )
+
     }
 
     fun updateLocationMode(locationMode: LocationMode) {
