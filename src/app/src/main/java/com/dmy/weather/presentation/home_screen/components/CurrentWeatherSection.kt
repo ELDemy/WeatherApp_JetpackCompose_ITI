@@ -23,23 +23,31 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
+import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.UiState
+import com.dmy.weather.presentation.utils.toTemp
 
 
 @Composable
-fun CurrentWeatherSection(state: UiState<WeatherModel>, dayForecast: DailyForecastModel?) {
+fun CurrentWeatherSection(
+    state: UiState<WeatherModel>,
+    dayForecast: DailyForecastModel?,
+    unit: UnitSystem
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,7 +66,7 @@ fun CurrentWeatherSection(state: UiState<WeatherModel>, dayForecast: DailyForeca
     ) {
         CompositionLocalProvider(LocalContentColor provides Color.White) {
             when {
-                state.data != null -> WeatherContent(state.data, dayForecast)
+                state.data != null -> WeatherContent(state.data, dayForecast, unit)
                 state.isLoading -> MyLoadingComponent(color = color.white)
                 state.error != null -> MyErrorComponent(state.error)
             }
@@ -67,7 +75,11 @@ fun CurrentWeatherSection(state: UiState<WeatherModel>, dayForecast: DailyForeca
 }
 
 @Composable
-private fun WeatherContent(weather: WeatherModel, dayForecast: DailyForecastModel?) {
+private fun WeatherContent(
+    weather: WeatherModel,
+    dayForecast: DailyForecastModel?,
+    unit: UnitSystem
+) {
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
 
         LocationInfo(text = "${weather.cityName}, ${weather.country}")
@@ -81,13 +93,13 @@ private fun WeatherContent(weather: WeatherModel, dayForecast: DailyForecastMode
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = weather.temperature,
+                text = weather.temperature.toTemp(unit),
                 fontSize = 64.sp,
                 fontWeight = FontWeight.SemiBold,
             )
             AsyncImage(
                 model = weather.iconUrl,
-                contentDescription = "Weather condition icon",
+                contentDescription = stringResource(R.string.Weather_condition_icon),
                 modifier = Modifier.size(72.dp)
             )
         }
@@ -103,9 +115,9 @@ private fun WeatherContent(weather: WeatherModel, dayForecast: DailyForecastMode
         val low = dayForecast?.forecasts?.firstOrNull()?.tempMin ?: weather.min
         val high = dayForecast?.forecasts?.firstOrNull()?.tempMax ?: weather.max
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            WeatherStatChip(label = "H", value = high)
-            WeatherStatChip(label = "L", value = low)
-            WeatherStatChip(label = "Feels", value = weather.feelsLike)
+            WeatherStatChip(label = "H", value = high.toTemp())
+            WeatherStatChip(label = "L", value = low.toTemp())
+            WeatherStatChip(label = "Feels", value = weather.feelsLike.toTemp())
         }
     }
 }
@@ -182,5 +194,5 @@ private fun WeatherStatChip(label: String, value: String) {
 @Preview(showBackground = true)
 @Composable
 fun CurrentWeatherSectionPreview() {
-    CurrentWeatherSection(UiState(),null)
+    CurrentWeatherSection(UiState(), null, UnitSystem.DEFAULT)
 }

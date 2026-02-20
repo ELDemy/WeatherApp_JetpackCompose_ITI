@@ -28,11 +28,16 @@ import androidx.compose.ui.unit.sp
 import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
+import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.home_screen.UiState
+import com.dmy.weather.presentation.utils.toClouds
+import com.dmy.weather.presentation.utils.toHumidity
+import com.dmy.weather.presentation.utils.toPressure
+import com.dmy.weather.presentation.utils.toSpeed
 
 @Composable
-fun WeatherDetails(state: UiState<WeatherModel>) {
+fun WeatherDetails(state: UiState<WeatherModel>, unit: UnitSystem) {
     val weather = state.data
 
     Column(
@@ -47,7 +52,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             DetailCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.Humidity),
-                data = weather?.humidity,
+                data = weather?.humidity.toHumidity(),
                 icon = drawable.humidity,
                 gradientColors = listOf(
                     color.blue_grad4,
@@ -58,7 +63,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             DetailCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.Wind_Speed),
-                data = weather?.windSpeed,
+                data = weather?.windSpeed.toSpeed(unit),
                 icon = drawable.wind,
                 gradientColors = listOf(
                     color.green_grad1,
@@ -72,7 +77,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             DetailCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.Pressure),
-                data = weather?.pressure,
+                data = weather?.pressure.toPressure(),
                 icon = drawable.pressure,
                 gradientColors = listOf(
                     color.purple_grad1,
@@ -83,7 +88,7 @@ fun WeatherDetails(state: UiState<WeatherModel>) {
             DetailCard(
                 modifier = Modifier.weight(1f),
                 title = stringResource(R.string.Clouds),
-                data = weather?.clouds,
+                data = weather?.clouds.toClouds(),
                 icon = drawable.cloud,
                 gradientColors = listOf(
                     color.grey_grad1,

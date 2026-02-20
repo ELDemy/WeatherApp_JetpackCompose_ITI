@@ -7,8 +7,8 @@ data class HourlyForecastModel(
 
 data class HourlyWeatherModel(
     val time: String,
-    val temperature: String,
+    val temperature: Double?,
     val iconUrl: String?,
     val description: String,
-    val clouds: String,
+    val clouds: Int?,
 )

@@ -28,6 +28,7 @@ import com.dmy.weather.data.model.DailyWeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.UiState
+import com.dmy.weather.presentation.utils.toTemp
 
 @Composable
 fun DailyForecast(state: UiState<DailyForecastModel>) {
@@ -95,7 +96,6 @@ fun DailyForecastItem(weather: DailyWeatherModel, index: Int) {
             )
         }
 
-        // Temp range pill
         Column(
             modifier = Modifier
                 .clip(RoundedCornerShape(50.dp))
@@ -111,7 +111,7 @@ fun DailyForecastItem(weather: DailyWeatherModel, index: Int) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = weather.tempMax,
+                text = weather.tempMax.toTemp(),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = colorResource(color.white)
@@ -123,7 +123,7 @@ fun DailyForecastItem(weather: DailyWeatherModel, index: Int) {
                 color = colorResource(color.white).copy(alpha = 0.5f)
             )
             Text(
-                text = weather.tempMin,
+                text = weather.tempMin.toTemp(),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 color = colorResource(color.white).copy(alpha = 0.85f)

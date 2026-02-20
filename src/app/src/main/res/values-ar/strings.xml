@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Weather</string>
+
     <string name="Selected_Language">اللغة المختارة</string>
-    <string name="Select_Language">اختار لغة</string>
-    <string name="Search_Languages">بحث اللغات...</string>
-    <string name="All_Languages">كل اللغاب</string>
-    <string name="Selected_Location">المكان المختار</string>
+    <string name="Select_Language">اختر اللغة</string>
+    <string name="Search_Languages">ابحث عن لغة…</string>
+    <string name="All_Languages">جميع اللغات</string>
+
+    <string name="Selected_Location">الموقع المختار</string>
+
     <string name="Now">الآن</string>
-    <string name="Forecast">الطقس</string>
-    <string name="Details">ظروف الطقس</string>
+    <string name="Forecast">التوقعات</string>
+    <string name="Details">التفاصيل</string>
+
     <string name="Wind_Speed">سرعة الرياح</string>
-    <string name="Humidity">الرطوبه</string>
-    <string name="Clouds">الغيوم</string>
+    <string name="Humidity">الرطوبة</string>
+    <string name="Clouds">السحب</string>
     <string name="Pressure">الضغط</string>
-    <string name="Next_Days_Forecast">طقس الأيام القادمة</string>
+
+    <string name="Next_Days_Forecast">توقعات الأيام القادمة</string>
     <string name="Today">اليوم</string>
-    <string name="hPa">هكت</string>
-    <string name="C">س</string>
-    <string name="m_s">م/س</string>
+
+    <string name="hPa">هكتو</string>
+    <string name="C">م</string>
+    <string name="F">ف</string>
+    <string name="K">ك</string>
+
+    <string name="m_s">م/ث</string>
+    <string name="mil_h">ميل/س</string>
+
+    <string name="Weather_condition_icon">أيقونة حالة الطقس</string>
 </resources>

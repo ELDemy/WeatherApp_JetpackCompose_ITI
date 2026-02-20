@@ -4,14 +4,14 @@ data class WeatherModel(
     val cityName: String,
     val country: String,
     val time: String,
-    val temperature: String,
-    val min: String,
-    val max: String,
-    val feelsLike: String,
+    val temperature: Double?,
+    val min: Double?,
+    val max: Double?,
+    val feelsLike: Double?,
     val description: String,
     var iconUrl: String?,
-    val humidity: String,
-    val pressure: String,
-    val windSpeed: String,
-    val clouds: String
+    val humidity: Int?,
+    val pressure: Int?,
+    val windSpeed: Double?,
+    val clouds: Int?
 )

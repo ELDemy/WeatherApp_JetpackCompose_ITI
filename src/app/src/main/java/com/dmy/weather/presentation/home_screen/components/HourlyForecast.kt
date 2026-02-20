@@ -30,6 +30,8 @@ import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.UiState
+import com.dmy.weather.presentation.utils.toClouds
+import com.dmy.weather.presentation.utils.toTemp
 
 @Composable
 fun HourlyForecast(state: UiState<HourlyForecastModel>, weather: WeatherModel?) {
@@ -39,7 +41,10 @@ fun HourlyForecast(state: UiState<HourlyForecastModel>, weather: WeatherModel?) 
             .padding(vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        SectionTitleText(stringResource(R.string.Forecast), modifier = Modifier.padding(horizontal = 24.dp))
+        SectionTitleText(
+            stringResource(R.string.Forecast),
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
         when {
             state.data != null -> HourlyListItems(state.data, weather)
             state.isLoading -> MyLoadingComponent()
@@ -65,9 +70,9 @@ fun HourlyListItems(
             item {
                 HourDetailCard(
                     time = stringResource(R.string.Now),
-                    temp = weather.temperature.dropLast(1),
+                    temp = weather.temperature.toTemp(),
                     description = weather.description,
-                    clouds = weather.clouds,
+                    clouds = weather.clouds.toClouds(),
                     icon = weather.iconUrl,
                 )
             }
@@ -75,9 +80,9 @@ fun HourlyListItems(
         items(hourlyForecast.hourlyItems) { item ->
             HourDetailCard(
                 time = item.time,
-                temp = item.temperature,
+                temp = item.temperature.toTemp(),
                 description = item.description,
-                clouds = item.clouds,
+                clouds = item.clouds.toClouds(),
                 icon = item.iconUrl,
             )
         }

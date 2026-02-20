@@ -1,6 +1,5 @@
 package com.dmy.weather.data.mapper
 
-
 import com.dmy.weather.data.dto.HourlyForecastDTO
 import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.HourlyWeatherModel
@@ -8,13 +7,13 @@ import com.dmy.weather.data.model.HourlyWeatherModel
 fun HourlyForecastDTO.toModel(): HourlyForecastModel {
     val items = list?.map { item ->
         val condition = item.weather?.firstOrNull()
-        
+
         HourlyWeatherModel(
             time = item.dt.getTimeInHours(),
-            temperature = item.main?.temp.toTemp(),
+            temperature = item.main?.temp,
             iconUrl = iconMapper(condition?.icon),
             description = condition?.description ?: "",
-            clouds = (item.clouds?.all).toClouds()
+            clouds = item.clouds?.all
         )
     } ?: emptyList()
 

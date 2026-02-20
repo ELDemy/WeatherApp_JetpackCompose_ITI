@@ -29,8 +29,7 @@ class WeatherRepository(
             val weatherDTO = weatherRemoteDataSource.getCurrentWeather(city)
                 ?: throw NullDataException()
 
-            val unit = settingsRepository.getUnit()
-            val weatherModel = weatherDTO.toModel(unit)
+            val weatherModel = weatherDTO.toModel()
 
             Log.i(TAG, "weatherDTO: $weatherDTO")
             Log.i(TAG, "weatherModel: $weatherModel")
@@ -45,8 +44,7 @@ class WeatherRepository(
             val weatherDTO = weatherRemoteDataSource.getCurrentWeather(long, lat)
                 ?: throw NullDataException()
 
-            val unit = settingsRepository.getUnit()
-            val weatherModel = weatherDTO.toModel(unit)
+            val weatherModel = weatherDTO.toModel()
 
             Log.i(TAG, "weatherDTO: $weatherDTO")
             Log.i(TAG, "weatherModel: $weatherModel")
@@ -86,7 +84,7 @@ class WeatherRepository(
             val dailyForecastDTO = weatherRemoteDataSource.getDailyForecast(city)
                 ?: throw NullDataException()
 
-            val dailyForecastModel = dailyForecastDTO.toModel(settingsRepository.getUnit())
+            val dailyForecastModel = dailyForecastDTO.toModel()
 
             Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
             Log.i(TAG, "weatherModel: $dailyForecastModel")
@@ -98,7 +96,7 @@ class WeatherRepository(
         return runCatching {
             val dailyForecastDTO = weatherRemoteDataSource.getDailyForecast(long, lat)
                 ?: throw NullDataException()
-            val dailyForecastModel = dailyForecastDTO.toModel(settingsRepository.getUnit())
+            val dailyForecastModel = dailyForecastDTO.toModel()
 
             Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
             Log.i(TAG, "weatherModel: $dailyForecastModel")
@@ -108,7 +106,7 @@ class WeatherRepository(
 
     suspend fun getClimateForecast(city: String) {
         val dailyForecastDTO = weatherRemoteDataSource.getClimateForecast(city)
-        val dailyForecastModel = dailyForecastDTO?.toModel(settingsRepository.getUnit())
+        val dailyForecastModel = dailyForecastDTO?.toModel()
 
         Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
         Log.i(TAG, "weatherModel: $dailyForecastModel")
@@ -116,7 +114,7 @@ class WeatherRepository(
 
     suspend fun getClimateForecast(long: String, lat: String) {
         val dailyForecastDTO = weatherRemoteDataSource.getClimateForecast(long, lat)
-        val dailyForecastModel = dailyForecastDTO?.toModel(settingsRepository.getUnit())
+        val dailyForecastModel = dailyForecastDTO?.toModel()
 
         Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
         Log.i(TAG, "weatherModel: $dailyForecastModel")

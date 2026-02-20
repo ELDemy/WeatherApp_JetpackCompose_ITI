@@ -2,12 +2,18 @@ package com.dmy.weather.presentation.home_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmy.weather.data.enums.AppLanguage
+import com.dmy.weather.data.enums.LocationMode
+import com.dmy.weather.data.enums.UnitSystem
+import com.dmy.weather.data.model.UserSettings
 import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.data.repo.WeatherRepository
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,6 +34,15 @@ class HomeVM(val weatherRepository: WeatherRepository, val settingsRepository: S
         }
     }
 
+    val settingsState = settingsRepository.settingsFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = UserSettings(
+            lang = AppLanguage.DEFAULT,
+            unit = UnitSystem.METRIC,
+            locationMode = LocationMode.GPS
+        )
+    )
 
     companion object {
         private const val TAG = "HomeViewModel"
