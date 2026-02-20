@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Selected_Language">اللغة المختارة</string>
+    <string name="Select_Language">اختار لغة</string>
+    <string name="Search_Languages">بحث اللغات...</string>
+    <string name="All_Languages">كل اللغاب</string>
+    <string name="Selected_Location">المكان المختار</string>
+</resources>

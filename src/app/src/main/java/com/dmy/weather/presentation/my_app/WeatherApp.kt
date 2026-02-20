@@ -19,9 +19,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dmy.weather.R
 import com.dmy.weather.presentation.home_screen.HomeScreen
+import com.dmy.weather.presentation.language_selection_screen.LanguageSelectionScreen
 import com.dmy.weather.presentation.my_app.top_bar.AppBar
 import com.dmy.weather.presentation.settings_screen.SettingsScreen
-import com.dmy.weather.presentation.settings_screen.language_selection_screen.LanguageSelectionScreen
 
 @Composable
 fun WeatherApp() {
@@ -39,7 +39,7 @@ fun WeatherApp() {
     { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavScreens.HomeScreen,
+            startDestination = NavScreens.SettingsScreen,
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavScreens.HomeScreen> {

@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.settings_screen.language_selection_screen
+package com.dmy.weather.presentation.language_selection_screen.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,15 +39,15 @@ import com.dmy.weather.presentation.settings_screen.SettingsVM
 
 @Composable
 fun LanguagesAppbar(navController: NavController, viewModel: SettingsVM) {
-    val GradientStart = colorResource(R.color.blue_primary)
-    val GradientEnd = colorResource(R.color.blue_grad1)
+    val gradientStart = colorResource(R.color.blue_primary)
+    val gradientEnd = colorResource(R.color.blue_grad1)
 
     val search by viewModel.searchQuery.collectAsState()
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Brush.horizontalGradient(listOf(GradientStart, GradientEnd)))
+            .background(Brush.horizontalGradient(listOf(gradientStart, gradientEnd)))
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Column {
@@ -60,7 +61,7 @@ fun LanguagesAppbar(navController: NavController, viewModel: SettingsVM) {
                 }
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Select Language",
+                    stringResource(R.string.Select_Language),
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp
@@ -87,7 +88,7 @@ fun LanguagesAppbar(navController: NavController, viewModel: SettingsVM) {
                         modifier = Modifier.weight(1f),
                         decorationBox = { inner ->
                             if (search.isEmpty()) Text(
-                                "Search languages...",
+                                stringResource(R.string.Search_Languages),
                                 color = Color.Gray
                             )
                             inner()

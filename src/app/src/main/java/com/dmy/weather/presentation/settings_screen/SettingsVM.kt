@@ -1,6 +1,8 @@
 package com.dmy.weather.presentation.settings_screen
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.enums.AppLanguage
@@ -47,6 +49,9 @@ class SettingsVM(private val settingsRepo: SettingsRepository) : ViewModel() {
         viewModelScope.launch {
             settingsRepo.saveSettings(settingsState.value.copy(lang = lang))
         }
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.forLanguageTags(lang.apiCode)
+        )
     }
 
     fun updateLocationMode(locationMode: LocationMode) {

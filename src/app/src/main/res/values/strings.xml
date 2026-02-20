@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Weather</string>
+    <string name="app_name" translatable="false">Weather</string>
+    <string name="Selected_Language">Selected Language</string>
+    <string name="Select_Language">Select Language</string>
+    <string name="Search_Languages">Search Languages...</string>
+    <string name="All_Languages">All Languages</string>
+    <string name="Selected_Location">Selected Location</string>
 </resources>
