@@ -1,3 +1,4 @@
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,16 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
-import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
 import com.dmy.weather.data.enums.UnitSystem
@@ -39,6 +38,7 @@ import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.UiState
+import com.dmy.weather.presentation.home_screen.components.WeatherIcon
 import com.dmy.weather.presentation.utils.toTemp
 
 
@@ -52,23 +52,38 @@ fun CurrentWeatherSection(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
-            .background(
-                Brush.linearGradient(
-                    colors = listOf(
-                        colorResource(color.blue_grad1),
-                        colorResource(color.blue_primary),
-                        colorResource(color.blue_grad3),
-                    )
-                )
-            )
             .defaultMinSize(minHeight = 200.dp)
-            .padding(vertical = 36.dp, horizontal = 24.dp),
     ) {
+        if (state.data?.bg != null) {
+            Image(
+                painter = painterResource(id = state.data.bg!!),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize()
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(
+                        Brush.linearGradient(
+                            colors = listOf(
+                                colorResource(color.blue_grad1),
+                                colorResource(color.blue_primary),
+                                colorResource(color.blue_grad3),
+                            )
+                        )
+                    )
+            )
+        }
+
         CompositionLocalProvider(LocalContentColor provides Color.White) {
-            when {
-                state.data != null -> WeatherContent(state.data, dayForecast, unit)
-                state.isLoading -> MyLoadingComponent(color = color.white)
-                state.error != null -> MyErrorComponent(state.error)
+            Box(modifier = Modifier.padding(vertical = 36.dp, horizontal = 24.dp)) {
+                when {
+                    state.data != null -> WeatherContent(state.data, dayForecast, unit)
+                    state.isLoading -> MyLoadingComponent(color = color.white)
+                    state.error != null -> MyErrorComponent(state.error)
+                }
             }
         }
     }
@@ -97,9 +112,8 @@ private fun WeatherContent(
                 fontSize = 64.sp,
                 fontWeight = FontWeight.SemiBold,
             )
-            AsyncImage(
-                model = weather.iconUrl,
-                contentDescription = stringResource(R.string.Weather_condition_icon),
+            WeatherIcon(
+                iconRes = weather.icon,
                 modifier = Modifier.size(72.dp)
             )
         }
@@ -121,6 +135,7 @@ private fun WeatherContent(
         }
     }
 }
+
 
 @Composable
 fun LocationInfo(text: String, modifier: Modifier = Modifier) {

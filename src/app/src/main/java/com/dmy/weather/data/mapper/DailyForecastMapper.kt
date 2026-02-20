@@ -17,6 +17,7 @@ fun DailyForecastDTO.toModel(): DailyForecastModel {
                 condition = item.weather?.firstOrNull()?.main ?: "Unknown",
                 description = item.weather?.firstOrNull()?.description ?: "",
                 icon = iconMapper(item.weather?.firstOrNull()?.icon),
+                bg = backgroundMapper(item.weather?.firstOrNull()?.icon),
                 humidity = item.humidity,
                 windSpeed = item.speed,
                 rainChance = item.pop

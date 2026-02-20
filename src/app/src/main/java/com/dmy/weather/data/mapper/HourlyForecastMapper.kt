@@ -11,7 +11,8 @@ fun HourlyForecastDTO.toModel(): HourlyForecastModel {
         HourlyWeatherModel(
             time = item.dt.getTimeInHours(),
             temperature = item.main?.temp,
-            iconUrl = iconMapper(condition?.icon),
+            icon = iconMapper(condition?.icon),
+            bg = backgroundMapper(item.weather?.firstOrNull()?.icon),
             description = condition?.description ?: "",
             clouds = item.clouds?.all
         )

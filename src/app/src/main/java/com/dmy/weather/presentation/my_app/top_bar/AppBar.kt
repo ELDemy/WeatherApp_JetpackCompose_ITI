@@ -24,6 +24,7 @@ import com.dmy.weather.presentation.my_app.NavScreens
 fun AppBar(
     navController: NavController,
     scrollBehavior: TopAppBarScrollBehavior,
+    bg: Int? = null
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val lifecycleState by navBackStackEntry
@@ -41,7 +42,7 @@ fun AppBar(
 
     when {
         currentDestination?.hasRoute<NavScreens.HomeScreen>() == true -> {
-            HomeTopBar(navController, scrollBehavior)
+            HomeTopBar(navController, scrollBehavior, bg)
         }
 
         currentDestination?.hasRoute<NavScreens.SettingsScreen>() == true -> {

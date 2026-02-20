@@ -12,7 +12,8 @@ data class DailyWeatherModel(
     val tempMax: Double?,
     val condition: String,
     val description: String,
-    val icon: String?,
+    val icon: Int?,
+    val bg: Int?,
     val humidity: Int?,
     val windSpeed: Double?,
     val rainChance: Double?
