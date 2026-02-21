@@ -1,10 +1,12 @@
 package com.dmy.weather.presentation.weather_details_screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.enums.AppLanguage
 import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.enums.UnitSystem
+import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.UserSettings
 import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.data.repo.WeatherRepository
@@ -19,15 +21,22 @@ import kotlinx.coroutines.launch
 
 class WeatherVM(
     val weatherRepository: WeatherRepository,
-    val settingsRepository: SettingsRepository
-) :
-    ViewModel() {
+    val settingsRepository: SettingsRepository,
+    val locationDetails: LocationDetails? = null
+) : ViewModel() {
+
+    companion object {
+        private const val TAG = "HomeViewModel"
+        var counter = 1
+    }
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState
 
     init {
+        Log.i(TAG, "WeatherVM counter is : ${counter++}")
         loadWeatherData()
+
         viewModelScope.launch {
             settingsRepository.settingsFlow
                 .distinctUntilChanged()
@@ -47,9 +56,6 @@ class WeatherVM(
         )
     )
 
-    companion object {
-        private const val TAG = "HomeViewModel"
-    }
 
     fun loadWeatherData() {
         viewModelScope.launch(SupervisorJob()) {

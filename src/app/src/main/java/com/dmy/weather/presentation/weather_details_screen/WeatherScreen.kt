@@ -11,13 +11,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dmy.weather.data.model.LocationDetails
+import com.dmy.weather.data.repo.SettingsRepository
+import com.dmy.weather.data.repo.WeatherRepository
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.weather_details_screen.components.DailyForecast
 import com.dmy.weather.presentation.weather_details_screen.components.HourlyForecast
 import com.dmy.weather.presentation.weather_details_screen.components.WeatherDetails
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
 
 private const val TAG = "WeatherScreen"
 
@@ -25,11 +28,19 @@ private const val TAG = "WeatherScreen"
 fun WeatherScreen(
     navController: NavController,
     appbarViewModel: AppbarViewModel,
+    location: LocationDetails,
     modifier: Modifier,
-    location: LocationDetails? = null,
 ) {
+    val viewModel =
+        viewModel<WeatherVM>(
+            factory = WeatherVMFactory(
+                location,
+                getKoin().get<WeatherRepository>(),
+                getKoin().get<SettingsRepository>()
+            )
+        )
     Log.i(TAG, "WeatherScreenLocation is: $location")
-    val viewModel: WeatherVM = koinViewModel<WeatherVM>()
+//    val viewModel: WeatherVM = koinViewModel<WeatherVM>()
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val settingsState by viewModel.settingsState.collectAsState()

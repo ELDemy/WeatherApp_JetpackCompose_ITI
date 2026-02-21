@@ -64,7 +64,12 @@ fun MyApp() {
             composable<NavScreens.WeatherScreen> { backStackEntry ->
                 val screen = backStackEntry.toRoute<NavScreens.WeatherScreen>()
                 val locationDetails = LocationDetails(screen.city, screen.long, screen.lat)
-                WeatherScreen(navController, appbarViewModel, modifier, locationDetails)
+                WeatherScreen(
+                    navController,
+                    appbarViewModel,
+                    locationDetails,
+                    modifier,
+                )
             }
             composable<NavScreens.SettingsScreen> {
                 SettingsScreen(navController, modifier)
