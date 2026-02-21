@@ -23,6 +23,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "MAPS_API_KEY", "\"${properties["MAPS_API_KEY"]}\"")
+        manifestPlaceholders["MAPS_API_KEY"] = properties["MAPS_API_KEY"] ?: ""
     }
 
     buildTypes {
@@ -61,6 +64,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.foundation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,25 +73,36 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-
+    //navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+    //ui
+    implementation(libs.androidx.compose.material.icons.extended.android)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
+    //Networking Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.gson)
 
+    //Room DB
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.androidx.compose.material.icons.extended.android)
+    //data store light weight db
     implementation("androidx.datastore:datastore-preferences:1.2.0")
     implementation("androidx.datastore:datastore:1.2.0")
 
-    implementation("io.insert-koin:koin-android:3.5.3")
-    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+    //for DI
+    implementation("io.insert-koin:koin-android:4.1.1")
+    implementation("io.insert-koin:koin-androidx-compose:4.1.1")
 
+    //Maps
+    implementation("com.google.maps.android:maps-compose:8.1.0")
+    //for auto complete locations
+    implementation("com.google.android.libraries.places:places:5.1.1")
+    implementation("com.google.maps.android:places-ktx:3.6.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 }

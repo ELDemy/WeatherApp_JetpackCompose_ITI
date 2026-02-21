@@ -24,6 +24,7 @@ import com.dmy.weather.presentation.home_screen.HomeScreen
 import com.dmy.weather.presentation.home_screen.HomeVM
 import com.dmy.weather.presentation.language_selection_screen.LanguageSelectionScreen
 import com.dmy.weather.presentation.my_app.top_bar.AppBar
+import com.dmy.weather.presentation.search_screen.SearchScreen
 import com.dmy.weather.presentation.settings_screen.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -51,7 +52,7 @@ fun WeatherApp() {
     { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavScreens.HomeScreen,
+            startDestination = NavScreens.SearchScreen,
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavScreens.HomeScreen> {
@@ -63,6 +64,9 @@ fun WeatherApp() {
             composable<NavScreens.LanguageSelectionScreen> {
                 LanguageSelectionScreen(navController, modifier)
             }
+            composable<NavScreens.SearchScreen> {
+                SearchScreen(navController, modifier)
+            }
         }
 
     }
@@ -70,6 +74,6 @@ fun WeatherApp() {
 
 @Preview(showBackground = true)
 @Composable
-fun WeatherAppPreview(modifier: Modifier = Modifier) {
+fun WeatherAppPreview() {
     WeatherApp()
 }
