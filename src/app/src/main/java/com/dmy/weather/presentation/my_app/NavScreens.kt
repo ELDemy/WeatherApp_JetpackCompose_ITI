@@ -7,7 +7,17 @@ sealed class NavScreens {
     object HomeScreen : NavScreens()
 
     @Serializable
+    data class WeatherScreen(
+        val city: String? = null,
+        val long: String? = null,
+        val lat: String? = null,
+    ) : NavScreens()
+
+    @Serializable
     object SearchScreen : NavScreens()
+
+    @Serializable
+    object LocationPickerScreen : NavScreens()
 
     @Serializable
     object FavoritesScreen : NavScreens()

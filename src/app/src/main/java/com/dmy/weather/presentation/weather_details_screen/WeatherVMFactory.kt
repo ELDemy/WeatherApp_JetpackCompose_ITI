@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen
+package com.dmy.weather.presentation.weather_details_screen
 
 //@Suppress("UNCHECKED_CAST")
 //class HomeVMFactory(

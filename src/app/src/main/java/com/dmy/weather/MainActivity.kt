@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.dmy.weather.presentation.my_app.WeatherApp
+import com.dmy.weather.presentation.my_app.MyApp
 import com.dmy.weather.ui.theme.WeatherTheme
 
 class MainActivity : AppCompatActivity() {
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherTheme {
-                WeatherApp()
+                MyApp()
             }
         }
     }

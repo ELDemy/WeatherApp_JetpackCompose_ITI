@@ -1,8 +1,5 @@
-package com.dmy.weather.presentation.map_screen
+package com.dmy.weather.presentation.location_picker_screen
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,12 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.dmy.weather.R
-import com.dmy.weather.presentation.map_screen.component.ConfirmButton
-import com.dmy.weather.presentation.map_screen.component.MapsSearchField
-import com.dmy.weather.presentation.map_screen.component.getLocation
+import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
+import com.dmy.weather.presentation.location_picker_screen.component.MapsSearchField
+import com.dmy.weather.presentation.location_picker_screen.component.getLocation
+import com.dmy.weather.presentation.location_picker_screen.component.hasLocationPermission
+import com.dmy.weather.presentation.my_app.NavScreens
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -40,14 +38,8 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 private const val TAG = "MapScreen"
 
-fun hasLocationPermission(context: Context): Boolean {
-    return ContextCompat.checkSelfPermission(
-        context, Manifest.permission.ACCESS_FINE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED
-}
-
 @Composable
-fun LocationPickerScreen(navController: NavController) {
+fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
     val context = LocalContext.current
     val pickedLocation = remember { mutableStateOf<LatLng?>(null) }
     val showSuggestions = remember { mutableStateOf(false) }
@@ -77,7 +69,7 @@ fun LocationPickerScreen(navController: NavController) {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
@@ -122,8 +114,7 @@ fun LocationPickerScreen(navController: NavController) {
                 imageVector = Icons.Default.MyLocation,
                 contentDescription = "My Location",
                 tint = colorResource(R.color.blue_primary),
-
-                )
+            )
         }
 
         ConfirmButton(
@@ -131,8 +122,13 @@ fun LocationPickerScreen(navController: NavController) {
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
             pickedLocation.value?.let { latLng ->
-                navController.navigate("next_screen/${latLng.latitude}/${latLng.longitude}") {
-                    popUpTo("location_picker") { inclusive = true }
+                navController.navigate(
+                    NavScreens.WeatherScreen(
+                        long = latLng.longitude.toString(),
+                        lat = latLng.latitude.toString()
+                    )
+                ) {
+                    popUpTo(NavScreens.LocationPickerScreen) { inclusive = true }
                 }
             }
         }

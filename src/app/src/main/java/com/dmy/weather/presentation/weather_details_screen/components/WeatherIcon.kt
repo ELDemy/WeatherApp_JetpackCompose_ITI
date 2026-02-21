@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen.components
+package com.dmy.weather.presentation.weather_details_screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size

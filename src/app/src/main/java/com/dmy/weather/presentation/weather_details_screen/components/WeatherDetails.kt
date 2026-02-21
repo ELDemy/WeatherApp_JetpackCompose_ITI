@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen.components
+package com.dmy.weather.presentation.weather_details_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,11 +30,11 @@ import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.WeatherModel
-import com.dmy.weather.presentation.home_screen.UiState
 import com.dmy.weather.presentation.utils.toClouds
 import com.dmy.weather.presentation.utils.toHumidity
 import com.dmy.weather.presentation.utils.toPressure
 import com.dmy.weather.presentation.utils.toSpeed
+import com.dmy.weather.presentation.weather_details_screen.UiState
 
 @Composable
 fun WeatherDetails(state: UiState<WeatherModel>, unit: UnitSystem) {

@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen.components
+package com.dmy.weather.presentation.weather_details_screen.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,9 +36,9 @@ import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
-import com.dmy.weather.presentation.home_screen.UiState
 import com.dmy.weather.presentation.utils.toClouds
 import com.dmy.weather.presentation.utils.toTemp
+import com.dmy.weather.presentation.weather_details_screen.UiState
 
 @Composable
 fun HourlyForecast(state: UiState<HourlyForecastModel>, weather: WeatherModel?) {
@@ -126,7 +126,12 @@ fun HourDetailCard(
             Text(text = time, fontSize = 14.sp, color = colorResource(color.text_grey))
             WeatherIcon(iconRes = icon, modifier = Modifier.size(56.dp))
             Spacer(Modifier.height(12.dp))
-            Text(text = temp, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colorResource(color.text_primary))
+            Text(
+                text = temp,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(color.text_primary)
+            )
             Text(text = clouds, fontSize = 11.sp, color = colorResource(color.blue_primary))
         }
     }

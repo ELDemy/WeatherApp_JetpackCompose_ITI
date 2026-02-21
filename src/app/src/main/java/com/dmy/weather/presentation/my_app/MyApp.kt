@@ -10,56 +10,68 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.dmy.weather.R
+import com.dmy.weather.data.model.LocationDetails
+import com.dmy.weather.presentation.app_bar.AppBar
+import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.home_screen.HomeScreen
-import com.dmy.weather.presentation.home_screen.HomeVM
 import com.dmy.weather.presentation.language_selection_screen.LanguageSelectionScreen
-import com.dmy.weather.presentation.my_app.top_bar.AppBar
+import com.dmy.weather.presentation.location_picker_screen.LocationPickerScreen
 import com.dmy.weather.presentation.search_screen.SearchScreen
 import com.dmy.weather.presentation.settings_screen.SettingsScreen
+import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
 import org.koin.androidx.compose.koinViewModel
 
+private const val TAG = "WeatherApp"
+
 @Composable
-fun WeatherApp() {
+fun MyApp() {
+    val appbarViewModel = koinViewModel<AppbarViewModel>()
     val navController = rememberNavController()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val homeVM: HomeVM = koinViewModel()
-    val uiState by homeVM.uiState.collectAsStateWithLifecycle()
 
     val modifier = Modifier
         .fillMaxSize()
         .background(color = colorResource(R.color.white))
-
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             AppBar(
                 navController,
                 scrollBehavior,
-                bg = uiState.currentWeather.data?.bg,
+                appbarViewModel,
             )
         }
     )
     { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavScreens.SearchScreen,
+            startDestination = NavScreens.HomeScreen,
             modifier = modifier.padding(innerPadding)
         ) {
             composable<NavScreens.HomeScreen> {
-                HomeScreen(navController, modifier)
+                HomeScreen(navController, appbarViewModel, modifier)
+            }
+
+            composable<NavScreens.WeatherScreen> { backStackEntry ->
+                val screen = backStackEntry.toRoute<NavScreens.WeatherScreen>()
+                val locationDetails = LocationDetails(screen.city, screen.long, screen.lat)
+                WeatherScreen(navController, appbarViewModel, modifier, locationDetails)
             }
             composable<NavScreens.SettingsScreen> {
                 SettingsScreen(navController, modifier)
+            }
+
+            composable<NavScreens.LocationPickerScreen> {
+                LocationPickerScreen(navController, modifier)
             }
             composable<NavScreens.LanguageSelectionScreen> {
                 LanguageSelectionScreen(navController, modifier)
@@ -74,6 +86,6 @@ fun WeatherApp() {
 
 @Preview(showBackground = true)
 @Composable
-fun WeatherAppPreview() {
-    WeatherApp()
+fun MyAppPreview() {
+    MyApp()
 }

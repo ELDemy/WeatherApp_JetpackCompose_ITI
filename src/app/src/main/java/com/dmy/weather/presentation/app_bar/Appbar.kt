@@ -1,7 +1,8 @@
-package com.dmy.weather.presentation.my_app.top_bar
+package com.dmy.weather.presentation.app_bar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +25,7 @@ import com.dmy.weather.presentation.my_app.NavScreens
 fun AppBar(
     navController: NavController,
     scrollBehavior: TopAppBarScrollBehavior,
-    bg: Int? = null
+    appbarViewModel: AppbarViewModel
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val lifecycleState by navBackStackEntry
@@ -35,14 +36,18 @@ fun AppBar(
     var currentDestination by remember { mutableStateOf(navBackStackEntry?.destination) }
 
     LaunchedEffect(lifecycleState) {
-        if (lifecycleState >= Lifecycle.State.STARTED) { // changed from RESUMED to STARTED
+        if (lifecycleState >= Lifecycle.State.STARTED) {
             currentDestination = navBackStackEntry?.destination
         }
     }
 
     when {
         currentDestination?.hasRoute<NavScreens.HomeScreen>() == true -> {
-            HomeTopBar(navController, scrollBehavior, bg)
+            HomeTopBar(navController, scrollBehavior, appbarViewModel.background)
+        }
+
+        currentDestination?.hasRoute<NavScreens.WeatherScreen>() == true -> {
+            WeatherTopBar(navController, scrollBehavior, appbarViewModel.background)
         }
 
         currentDestination?.hasRoute<NavScreens.SettingsScreen>() == true -> {
@@ -68,6 +73,15 @@ fun AppBar(
                 navController,
                 "Search Location",
                 icon = Icons.Filled.Search,
+                scrollBehavior
+            )
+        }
+
+        currentDestination?.hasRoute<NavScreens.LocationPickerScreen>() == true -> {
+            DefaultTopBar(
+                navController,
+                "Select Location",
+                icon = Icons.Filled.LocationOn,
                 scrollBehavior
             )
         }

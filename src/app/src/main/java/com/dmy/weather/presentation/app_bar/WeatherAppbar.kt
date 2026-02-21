@@ -1,11 +1,9 @@
-package com.dmy.weather.presentation.my_app.top_bar
+package com.dmy.weather.presentation.app_bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,12 +20,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
-import com.dmy.weather.presentation.my_app.NavScreens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(
+fun WeatherTopBar(
     navController: NavController,
     scrollBehavior: TopAppBarScrollBehavior,
     bg: Int? = null
@@ -55,39 +52,15 @@ fun HomeTopBar(
                 Text("Weather")
             },
             navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                }
+            },
+            actions = {
                 Icon(
                     painter = painterResource(R.drawable.ic_launcher_foreground),
                     contentDescription = "App Icon"
                 )
-            },
-            actions = {
-                IconButton(onClick = {
-                    navController.navigate(NavScreens.SearchScreen)
-                }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = "Settings"
-                    )
-                }
-
-                IconButton(onClick = {
-                    navController.navigate(NavScreens.FavoritesScreen)
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Favorite,
-                        contentDescription = "Settings"
-                    )
-                }
-
-                IconButton(onClick = {
-                    navController.navigate(NavScreens.SettingsScreen)
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Settings,
-                        contentDescription = "Settings"
-                    )
-                }
             }
         )
     }

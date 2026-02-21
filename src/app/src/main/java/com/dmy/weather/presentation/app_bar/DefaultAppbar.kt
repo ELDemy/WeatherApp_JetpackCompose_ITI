@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.my_app.top_bar
+package com.dmy.weather.presentation.app_bar
 
 
 import androidx.compose.material.icons.Icons

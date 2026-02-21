@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen.components
+package com.dmy.weather.presentation.weather_details_screen.components
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

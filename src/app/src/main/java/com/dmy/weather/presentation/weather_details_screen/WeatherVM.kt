@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen
+package com.dmy.weather.presentation.weather_details_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +17,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeVM(val weatherRepository: WeatherRepository, val settingsRepository: SettingsRepository) :
+class WeatherVM(
+    val weatherRepository: WeatherRepository,
+    val settingsRepository: SettingsRepository
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())

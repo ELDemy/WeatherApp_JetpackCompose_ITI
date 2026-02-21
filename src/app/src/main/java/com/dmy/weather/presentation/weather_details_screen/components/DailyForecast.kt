@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.home_screen.components
+package com.dmy.weather.presentation.weather_details_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,8 +26,8 @@ import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.DailyWeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
-import com.dmy.weather.presentation.home_screen.UiState
 import com.dmy.weather.presentation.utils.toTemp
+import com.dmy.weather.presentation.weather_details_screen.UiState
 
 @Composable
 fun DailyForecast(state: UiState<DailyForecastModel>) {
