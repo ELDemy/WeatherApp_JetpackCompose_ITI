@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.dmy.weather.R
 import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
 import com.dmy.weather.presentation.location_picker_screen.component.MapsSearchField
+import com.dmy.weather.presentation.location_picker_screen.component.RequestLocationPermission
 import com.dmy.weather.presentation.location_picker_screen.component.getLocation
 import com.dmy.weather.presentation.location_picker_screen.component.hasLocationPermission
 import com.dmy.weather.presentation.my_app.NavScreens
@@ -51,11 +52,15 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
         position = CameraPosition.fromLatLngZoom(userLatLng ?: LatLng(30.0444, 31.2357), 10f)
     }
 
-    getLocation { location ->
-        location?.let {
-            hasPermission = true
-            userLatLng = it
-            if (pickedLocation.value == null) {
+    if (!hasPermission) {
+        RequestLocationPermission { granted -> hasPermission = granted }
+    }
+
+    LaunchedEffect(hasPermission) {
+        if (hasPermission && userLatLng == null) {
+            val location = getLocation(context)
+            location?.let {
+                userLatLng = it
                 pickedLocation.value = it
             }
         }
@@ -87,48 +92,50 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
             }
         )
 
-        MapsSearchField(
-            showSuggestions = showSuggestions,
-            cameraPositionState = cameraPositionState,
-            pickedLocation = pickedLocation,
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
-
-        FloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 115.dp)
-                .size(32.dp),
-            containerColor = colorResource(R.color.white),
-            onClick = {
-                userLatLng?.let {
-                    if (mapLoaded) {
-                        cameraPositionState.move(
-                            CameraUpdateFactory.newLatLngZoom(it, 14f)
-                        )
-                    }
-                }
-            },
-        ) {
-            Icon(
-                imageVector = Icons.Default.MyLocation,
-                contentDescription = "My Location",
-                tint = colorResource(R.color.blue_primary),
+        if (mapLoaded) {
+            MapsSearchField(
+                showSuggestions = showSuggestions,
+                cameraPositionState = cameraPositionState,
+                pickedLocation = pickedLocation,
+                modifier = Modifier.align(Alignment.TopCenter)
             )
-        }
 
-        ConfirmButton(
-            enabled = pickedLocation.value != null,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        ) {
-            pickedLocation.value?.let { latLng ->
-                navController.navigate(
-                    NavScreens.WeatherScreen(
-                        long = latLng.longitude.toString(),
-                        lat = latLng.latitude.toString()
-                    )
-                ) {
-                    popUpTo(NavScreens.LocationPickerScreen) { inclusive = true }
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 115.dp)
+                    .size(32.dp),
+                containerColor = colorResource(R.color.white),
+                onClick = {
+                    userLatLng?.let {
+                        if (mapLoaded) {
+                            cameraPositionState.move(
+                                CameraUpdateFactory.newLatLngZoom(it, 14f)
+                            )
+                        }
+                    }
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.MyLocation,
+                    contentDescription = "My Location",
+                    tint = colorResource(R.color.blue_primary),
+                )
+            }
+
+            ConfirmButton(
+                enabled = pickedLocation.value != null,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            ) {
+                pickedLocation.value?.let { latLng ->
+                    navController.navigate(
+                        NavScreens.WeatherScreen(
+                            long = latLng.longitude.toString(),
+                            lat = latLng.latitude.toString()
+                        )
+                    ) {
+                        popUpTo(NavScreens.LocationPickerScreen) { inclusive = true }
+                    }
                 }
             }
         }

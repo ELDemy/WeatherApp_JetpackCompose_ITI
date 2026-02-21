@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class WeatherVM(
     val weatherRepository: WeatherRepository,
     val settingsRepository: SettingsRepository,
-    val locationDetails: LocationDetails? = null
+    val locationDetails: LocationDetails
 ) : ViewModel() {
 
     companion object {
@@ -30,8 +30,8 @@ class WeatherVM(
         var counter = 1
     }
 
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState
+    private val _uiState = MutableStateFlow(WeatherUiState())
+    val uiState: StateFlow<WeatherUiState> = _uiState
 
     init {
         Log.i(TAG, "WeatherVM counter is : ${counter++}")
@@ -68,7 +68,7 @@ class WeatherVM(
     private suspend fun loadCurrentWeather() {
         _uiState.update { it.copy(currentWeather = UiState(isLoading = true)) }
 
-        val result = weatherRepository.getCurrentWeather("Cairo")
+        val result = weatherRepository.getCurrentWeather(locationDetails)
 
         _uiState.update {
             it.copy(
@@ -88,7 +88,7 @@ class WeatherVM(
     private suspend fun loadHourlyForecast() {
         _uiState.update { it.copy(hourlyForecast = UiState(isLoading = true)) }
 
-        val result = weatherRepository.getHourlyForecast("Cairo")
+        val result = weatherRepository.getHourlyForecast(locationDetails)
 
         _uiState.update {
             it.copy(
@@ -110,7 +110,7 @@ class WeatherVM(
     private suspend fun loadDailyForecast() {
         _uiState.update { it.copy(dailyForecast = UiState(isLoading = true)) }
 
-        val result = weatherRepository.getDailyForecast("Cairo")
+        val result = weatherRepository.getDailyForecast(locationDetails)
 
         _uiState.update {
             it.copy(

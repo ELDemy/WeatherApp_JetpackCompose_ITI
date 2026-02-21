@@ -7,14 +7,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 fun hasLocationPermission(context: Context): Boolean {
     return ContextCompat.checkSelfPermission(
@@ -22,34 +19,26 @@ fun hasLocationPermission(context: Context): Boolean {
     ) == PackageManager.PERMISSION_GRANTED
 }
 
-@Composable
-fun getLocation(onLocation: (LatLng?) -> Unit) {
-    val context = LocalContext.current
-    var hasPermission by remember {
-        mutableStateOf(hasLocationPermission(context))
-    }
-
-    val fusedLocationClient = remember {
-        LocationServices.getFusedLocationProviderClient(context)
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        hasPermission = granted
-    }
-
-    LaunchedEffect(hasPermission) {
-        if (!hasPermission) {
-            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        } else {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location ->
-                    onLocation(location?.let { LatLng(it.latitude, it.longitude) })
-                }
-                .addOnFailureListener {
-                    onLocation(null)
-                }
-        }
+suspend fun getLocation(context: Context): LatLng? {
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    return suspendCancellableCoroutine { continuation ->
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                continuation.resume(LatLng(location.latitude, location.longitude))
+            }
+            .addOnFailureListener {
+                continuation.resume(null)
+            }
     }
 }
+
+@Composable
+fun RequestLocationPermission(onResult: (Boolean) -> Unit) {
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { onResult(it) }
+    LaunchedEffect(Unit) {
+        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+}
+

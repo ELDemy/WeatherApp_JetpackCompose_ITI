@@ -7,6 +7,7 @@ import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.model.CityModel
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.HourlyForecastModel
+import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.utils.exceptions.NullDataException
 import com.dmy.weather.utils.mapFailure
@@ -22,12 +23,22 @@ class WeatherRepository(
         private const val TAG = "WeatherRepo"
     }
 
-
-    suspend fun getCurrentWeather(city: String): Result<WeatherModel> {
+    suspend fun getCurrentWeather(locationDetails: LocationDetails): Result<WeatherModel> {
         return runCatching {
+            val weatherDTO =
+                when {
+                    locationDetails.city != null ->
+                        weatherRemoteDataSource.getCurrentWeather(
+                            locationDetails.city
+                        )
 
-            val weatherDTO = weatherRemoteDataSource.getCurrentWeather(city)
-                ?: throw NullDataException()
+                    locationDetails.long != null && locationDetails.lat != null ->
+                        weatherRemoteDataSource.getCurrentWeather(
+                            locationDetails.long, locationDetails.lat
+                        )
+
+                    else -> null
+                } ?: throw NullDataException()
 
             val weatherModel = weatherDTO.toModel()
 
@@ -38,24 +49,23 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-
-    suspend fun getCurrentWeather(long: String, lat: String): Result<WeatherModel> {
-        return runCatching {
-            val weatherDTO = weatherRemoteDataSource.getCurrentWeather(long, lat)
-                ?: throw NullDataException()
-
-            val weatherModel = weatherDTO.toModel()
-
-            Log.i(TAG, "weatherDTO: $weatherDTO")
-            Log.i(TAG, "weatherModel: $weatherModel")
-            return Result.success(weatherModel)
-        }.mapFailure()
-    }
-
-    suspend fun getHourlyForecast(city: String): Result<HourlyForecastModel> {
+    suspend fun getHourlyForecast(locationDetails: LocationDetails): Result<HourlyForecastModel> {
         return runCatching {
             val hourlyForecastDTO =
-                weatherRemoteDataSource.getHourlyForecast(city) ?: throw NullDataException()
+                when {
+                    locationDetails.city != null ->
+                        weatherRemoteDataSource.getHourlyForecast(
+                            locationDetails.city
+                        )
+
+                    locationDetails.long != null && locationDetails.lat != null ->
+                        weatherRemoteDataSource.getHourlyForecast(
+                            locationDetails.long, locationDetails.lat
+                        )
+
+                    else -> null
+                } ?: throw NullDataException()
+
             val hourlyForecastModel = hourlyForecastDTO.toModel()
 
             Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
@@ -63,39 +73,25 @@ class WeatherRepository(
 
             return Result.success(hourlyForecastModel)
         }.mapFailure()
-
     }
 
-    suspend fun getHourlyForecast(long: String, lat: String): Result<HourlyForecastModel> {
+    suspend fun getDailyForecast(locationDetails: LocationDetails): Result<DailyForecastModel> {
         return runCatching {
-            val hourlyForecastDTO =
-                weatherRemoteDataSource.getHourlyForecast(long, lat) ?: throw NullDataException()
+            val dailyForecastDTO =
+                when {
+                    locationDetails.city != null ->
+                        weatherRemoteDataSource.getDailyForecast(
+                            locationDetails.city
+                        )
 
-            val hourlyForecastModel = hourlyForecastDTO.toModel()
+                    locationDetails.long != null && locationDetails.lat != null ->
+                        weatherRemoteDataSource.getDailyForecast(
+                            locationDetails.long, locationDetails.lat
+                        )
 
-            Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
-            Log.i(TAG, "hourlyForecastModel: $hourlyForecastModel")
-            return Result.success(hourlyForecastModel)
-        }.mapFailure()
-    }
+                    else -> null
+                } ?: throw NullDataException()
 
-    suspend fun getDailyForecast(city: String): Result<DailyForecastModel> {
-        return runCatching {
-            val dailyForecastDTO = weatherRemoteDataSource.getDailyForecast(city)
-                ?: throw NullDataException()
-
-            val dailyForecastModel = dailyForecastDTO.toModel()
-
-            Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
-            Log.i(TAG, "weatherModel: $dailyForecastModel")
-            return Result.success(dailyForecastModel)
-        }.mapFailure()
-    }
-
-    suspend fun getDailyForecast(long: String, lat: String): Result<DailyForecastModel> {
-        return runCatching {
-            val dailyForecastDTO = weatherRemoteDataSource.getDailyForecast(long, lat)
-                ?: throw NullDataException()
             val dailyForecastModel = dailyForecastDTO.toModel()
 
             Log.i(TAG, "dailyForecastDTO: $dailyForecastDTO")
