@@ -29,7 +29,9 @@ fun WeatherScreenWithCustomLocation(
     location: LocationDetails,
     modifier: Modifier,
     warning: String? = null,
-    onFabClick: () -> Unit
+    onFabClick: () -> Unit,
+    onRefresh: (() -> Unit)? = null,
+    onWarningClick: (() -> Unit)? = null,
 ) {
     Box(Modifier.fillMaxSize()) {
         WeatherScreen(
@@ -37,7 +39,9 @@ fun WeatherScreenWithCustomLocation(
             appbarViewModel = appbarViewModel,
             location = location,
             warning = warning,
-            modifier = modifier
+            onWarningClick = onWarningClick,
+            modifier = modifier,
+            onRefresh = onRefresh,
         )
 
         FloatingActionButton(

@@ -87,6 +87,8 @@ fun HomeScreen(
         }
     }
 
+    val onRefresh = { viewModel.retry() }
+
     when (val currentState = state) {
         is HomeUiState.Loading -> {
             Column(
@@ -98,11 +100,6 @@ fun HomeScreen(
             }
         }
 
-        is HomeUiState.NoLocation -> {
-            NoLocationScreen(
-                onRetry = { viewModel.retry() }
-            )
-        }
 
         is HomeUiState.CurrentLocationReady -> {
             WeatherScreen(
@@ -110,7 +107,8 @@ fun HomeScreen(
                 appbarViewModel = appbarViewModel,
                 location = currentState.location,
                 warning = currentState.warning,
-                modifier = modifier
+                modifier = modifier,
+                onRefresh = onRefresh,
             )
         }
 
@@ -121,7 +119,8 @@ fun HomeScreen(
                 appbarViewModel = appbarViewModel,
                 location = currentState.location,
                 warning = currentState.warning,
-                onFabClick = { viewModel.openMap() }
+                onFabClick = { viewModel.openMap() },
+                onRefresh = onRefresh,
             )
         }
 
@@ -138,11 +137,32 @@ fun HomeScreen(
                         appbarViewModel = appbarViewModel,
                         location = currentState.location,
                         warning = currentState.warning,
-                        onFabClick = { viewModel.openMap() }
-                    )
+                        onFabClick = { viewModel.openMap() },
+                        onRefresh = onRefresh,
+                    ) {
+                        when (currentState.effect) {
+                            is HomeEffect.RequestGpsLocation ->
+                                requestLocation = true
+
+                            is HomeEffect.OpenLocationSettings ->
+                                showLocationDialog.value = true
+
+                            is HomeEffect.OpenAppSettings ->
+                                showLocationPermissionDialog.value = true
+
+                            else -> viewModel.retry()
+                        }
+
+                    }
                 }
             }
 
+        }
+
+        is HomeUiState.NoLocation -> {
+            NoLocationScreen(
+                onRetry = { viewModel.retry() }
+            )
         }
     }
 

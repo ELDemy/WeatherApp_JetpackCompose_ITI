@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,6 +20,7 @@ import com.dmy.weather.data.repo.WeatherRepository
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.weather_details_screen.components.DailyForecast
 import com.dmy.weather.presentation.weather_details_screen.components.HourlyForecast
+import com.dmy.weather.presentation.weather_details_screen.components.WarningBox
 import com.dmy.weather.presentation.weather_details_screen.components.WeatherDetails
 import org.koin.compose.getKoin
 
@@ -31,6 +33,8 @@ fun WeatherScreen(
     location: LocationDetails,
     modifier: Modifier,
     warning: String? = null,
+    onRefresh: (() -> Unit)? = null,
+    onWarningClick: (() -> Unit)? = null,
 ) {
     val viewModel =
         viewModel<WeatherVM>(
@@ -40,7 +44,6 @@ fun WeatherScreen(
             )
         )
     Log.i(TAG, "WeatherScreenLocation is: $location")
-//    val viewModel: WeatherVM = koinViewModel<WeatherVM>()
 
     LaunchedEffect(location) { viewModel.loadWeatherData(location) }
 
@@ -51,21 +54,34 @@ fun WeatherScreen(
         appbarViewModel.updateBackground(uiState.currentWeather.data?.bg)
     }
 
-    Column(
+    val isRefreshing = uiState.currentWeather.isLoading
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh ?: { viewModel.loadWeatherData(location) },
         modifier = modifier
-            .verticalScroll(rememberScrollState())
     ) {
-        CurrentWeatherSection(
-            state = uiState.currentWeather,
-            dayForecast = uiState.dailyForecast.data,
-            unit = settingsState.unit!!
-        )
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            CurrentWeatherSection(
+                state = uiState.currentWeather,
+                dayForecast = uiState.dailyForecast.data,
+                unit = settingsState.unit!!
+            )
 
-        HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
+            if (warning != null) {
+                WarningBox(
+                    warning = warning,
+                    onButtonClick = onWarningClick
+                )
+            }
 
-        WeatherDetails(state = uiState.currentWeather, settingsState.unit!!)
+            HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
 
-        DailyForecast(state = uiState.dailyForecast)
+            WeatherDetails(state = uiState.currentWeather, settingsState.unit!!)
+
+            DailyForecast(state = uiState.dailyForecast)
+        }
     }
 }
-

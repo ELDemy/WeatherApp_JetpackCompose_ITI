@@ -66,17 +66,23 @@ class WeatherVM(
     }
 
     private suspend fun loadCurrentWeather() {
-        _uiState.update { it.copy(currentWeather = UiState(isLoading = true)) }
+        _uiState.update { it.copy(currentWeather = it.currentWeather.copy(isLoading = true)) }
 
         val result = weatherRepository.getCurrentWeather(locationDetails)
 
         _uiState.update {
             it.copy(
                 currentWeather = result.fold(
-                    onSuccess = { model -> UiState(isLoading = false, data = model) },
-                    onFailure = { error ->
-                        UiState(
+                    onSuccess = { model ->
+                        it.currentWeather.copy(
                             isLoading = false,
+                            data = model
+                        )
+                    },
+                    onFailure = { error ->
+                        it.currentWeather.copy(
+                            isLoading = false,
+                            data = null,
                             error = error.message ?: "Unknown Error"
                         )
                     }
@@ -86,7 +92,7 @@ class WeatherVM(
     }
 
     private suspend fun loadHourlyForecast() {
-        _uiState.update { it.copy(hourlyForecast = UiState(isLoading = true)) }
+        _uiState.update { it.copy(hourlyForecast = it.hourlyForecast.copy(isLoading = true)) }
 
         val result = weatherRepository.getHourlyForecast(locationDetails)
 
@@ -94,11 +100,12 @@ class WeatherVM(
             it.copy(
                 hourlyForecast = result.fold(
                     onSuccess = { model ->
-                        UiState(isLoading = false, data = model)
+                        it.hourlyForecast.copy(isLoading = false, data = model)
                     },
                     onFailure = { error ->
-                        UiState(
+                        it.hourlyForecast.copy(
                             isLoading = false,
+                            data = null,
                             error = error.message ?: "Unknown Error"
                         )
                     }
@@ -108,7 +115,7 @@ class WeatherVM(
     }
 
     private suspend fun loadDailyForecast() {
-        _uiState.update { it.copy(dailyForecast = UiState(isLoading = true)) }
+        _uiState.update { it.copy(dailyForecast = it.dailyForecast.copy(isLoading = true)) }
 
         val result = weatherRepository.getDailyForecast(locationDetails)
 
@@ -116,11 +123,12 @@ class WeatherVM(
             it.copy(
                 dailyForecast = result.fold(
                     onSuccess = { model ->
-                        UiState(isLoading = false, data = model)
+                        it.dailyForecast.copy(isLoading = false, data = model)
                     },
                     onFailure = { error ->
-                        UiState(
+                        it.dailyForecast.copy(
                             isLoading = false,
+                            data = null,
                             error = error.message ?: "Unknown Error"
                         )
                     }

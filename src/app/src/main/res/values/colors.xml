@@ -33,4 +33,8 @@
 
     <color name="orange_grad1">#FF8904</color>
 
+    <color name="warning_background">#FFF3E0</color>
+    <color name="warning_foreground">#E65100</color>
+    <color name="warning_border">#FF8904</color>
+
 </resources>
