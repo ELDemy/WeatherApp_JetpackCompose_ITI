@@ -23,8 +23,8 @@ private const val TAG = "HomeVM"
 
 class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
 
-    private val _state = MutableStateFlow<HomeState>(HomeState.Loading)
-    val state: StateFlow<HomeState> = _state.asStateFlow()
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     private val _effect = Channel<HomeEffect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
@@ -43,7 +43,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
     }
 
     fun retry() {
-        _state.update { HomeState.Loading }
+        _uiState.update { HomeUiState.Loading }
         viewModelScope.launch { resolveLocation() }
     }
 
@@ -56,11 +56,11 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
             GPS -> _effect.send(HomeEffect.RequestGpsLocation)
             MAP -> {
                 val location = null// settingsRepository.getSavedLocation()
-                _state.update {
-                    if (location != null) HomeState.CurrentLocationReady(location)
+                _uiState.update {
+                    if (location != null) HomeUiState.CurrentLocationReady(location)
                     else {
                         _effect.send(HomeEffect.GetLocationFromMap)
-                        HomeState.NoLocation
+                        HomeUiState.NoLocation
                     }
                 }
             }
@@ -68,43 +68,43 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
     }
 
     fun onMapLocationReceived(location: LocationDetails) {
-        _state.update { HomeState.CustomLocationReady(location) }
+        _uiState.update { HomeUiState.CustomLocationReady(location) }
     }
 
 
     fun onLocationResult(result: LocationResult) {
         when (result) {
             is LocationResult.Current -> {
-                _state.update { HomeState.CurrentLocationReady(result.latLng.toLocationDetails()) }
+                _uiState.update { HomeUiState.CurrentLocationReady(result.latLng.toLocationDetails()) }
             }
 
             is LocationResult.LastKnown -> {
-                _state.update { HomeState.CurrentLocationReady(result.latLng.toLocationDetails()) }
+                _uiState.update { HomeUiState.CurrentLocationReady(result.latLng.toLocationDetails()) }
                 viewModelScope.launch {
                     _effect.send(HomeEffect.ShowWarning("GPS is off. Showing last known location."))
                 }
             }
 
             is LocationResult.Unavailable -> {
-                _state.update { HomeState.NoLocation }
+                _uiState.update { HomeUiState.NoLocation }
             }
 
             is LocationResult.LocationServicesOff -> {
-                _state.update { HomeState.NoLocation }
+                _uiState.update { HomeUiState.NoLocation }
                 viewModelScope.launch {
                     _effect.send(HomeEffect.OpenLocationSettings)
                 }
             }
 
             is LocationResult.PermissionDenied -> {
-                _state.update { HomeState.NoLocation }
+                _uiState.update { HomeUiState.NoLocation }
                 viewModelScope.launch {
                     _effect.send(HomeEffect.ShowWarning("Location permission is required."))
                 }
             }
 
             is LocationResult.PermissionPermanentlyDenied -> {
-                _state.update { HomeState.NoLocation }
+                _uiState.update { HomeUiState.NoLocation }
                 viewModelScope.launch {
                     _effect.send(HomeEffect.OpenAppSettings)
                 }

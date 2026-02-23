@@ -37,7 +37,7 @@ fun HomeScreen(
     modifier: Modifier,
     viewModel: HomeVM = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     var requestLocation by remember { mutableStateOf(false) }
     val openMap = remember { mutableStateOf(false) }
     val showLocationDialog = remember { mutableStateOf(false) }
@@ -53,7 +53,7 @@ fun HomeScreen(
                     navController.currentBackStackEntry
                         ?.savedStateHandle
                         ?.remove<LocationDetails>("picked_location")
-                    
+
                     viewModel.onMapLocationReceived(location)
                 }
             }
@@ -79,7 +79,7 @@ fun HomeScreen(
     }
 
     when (val currentState = state) {
-        is HomeState.Loading -> {
+        is HomeUiState.Loading -> {
             Column(
                 Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -89,11 +89,11 @@ fun HomeScreen(
             }
         }
 
-        is HomeState.NoLocation -> NoLocationScreen(
+        is HomeUiState.NoLocation -> NoLocationScreen(
             onRetry = { viewModel.retry() }
         )
 
-        is HomeState.CurrentLocationReady -> {
+        is HomeUiState.CurrentLocationReady -> {
             WeatherScreen(
                 navController = navController,
                 appbarViewModel = appbarViewModel,
@@ -102,7 +102,7 @@ fun HomeScreen(
             )
         }
 
-        is HomeState.CustomLocationReady -> {
+        is HomeUiState.CustomLocationReady -> {
             WeatherScreen(
                 navController = navController,
                 appbarViewModel = appbarViewModel,
