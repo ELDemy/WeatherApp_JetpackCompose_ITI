@@ -17,7 +17,10 @@ sealed class NavScreens {
     object SearchScreen : NavScreens()
 
     @Serializable
-    object LocationPickerScreen : NavScreens()
+    data class LocationPickerScreen(
+        val long: String? = null,
+        val lat: String? = null,
+    ) : NavScreens()
 
     @Serializable
     object FavoritesScreen : NavScreens()

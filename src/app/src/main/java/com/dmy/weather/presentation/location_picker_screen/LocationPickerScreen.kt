@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
 import com.dmy.weather.data.model.LocationDetails
+import com.dmy.weather.data.model.toLatLng
 import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
 import com.dmy.weather.presentation.location_picker_screen.component.LocationResult
 import com.dmy.weather.presentation.location_picker_screen.component.getUserLocation
@@ -37,25 +38,40 @@ import com.google.maps.android.compose.rememberCameraPositionState
 private const val TAG = "MapScreen"
 
 @Composable
-fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
+fun LocationPickerScreen(
+    navController: NavController,
+    modifier: Modifier,
+    initialLocation: LocationDetails?
+) {
     val pickedLocation = remember { mutableStateOf<LatLng?>(null) }
     val showSuggestions = remember { mutableStateOf(false) }
     var mapLoaded by remember { mutableStateOf(false) }
     var userLatLng by remember { mutableStateOf<LatLng?>(null) }
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(userLatLng ?: LatLng(30.0444, 31.2357), 15f)
+        position = CameraPosition.fromLatLngZoom(
+            initialLocation.toLatLng() ?: LatLng(30.0444, 31.2357),
+            9f
+        )
     }
 
     getUserLocation {
         if (it is LocationResult.Current) {
             userLatLng = it.latLng
-            pickedLocation.value = it.latLng
+
+            if (initialLocation == null)
+                pickedLocation.value = it.latLng
+        }
+    }
+
+    LaunchedEffect(mapLoaded) {
+        if (initialLocation != null) {
+            pickedLocation.value = initialLocation.toLatLng()
         }
     }
 
     LaunchedEffect(mapLoaded, userLatLng) {
-        if (mapLoaded && userLatLng != null) {
+        if (mapLoaded && initialLocation != null && userLatLng != null) {
             cameraPositionState.animate(
                 CameraUpdateFactory.newLatLngZoom(userLatLng!!, 14f)
             )
@@ -88,28 +104,29 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
 //                modifier = Modifier.align(Alignment.TopCenter)
 //            )
 
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = 115.dp)
-                    .size(32.dp),
-                containerColor = colorResource(R.color.white),
-                onClick = {
-                    userLatLng?.let {
-                        if (mapLoaded) {
-                            cameraPositionState.move(
-                                CameraUpdateFactory.newLatLngZoom(it, 14f)
-                            )
+            if (userLatLng != null)
+                FloatingActionButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp, bottom = 115.dp)
+                        .size(32.dp),
+                    containerColor = colorResource(R.color.white),
+                    onClick = {
+                        userLatLng?.let {
+                            if (mapLoaded) {
+                                cameraPositionState.move(
+                                    CameraUpdateFactory.newLatLngZoom(it, 14f)
+                                )
+                            }
                         }
-                    }
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.MyLocation,
-                    contentDescription = "My Location",
-                    tint = colorResource(R.color.blue_primary),
-                )
-            }
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MyLocation,
+                        contentDescription = "My Location",
+                        tint = colorResource(R.color.blue_primary),
+                    )
+                }
 
             ConfirmButton(
                 enabled = pickedLocation.value != null,
@@ -126,15 +143,6 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
                             )
                         )
                     navController.popBackStack()
-
-//                    navController.navigate(
-//                        NavScreens.WeatherScreen(
-//                            long = latLng.longitude.toString(),
-//                            lat = latLng.latitude.toString()
-//                        )
-//                    ) {
-//                        popUpTo(NavScreens.LocationPickerScreen) { inclusive = true }
-//                    }
                 }
             }
         }

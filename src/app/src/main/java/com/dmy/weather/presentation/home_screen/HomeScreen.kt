@@ -22,6 +22,7 @@ import com.dmy.weather.presentation.components.AlertDialogForLocationPermission
 import com.dmy.weather.presentation.components.AlertDialogForLocationSettings
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.components.NoLocationScreen
+import com.dmy.weather.presentation.home_screen.components.WeatherScreenWithCustomLocation
 import com.dmy.weather.presentation.location_picker_screen.component.getUserLocation
 import com.dmy.weather.presentation.my_app.NavScreens
 import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
@@ -65,15 +66,15 @@ fun HomeScreen(
             Log.i(TAG, "HomeScreen: $effect")
             when (effect) {
                 is HomeEffect.RequestGpsLocation -> requestLocation = true
+                is HomeEffect.GetLocationFromMap -> openMap.value = true
                 is HomeEffect.OpenLocationSettings -> showLocationDialog.value = true
+                is HomeEffect.OpenAppSettings -> showLocationPermissionDialog.value = true
+
                 is HomeEffect.ShowWarning ->
                     snackbarHostState.showSnackbar(
                         message = effect.message,
                         duration = SnackbarDuration.Long
                     )
-
-                is HomeEffect.OpenAppSettings -> showLocationPermissionDialog.value = true
-                HomeEffect.GetLocationFromMap -> openMap.value = true
             }
         }
     }
@@ -103,17 +104,24 @@ fun HomeScreen(
         }
 
         is HomeUiState.CustomLocationReady -> {
-            WeatherScreen(
+            WeatherScreenWithCustomLocation(
+                modifier = modifier,
                 navController = navController,
                 appbarViewModel = appbarViewModel,
                 location = currentState.location,
-                modifier = modifier
+                onFabClick = { viewModel.openMap() }
             )
         }
     }
 
     if (openMap.value) {
-        navController.navigate(NavScreens.LocationPickerScreen)
+        Log.i(TAG, "HomeScreen: activeLocation ${viewModel.activeLocation}")
+        navController.navigate(
+            NavScreens.LocationPickerScreen(
+                viewModel.activeLocation?.long,
+                viewModel.activeLocation?.lat
+            )
+        )
     }
 
     if (requestLocation) {

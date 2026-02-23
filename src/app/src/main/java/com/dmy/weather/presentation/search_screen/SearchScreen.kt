@@ -47,7 +47,7 @@ fun SearchScreen(navController: NavController, modifier: Modifier) {
     ) {
         Button(
             onClick = {
-                navController.navigate(NavScreens.LocationPickerScreen)
+                navController.navigate(NavScreens.LocationPickerScreen())
             }
         ) {
             Text("Search Location")

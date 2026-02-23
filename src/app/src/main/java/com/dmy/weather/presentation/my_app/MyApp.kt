@@ -84,8 +84,13 @@ fun MyApp() {
                 SettingsScreen(navController, modifier)
             }
 
-            composable<NavScreens.LocationPickerScreen> {
-                LocationPickerScreen(navController, modifier)
+            composable<NavScreens.LocationPickerScreen> { backStackEntry ->
+                val screen = backStackEntry.toRoute<NavScreens.LocationPickerScreen>()
+                var locationDetails: LocationDetails? = null
+                if (screen.lat != null && screen.long != null) {
+                    locationDetails = LocationDetails(long = screen.long, lat = screen.lat)
+                }
+                LocationPickerScreen(navController, modifier, locationDetails)
             }
             composable<NavScreens.LanguageSelectionScreen> {
                 LanguageSelectionScreen(navController, modifier)
