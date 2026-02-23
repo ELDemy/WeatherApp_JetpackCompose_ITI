@@ -1,6 +1,7 @@
 package com.dmy.weather.presentation.components
 
 import android.content.Intent
+import android.net.Uri
 import android.provider.Settings
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOff
@@ -28,6 +29,30 @@ fun AlertDialogForLocationSettings(showLocationDialog: MutableState<Boolean>) {
         },
         dismissButton = {
             TextButton(onClick = { showLocationDialog.value = false }) { Text("Cancel") }
+        }
+    )
+}
+
+@Composable
+fun AlertDialogForLocationPermission(showDialog: MutableState<Boolean>) {
+    val context = LocalContext.current
+    AlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        icon = { Icon(Icons.Outlined.LocationOff, contentDescription = null) },
+        title = { Text("Location is Off") },
+        text = { Text("Please turn on location services to get weather for your current location.") },
+        confirmButton = {
+            TextButton(onClick = {
+                showDialog.value = false
+                context.startActivity(
+                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", context.packageName, null)
+                    }
+                )
+            }) { Text("Open Settings") }
+        },
+        dismissButton = {
+            TextButton(onClick = { showDialog.value = false }) { Text("Cancel") }
         }
     )
 }

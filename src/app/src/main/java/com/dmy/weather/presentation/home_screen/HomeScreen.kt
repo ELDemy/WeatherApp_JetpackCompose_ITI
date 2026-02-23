@@ -1,5 +1,6 @@
 package com.dmy.weather.presentation.home_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
+import com.dmy.weather.presentation.components.AlertDialogForLocationPermission
 import com.dmy.weather.presentation.components.AlertDialogForLocationSettings
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.components.NoLocationScreen
@@ -36,9 +38,11 @@ fun HomeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     var requestLocation by remember { mutableStateOf(false) }
     val showLocationDialog = remember { mutableStateOf(false) }
+    val showLocationPermissionDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
+            Log.i(TAG, "HomeScreen: $effect")
             when (effect) {
                 is HomeEffect.RequestGpsLocation -> requestLocation = true
                 is HomeEffect.OpenLocationSettings -> showLocationDialog.value = true
@@ -47,6 +51,9 @@ fun HomeScreen(
                         message = effect.message,
                         duration = SnackbarDuration.Long
                     )
+
+                is HomeEffect.OpenAppSettings -> showLocationPermissionDialog.value = true
+
             }
         }
     }
@@ -84,6 +91,10 @@ fun HomeScreen(
     }
     if (showLocationDialog.value) {
         AlertDialogForLocationSettings(showLocationDialog)
+    }
+
+    if (showLocationPermissionDialog.value) {
+        AlertDialogForLocationPermission(showLocationPermissionDialog)
     }
 }
 
