@@ -7,4 +7,4 @@ data class LocationDetails(
     val city: String? = null,
     val long: String? = null,
     val lat: String? = null,
-)
+) : java.io.Serializable

@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 class WeatherVM(
     val weatherRepository: WeatherRepository,
     val settingsRepository: SettingsRepository,
-    val locationDetails: LocationDetails
 ) : ViewModel() {
 
     companion object {
@@ -30,18 +29,18 @@ class WeatherVM(
         var counter = 1
     }
 
+    lateinit var locationDetails: LocationDetails
     private val _uiState = MutableStateFlow(WeatherUiState())
     val uiState: StateFlow<WeatherUiState> = _uiState
 
     init {
         Log.i(TAG, "WeatherVM counter is : ${counter++}")
-        loadWeatherData()
 
         viewModelScope.launch {
             settingsRepository.settingsFlow
                 .distinctUntilChanged()
                 .collect {
-                    loadWeatherData()
+                    loadWeatherData(locationDetails)
                 }
         }
     }
@@ -57,7 +56,8 @@ class WeatherVM(
     )
 
 
-    fun loadWeatherData() {
+    fun loadWeatherData(locationDetails: LocationDetails) {
+        this.locationDetails = locationDetails
         viewModelScope.launch(SupervisorJob()) {
             launch { loadCurrentWeather() }
             launch { loadHourlyForecast() }

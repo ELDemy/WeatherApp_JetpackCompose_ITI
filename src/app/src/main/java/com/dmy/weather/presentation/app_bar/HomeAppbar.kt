@@ -62,7 +62,7 @@ fun HomeTopBar(
             },
             actions = {
                 IconButton(onClick = {
-                    navController.navigate(NavScreens.LocationPickerScreen)
+                    navController.navigate(NavScreens.SearchScreen)
                 }
                 ) {
                     Icon(

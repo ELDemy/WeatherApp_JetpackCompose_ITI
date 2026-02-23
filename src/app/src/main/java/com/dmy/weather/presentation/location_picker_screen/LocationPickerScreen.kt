@@ -20,10 +20,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
+import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
 import com.dmy.weather.presentation.location_picker_screen.component.LocationResult
 import com.dmy.weather.presentation.location_picker_screen.component.getUserLocation
-import com.dmy.weather.presentation.my_app.NavScreens
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -116,14 +116,25 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
                 modifier = Modifier.align(Alignment.BottomCenter)
             ) {
                 pickedLocation.value?.let { latLng ->
-                    navController.navigate(
-                        NavScreens.WeatherScreen(
-                            long = latLng.longitude.toString(),
-                            lat = latLng.latitude.toString()
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(
+                            "picked_location",
+                            LocationDetails(
+                                lat = latLng.latitude.toString(),
+                                long = latLng.longitude.toString()
+                            )
                         )
-                    ) {
-                        popUpTo(NavScreens.LocationPickerScreen) { inclusive = true }
-                    }
+                    navController.popBackStack()
+
+//                    navController.navigate(
+//                        NavScreens.WeatherScreen(
+//                            long = latLng.longitude.toString(),
+//                            lat = latLng.latitude.toString()
+//                        )
+//                    ) {
+//                        popUpTo(NavScreens.LocationPickerScreen) { inclusive = true }
+//                    }
                 }
             }
         }

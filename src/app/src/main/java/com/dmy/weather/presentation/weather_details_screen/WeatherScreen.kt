@@ -34,13 +34,14 @@ fun WeatherScreen(
     val viewModel =
         viewModel<WeatherVM>(
             factory = WeatherVMFactory(
-                location,
                 getKoin().get<WeatherRepository>(),
                 getKoin().get<SettingsRepository>()
             )
         )
     Log.i(TAG, "WeatherScreenLocation is: $location")
 //    val viewModel: WeatherVM = koinViewModel<WeatherVM>()
+
+    LaunchedEffect(location) { viewModel.loadWeatherData(location) }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val settingsState by viewModel.settingsState.collectAsState()
