@@ -1,44 +1,67 @@
 package com.dmy.weather.presentation.location_picker_screen.component
 
 import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.core.content.ContextCompat
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.dmy.weather.utils.LocationUtils
 
-fun hasLocationPermission(context: Context): Boolean {
-    return ContextCompat.checkSelfPermission(
-        context, Manifest.permission.ACCESS_FINE_LOCATION
-    ) == PackageManager.PERMISSION_GRANTED
-}
-
-suspend fun getLocation(context: Context): LatLng? {
-    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    return suspendCancellableCoroutine { continuation ->
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                continuation.resume(LatLng(location.latitude, location.longitude))
-            }
-            .addOnFailureListener {
-                continuation.resume(null)
-            }
-    }
-}
 
 @Composable
-fun RequestLocationPermission(onResult: (Boolean) -> Unit) {
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { onResult(it) }
-    LaunchedEffect(Unit) {
-        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+fun getUserLocation(onResult: (LocationResult) -> Unit) {
+    val context = LocalContext.current
+
+    var currentPermission by remember { mutableStateOf<Boolean>(LocationUtils.hasPermission(context)) }
+    var hasPermission by remember { mutableStateOf<Boolean?>(null) }
+
+    when (currentPermission) {
+        true -> hasPermission = true
+
+        false -> {
+            val launcher = rememberLauncherForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            )
+            { granted -> hasPermission = granted }
+
+            LaunchedEffect(Unit) {
+                launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+    }
+
+    LaunchedEffect(hasPermission) {
+        when (hasPermission) {
+            null -> return@LaunchedEffect
+            false -> {
+                onResult(LocationResult.Unavailable)
+                return@LaunchedEffect
+            }
+
+            true -> {
+                if (!LocationUtils.isLocationEnabled(context)) {
+                    onResult(LocationResult.LocationServicesOff)
+                    return@LaunchedEffect
+                }
+
+                val current = LocationUtils.getCurrentLocation(context)
+                if (current != null) {
+                    onResult(LocationResult.Current(current))
+                    return@LaunchedEffect
+                }
+
+                val lastKnown = LocationUtils.getLastKnownLocation(context)
+                if (lastKnown != null) {
+                    onResult(LocationResult.LastKnown(lastKnown))
+                } else {
+                    onResult(LocationResult.Unavailable)
+                }
+            }
+        }
     }
 }
-

@@ -16,16 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
 import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
-import com.dmy.weather.presentation.location_picker_screen.component.MapsSearchField
-import com.dmy.weather.presentation.location_picker_screen.component.RequestLocationPermission
-import com.dmy.weather.presentation.location_picker_screen.component.getLocation
-import com.dmy.weather.presentation.location_picker_screen.component.hasLocationPermission
+import com.dmy.weather.presentation.location_picker_screen.component.LocationResult
+import com.dmy.weather.presentation.location_picker_screen.component.getUserLocation
 import com.dmy.weather.presentation.my_app.NavScreens
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -41,28 +38,19 @@ private const val TAG = "MapScreen"
 
 @Composable
 fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
-    val context = LocalContext.current
     val pickedLocation = remember { mutableStateOf<LatLng?>(null) }
     val showSuggestions = remember { mutableStateOf(false) }
-    var hasPermission by remember { mutableStateOf(hasLocationPermission(context)) }
     var mapLoaded by remember { mutableStateOf(false) }
     var userLatLng by remember { mutableStateOf<LatLng?>(null) }
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(userLatLng ?: LatLng(30.0444, 31.2357), 10f)
+        position = CameraPosition.fromLatLngZoom(userLatLng ?: LatLng(30.0444, 31.2357), 15f)
     }
 
-    if (!hasPermission) {
-        RequestLocationPermission { granted -> hasPermission = granted }
-    }
-
-    LaunchedEffect(hasPermission) {
-        if (hasPermission && userLatLng == null) {
-            val location = getLocation(context)
-            location?.let {
-                userLatLng = it
-                pickedLocation.value = it
-            }
+    getUserLocation {
+        if (it is LocationResult.Current) {
+            userLatLng = it.latLng
+            pickedLocation.value = it.latLng
         }
     }
 
@@ -78,8 +66,8 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            properties = MapProperties(isMyLocationEnabled = hasPermission),
-            uiSettings = MapUiSettings(myLocationButtonEnabled = hasPermission),
+            properties = MapProperties(isMyLocationEnabled = userLatLng != null),
+            uiSettings = MapUiSettings(myLocationButtonEnabled = userLatLng != null),
             onMapLoaded = { mapLoaded = true },
             onMapClick = { latLng ->
                 pickedLocation.value = latLng
@@ -93,12 +81,12 @@ fun LocationPickerScreen(navController: NavController, modifier: Modifier) {
         )
 
         if (mapLoaded) {
-            MapsSearchField(
-                showSuggestions = showSuggestions,
-                cameraPositionState = cameraPositionState,
-                pickedLocation = pickedLocation,
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
+//            MapsSearchField(
+//                showSuggestions = showSuggestions,
+//                cameraPositionState = cameraPositionState,
+//                pickedLocation = pickedLocation,
+//                modifier = Modifier.align(Alignment.TopCenter)
+//            )
 
             FloatingActionButton(
                 modifier = Modifier

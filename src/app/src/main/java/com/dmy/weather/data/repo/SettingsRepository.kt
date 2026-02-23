@@ -1,6 +1,7 @@
 package com.dmy.weather.data.repo
 
 import com.dmy.weather.data.data_source.local.data_store.MyDataStore
+import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.UserSettings
 import kotlinx.coroutines.flow.Flow
@@ -16,5 +17,9 @@ class SettingsRepository(private val myDataStore: MyDataStore) {
 
     suspend fun getUnit(): UnitSystem {
         return settingsFlow.first().unit ?: UnitSystem.METRIC
+    }
+
+    suspend fun getLocationMode(): LocationMode {
+        return settingsFlow.first().locationMode ?: LocationMode.DEFAULT
     }
 }
