@@ -21,7 +21,8 @@ class MyDataStore(private val context: Context) {
         private val UNITS_KEY = stringPreferencesKey("units")
         private val LOCATION_MODE_KEY = stringPreferencesKey("location_mode")
 
-        private val LOCATION_DETAILS_KEY = stringPreferencesKey("location_details")
+        private val DEFAULT_LOCATION_KEY = stringPreferencesKey("default_location")
+        private val LAST_KNOWN_LOCATION_KEY = stringPreferencesKey("last_knowm_location")
     }
 
     val settingsFlow: Flow<UserSettings> = context.dataStore.data.map { pref ->
@@ -40,15 +41,29 @@ class MyDataStore(private val context: Context) {
         }
     }
 
-    val locationDetailsFlow: Flow<LocationDetails?> = context.dataStore.data.map { pref ->
-        pref[LOCATION_DETAILS_KEY]?.let {
+    val defaultLocationFlow: Flow<LocationDetails?> = context.dataStore.data.map { pref ->
+        pref[DEFAULT_LOCATION_KEY]?.let {
             Json.decodeFromString<LocationDetails>(it)
         }
     }
 
     suspend fun saveDefaultLocation(locationDetails: LocationDetails) {
         context.dataStore.edit { pref ->
-            pref[LOCATION_DETAILS_KEY] = Json.encodeToString(locationDetails)
+            pref[DEFAULT_LOCATION_KEY] = Json.encodeToString(locationDetails)
         }
     }
+
+    val lastKnownLocationFlow: Flow<LocationDetails?> = context.dataStore.data.map { pref ->
+        pref[LAST_KNOWN_LOCATION_KEY]?.let {
+            Json.decodeFromString<LocationDetails>(it)
+        }
+    }
+
+    suspend fun saveLastKnownLocation(locationDetails: LocationDetails) {
+        context.dataStore.edit { pref ->
+            pref[LAST_KNOWN_LOCATION_KEY] = Json.encodeToString(locationDetails)
+        }
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.dmy.weather.presentation.home_screen.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -27,6 +28,7 @@ fun WeatherScreenWithCustomLocation(
     appbarViewModel: AppbarViewModel,
     location: LocationDetails,
     modifier: Modifier,
+    warning: String? = null,
     onFabClick: () -> Unit
 ) {
     Box(Modifier.fillMaxSize()) {
@@ -34,12 +36,14 @@ fun WeatherScreenWithCustomLocation(
             navController = navController,
             appbarViewModel = appbarViewModel,
             location = location,
+            warning = warning,
             modifier = modifier
         )
 
         FloatingActionButton(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
+                .navigationBarsPadding()
                 .padding(end = 16.dp, bottom = 48.dp)
                 .size(56.dp),
             containerColor = colorResource(R.color.blue_primary),

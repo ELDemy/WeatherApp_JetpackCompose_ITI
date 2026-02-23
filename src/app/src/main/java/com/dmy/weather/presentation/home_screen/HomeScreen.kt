@@ -40,7 +40,6 @@ fun HomeScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var requestLocation by remember { mutableStateOf(false) }
-    val openMap = remember { mutableStateOf(false) }
     val showLocationDialog = remember { mutableStateOf(false) }
     val showLocationPermissionDialog = remember { mutableStateOf(false) }
 
@@ -66,9 +65,18 @@ fun HomeScreen(
             Log.i(TAG, "HomeScreen: $effect")
             when (effect) {
                 is HomeEffect.RequestGpsLocation -> requestLocation = true
-                is HomeEffect.GetLocationFromMap -> openMap.value = true
                 is HomeEffect.OpenLocationSettings -> showLocationDialog.value = true
                 is HomeEffect.OpenAppSettings -> showLocationPermissionDialog.value = true
+
+                is HomeEffect.GetLocationFromMap -> {
+                    Log.i(TAG, "HomeScreen: activeLocation ${effect.currentLocation}")
+                    navController.navigate(
+                        NavScreens.LocationPickerScreen(
+                            effect.currentLocation?.long,
+                            effect.currentLocation?.lat
+                        )
+                    )
+                }
 
                 is HomeEffect.ShowWarning ->
                     snackbarHostState.showSnackbar(
@@ -90,15 +98,18 @@ fun HomeScreen(
             }
         }
 
-        is HomeUiState.NoLocation -> NoLocationScreen(
-            onRetry = { viewModel.retry() }
-        )
+        is HomeUiState.NoLocation -> {
+            NoLocationScreen(
+                onRetry = { viewModel.retry() }
+            )
+        }
 
         is HomeUiState.CurrentLocationReady -> {
             WeatherScreen(
                 navController = navController,
                 appbarViewModel = appbarViewModel,
                 location = currentState.location,
+                warning = currentState.warning,
                 modifier = modifier
             )
         }
@@ -109,20 +120,32 @@ fun HomeScreen(
                 navController = navController,
                 appbarViewModel = appbarViewModel,
                 location = currentState.location,
+                warning = currentState.warning,
                 onFabClick = { viewModel.openMap() }
             )
         }
+
+        is HomeUiState.OldLocation -> {
+            when (currentState.location) {
+                null -> NoLocationScreen(
+                    onRetry = { viewModel.retry() }
+                )
+
+                else -> {
+                    WeatherScreenWithCustomLocation(
+                        modifier = modifier,
+                        navController = navController,
+                        appbarViewModel = appbarViewModel,
+                        location = currentState.location,
+                        warning = currentState.warning,
+                        onFabClick = { viewModel.openMap() }
+                    )
+                }
+            }
+
+        }
     }
 
-    if (openMap.value) {
-        Log.i(TAG, "HomeScreen: activeLocation ${viewModel.activeLocation}")
-        navController.navigate(
-            NavScreens.LocationPickerScreen(
-                viewModel.activeLocation?.long,
-                viewModel.activeLocation?.lat
-            )
-        )
-    }
 
     if (requestLocation) {
         getUserLocation { result ->

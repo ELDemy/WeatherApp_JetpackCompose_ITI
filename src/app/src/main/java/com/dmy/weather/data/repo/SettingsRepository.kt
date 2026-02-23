@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.firstOrNull
 class SettingsRepository(private val myDataStore: MyDataStore) {
 
     val settingsFlow: Flow<UserSettings> = myDataStore.settingsFlow
-    val locationDetailsFlow: Flow<LocationDetails?> = myDataStore.locationDetailsFlow
+    val locationDetailsFlow: Flow<LocationDetails?> = myDataStore.defaultLocationFlow
 
     suspend fun saveSettings(userSettings: UserSettings) {
         myDataStore.saveSettings(userSettings)
@@ -32,5 +32,13 @@ class SettingsRepository(private val myDataStore: MyDataStore) {
 
     suspend fun getDefaultLocation(): LocationDetails? {
         return locationDetailsFlow.firstOrNull()
+    }
+
+    suspend fun saveLastKnownLocation(locationDetails: LocationDetails) {
+        myDataStore.saveLastKnownLocation(locationDetails)
+    }
+
+    suspend fun getLastKnownLocation(): LocationDetails? {
+        return myDataStore.lastKnownLocationFlow.firstOrNull()
     }
 }

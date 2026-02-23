@@ -30,6 +30,7 @@ fun WeatherScreen(
     appbarViewModel: AppbarViewModel,
     location: LocationDetails,
     modifier: Modifier,
+    warning: String? = null,
 ) {
     val viewModel =
         viewModel<WeatherVM>(

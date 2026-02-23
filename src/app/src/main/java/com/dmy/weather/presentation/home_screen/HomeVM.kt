@@ -29,8 +29,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
     private val _effect = Channel<HomeEffect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
 
-    var activeLocation: LocationDetails? = null
-        private set
+    private var activeLocation: LocationDetails? = null
 
     init {
         viewModelScope.launch { resolveLocation() }
@@ -59,8 +58,13 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                 _uiState.update {
                     if (location != null) HomeUiState.CustomLocationReady(location)
                     else {
+                        val location = getLastKnownLocation()
                         openMap()
-                        HomeUiState.NoLocation
+                        if (location != null) {
+                            HomeUiState.CurrentLocationReady(location)
+                        } else {
+                            HomeUiState.OldLocation()
+                        }
                     }
                 }
             }
@@ -82,22 +86,36 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
         }
     }
 
+    private fun saveLastKnownLocation(locationDetails: LocationDetails) {
+        activeLocation = locationDetails
+        viewModelScope.launch {
+            settingsRepository.saveLastKnownLocation(locationDetails)
+        }
+    }
+
+    private suspend fun getLastKnownLocation(): LocationDetails? {
+        return settingsRepository.getLastKnownLocation()
+    }
+
     fun openMap() {
         viewModelScope.launch {
-            _effect.send(HomeEffect.GetLocationFromMap)
+            _effect.send(HomeEffect.GetLocationFromMap(activeLocation))
         }
     }
 
     fun onMapLocationReceived(location: LocationDetails) {
         saveDefaultLocation(location)
+        this.activeLocation = location
         _uiState.update { HomeUiState.CustomLocationReady(location) }
     }
 
     fun onLocationResult(result: LocationResult) {
+        Log.i(TAG, "onLocationResult: $result")
         when (result) {
             is LocationResult.Current -> {
                 val locationDetails = result.latLng.toLocationDetails()
                 activeLocation = locationDetails
+                saveLastKnownLocation(locationDetails)
                 _uiState.update { HomeUiState.CurrentLocationReady(locationDetails) }
             }
 
@@ -111,28 +129,64 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                 }
             }
 
-            is LocationResult.Unavailable -> {
-                _uiState.update { HomeUiState.NoLocation }
-            }
-
-            is LocationResult.LocationServicesOff -> {
-                _uiState.update { HomeUiState.NoLocation }
+            else -> {
                 viewModelScope.launch {
-                    _effect.send(HomeEffect.OpenLocationSettings)
-                }
-            }
+                    val oldLocation = getLastKnownLocation() ?: getDefaultLocation()
+                    activeLocation = oldLocation
+                    when (result) {
+                        is LocationResult.Unavailable -> {
+                            _uiState.update {
+                                HomeUiState.OldLocation(
+                                    oldLocation,
+                                    warning = "Location is not available.",
+                                    effect = HomeEffect.RequestGpsLocation
+                                )
+                            }
+                        }
 
-            is LocationResult.PermissionDenied -> {
-                _uiState.update { HomeUiState.NoLocation }
-                viewModelScope.launch {
-                    _effect.send(HomeEffect.ShowWarning("Location permission is required."))
-                }
-            }
+                        is LocationResult.LocationServicesOff -> {
+                            _uiState.update {
+                                HomeUiState.OldLocation(
+                                    oldLocation,
+                                    warning = "Location services are off please enable it.",
+                                    effect = HomeEffect.OpenLocationSettings
+                                )
+                            }
+                            viewModelScope.launch {
+                                _effect.send(HomeEffect.OpenLocationSettings)
+                            }
+                        }
 
-            is LocationResult.PermissionPermanentlyDenied -> {
-                _uiState.update { HomeUiState.NoLocation }
-                viewModelScope.launch {
-                    _effect.send(HomeEffect.OpenAppSettings)
+                        is LocationResult.PermissionDenied -> {
+                            _uiState.update {
+                                HomeUiState.OldLocation(
+                                    oldLocation,
+                                    warning = "Location permission is required.",
+                                    effect = HomeEffect.RequestGpsLocation
+                                )
+                            }
+
+                            viewModelScope.launch {
+                                _effect.send(
+                                    HomeEffect.ShowWarning("Location permission is required.")
+                                )
+                            }
+                        }
+
+                        is LocationResult.PermissionPermanentlyDenied -> {
+                            _uiState.update {
+                                HomeUiState.OldLocation(
+                                    oldLocation,
+                                    warning = "Location permission is required.",
+                                    effect = HomeEffect.OpenAppSettings
+                                )
+                            }
+
+                            viewModelScope.launch {
+                                _effect.send(HomeEffect.OpenAppSettings)
+                            }
+                        }
+                    }
                 }
             }
         }
