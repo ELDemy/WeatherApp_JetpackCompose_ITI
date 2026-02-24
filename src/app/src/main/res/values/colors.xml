@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_primary">#155DFC</color>
 
+    <color name="white_background">#FFF5F7FA</color>
+
 
     <color name="text_primary">#FF000000</color>
     <color name="text_white">#FFFFFFFF</color>
@@ -36,5 +38,7 @@
     <color name="warning_background">#FFF3E0</color>
     <color name="warning_foreground">#E65100</color>
     <color name="warning_border">#FF8904</color>
+
+    <color name="error_foreground">#FFE53935</color>
 
 </resources>

@@ -12,6 +12,10 @@ class GeocodingRemoteDataSource(val geocodingService: GeocodingService) {
         return geocodingService.getGeocodingCityByCity(city)?.firstOrNull()
     }
 
+    suspend fun getCitiesByName(city: String): List<GeocodingCityDTO>? {
+        return geocodingService.getGeocodingCityByCity(city, limit = 0)
+    }
+
     suspend fun getGeocodingCityByCoord(long: String, lat: String): GeocodingCityDTO? {
         return geocodingService.getGeocodingCityByCoord(long, lat)?.firstOrNull()
     }

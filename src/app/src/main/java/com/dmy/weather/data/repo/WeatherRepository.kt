@@ -1,22 +1,17 @@
 package com.dmy.weather.data.repo
 
 import android.util.Log
-import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
 import com.dmy.weather.data.mapper.toModel
-import com.dmy.weather.data.model.CityModel
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.utils.exceptions.NullDataException
 import com.dmy.weather.utils.mapFailure
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class WeatherRepository(
     val weatherRemoteDataSource: WeatherRemoteDataSource,
-    val geocodingRemoteDataSource: GeocodingRemoteDataSource,
     val settingsRepository: SettingsRepository,
 ) {
     companion object {
@@ -117,27 +112,5 @@ class WeatherRepository(
     }
 
 
-    fun getGeocodingCityInfoByCity(city: String) {
-        GlobalScope.launch {
-
-            val geocodingCityDTO = geocodingRemoteDataSource.getGeocodingCityByCity(city)
-            val cityModel = geocodingCityDTO?.toModel()
-
-            Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
-            Log.i(TAG, "cityModel: $cityModel")
-
-//            return cityModel
-        }
-    }
-
-    suspend fun getGeocodingCityInfoByCoord(long: String, lat: String): CityModel? {
-        val geocodingCityDTO = geocodingRemoteDataSource.getGeocodingCityByCoord(long, lat)
-        val cityModel = geocodingCityDTO?.toModel()
-
-        Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
-        Log.i(TAG, "cityModel: $cityModel")
-
-        return cityModel
-    }
 }
 

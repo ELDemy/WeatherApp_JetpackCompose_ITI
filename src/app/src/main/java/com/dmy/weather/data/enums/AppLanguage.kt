@@ -61,5 +61,11 @@ enum class AppLanguage(
         fun fromName(name: String?): AppLanguage {
             return entries.find { it.name == name } ?: DEFAULT
         }
+
+        fun getFlag(code: String): String? {
+            return entries.find {
+                it.apiCode.equals(code, ignoreCase = true)
+            }?.flagEmoji
+        }
     }
 }
