@@ -9,14 +9,14 @@ import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
 
 
-object WorkManagerScheduler {
+object AlertScheduler {
     fun scheduleWeatherCheck(context: Context) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
         val weatherRequest =
-            PeriodicWorkRequestBuilder<AlarmWorkManager>(
+            PeriodicWorkRequestBuilder<AlertWorkManager>(
 //                1, TimeUnit.HOURS
                 15, TimeUnit.MINUTES
             ).setConstraints(constraints).build()

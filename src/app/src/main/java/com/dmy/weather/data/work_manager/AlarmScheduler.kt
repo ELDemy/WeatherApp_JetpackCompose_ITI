@@ -7,23 +7,28 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import com.dmy.weather.data.broadcast.WeatherAlarmReceiver
-import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.data.model.NotificationWeatherModel
 
 object AlarmScheduler {
 
-    fun scheduleNotificationAt(context: Context, triggerAtMillis: Long, weather: WeatherModel) {
+    fun scheduleNotificationAt(
+        context: Context,
+        triggerAtMillis: Long,
+        notificationWeather: NotificationWeatherModel
+    ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
                 Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).also {
+                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(it)
                 }
                 return
             }
         }
         val intent = Intent(context, WeatherAlarmReceiver::class.java).apply {
-            putExtra("weather", weather)
+            putExtra("weather", notificationWeather)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(

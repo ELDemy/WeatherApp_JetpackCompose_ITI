@@ -13,7 +13,7 @@ import com.dmy.weather.MainActivity
 import com.dmy.weather.R
 import com.dmy.weather.data.broadcast.AlarmDismissReceiver
 import com.dmy.weather.data.model.DailyForecastModel
-import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.data.model.NotificationWeatherModel
 
 object NotificationBuilder {
     fun createNotificationChannels(context: Context) {
@@ -25,7 +25,7 @@ object NotificationBuilder {
 
     fun showUpdatesNotification(
         context: Context,
-        weather: WeatherModel,
+        weather: NotificationWeatherModel,
         dayForecast: DailyForecastModel?
     ) {
         val notification = baseBuilder(context, NotificationTypes.UPDATES, weather, dayForecast)
@@ -38,7 +38,7 @@ object NotificationBuilder {
 
     fun showNotification(
         context: Context,
-        weather: WeatherModel,
+        weather: NotificationWeatherModel,
         dayForecast: DailyForecastModel?
     ) {
         val notification = baseBuilder(context, NotificationTypes.Notify, weather, dayForecast)
@@ -51,7 +51,7 @@ object NotificationBuilder {
 
     fun showAlarmNotification(
         context: Context,
-        weather: WeatherModel,
+        weather: NotificationWeatherModel,
         dayForecast: DailyForecastModel?
     ) {
         val notificationId = System.currentTimeMillis().toInt()
@@ -75,20 +75,21 @@ object NotificationBuilder {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification = baseBuilder(context, NotificationTypes.ALARM, weather, dayForecast)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setFullScreenIntent(fullScreenPendingIntent, true)
-            .addAction(
-                R.drawable.ic_launcher_foreground,
-                context.getString(R.string.I_will_take_care),
-                dismissPendingIntent
-            )
-            .build().also {
-                it.flags = it.flags or Notification.FLAG_INSISTENT
-            }
+        val notification =
+            baseBuilder(context, NotificationTypes.ALARM, weather, dayForecast)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setFullScreenIntent(fullScreenPendingIntent, true)
+                .addAction(
+                    R.drawable.ic_launcher_foreground,
+                    context.getString(R.string.I_will_take_care),
+                    dismissPendingIntent
+                )
+                .build().also {
+                    it.flags = it.flags or Notification.FLAG_INSISTENT
+                }
 
         notify(context, notification, notificationId)
     }
@@ -105,7 +106,7 @@ object NotificationBuilder {
 
     private fun buildRemoteViews(
         context: Context,
-        weather: WeatherModel,
+        weather: NotificationWeatherModel,
         dayForecast: DailyForecastModel?
     ): Pair<RemoteViews, RemoteViews> {
         val packageName = context.packageName
@@ -142,7 +143,7 @@ object NotificationBuilder {
     private fun baseBuilder(
         context: Context,
         type: NotificationTypes,
-        weather: WeatherModel,
+        weather: NotificationWeatherModel,
         dayForecast: DailyForecastModel?
     ): NotificationCompat.Builder {
         val (collapsed, expanded) = buildRemoteViews(context, weather, dayForecast)

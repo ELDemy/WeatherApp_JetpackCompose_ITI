@@ -29,11 +29,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.data.work_manager.AlertWorkManager
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.utils.toTemp
@@ -47,6 +50,7 @@ fun CurrentWeatherSection(
     dayForecast: DailyForecastModel?,
     unit: UnitSystem
 ) {
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,7 +82,13 @@ fun CurrentWeatherSection(
 
         Box(modifier = Modifier.padding(vertical = 36.dp, horizontal = 24.dp)) {
             when {
-                state.data != null -> WeatherContent(state.data, dayForecast, unit)
+                state.data != null -> {
+//                    WorkManager.getInstance(context).enqueue(
+//                        OneTimeWorkRequestBuilder<AlertWorkManager>().build()
+//                    )
+                    WeatherContent(state.data, dayForecast, unit)
+                }
+
                 state.isLoading -> MyLoadingComponent(color = color.white)
                 state.error != null -> MyErrorComponent(state.error)
             }

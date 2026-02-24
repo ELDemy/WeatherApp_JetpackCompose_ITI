@@ -3,6 +3,7 @@ package com.dmy.weather.data.data_source.remote
 import com.dmy.weather.data.dto.DailyForecastDTO
 import com.dmy.weather.data.dto.HourlyForecastDTO
 import com.dmy.weather.data.dto.WeatherDTO
+import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.network.WeatherService
 
 class WeatherRemoteDataSource(val weatherService: WeatherService) {
@@ -32,6 +33,22 @@ class WeatherRemoteDataSource(val weatherService: WeatherService) {
 
     suspend fun getClimateForecast(long: String, lat: String): DailyForecastDTO? {
         return weatherService.getClimateForecast(long, lat)
+    }
+
+    suspend fun getHourlyForecast(locationDetails: LocationDetails?): HourlyForecastDTO? {
+        return when {
+            locationDetails?.city != null ->
+                weatherService.getHourlyForecast(
+                    locationDetails.city
+                )
+
+            locationDetails?.long != null && locationDetails.lat != null ->
+                weatherService.getHourlyForecast(
+                    locationDetails.long, locationDetails.lat
+                )
+
+            else -> null
+        }
     }
 
     suspend fun getHourlyForecast(city: String): HourlyForecastDTO? {
