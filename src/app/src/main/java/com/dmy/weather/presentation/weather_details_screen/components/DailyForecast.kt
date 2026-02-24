@@ -87,13 +87,11 @@ fun DailyForecastItem(weather: DailyWeatherModel, index: Int) {
                     text = if (index == 0) stringResource(R.string.Today) else weather.dateTime,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = colorResource(color.text_primary)
                 )
                 Text(
                     text = weather.description,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Normal,
-                    color = colorResource(color.text_grey)
                 )
             }
 

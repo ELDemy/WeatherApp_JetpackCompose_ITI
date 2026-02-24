@@ -12,11 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -77,13 +75,11 @@ fun CurrentWeatherSection(
             )
         }
 
-        CompositionLocalProvider(LocalContentColor provides Color.White) {
-            Box(modifier = Modifier.padding(vertical = 36.dp, horizontal = 24.dp)) {
-                when {
-                    state.data != null -> WeatherContent(state.data, dayForecast, unit)
-                    state.isLoading -> MyLoadingComponent(color = color.white)
-                    state.error != null -> MyErrorComponent(state.error)
-                }
+        Box(modifier = Modifier.padding(vertical = 36.dp, horizontal = 24.dp)) {
+            when {
+                state.data != null -> WeatherContent(state.data, dayForecast, unit)
+                state.isLoading -> MyLoadingComponent(color = color.white)
+                state.error != null -> MyErrorComponent(state.error)
             }
         }
     }

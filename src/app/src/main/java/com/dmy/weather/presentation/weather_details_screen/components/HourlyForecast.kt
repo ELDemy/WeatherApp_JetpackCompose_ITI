@@ -123,16 +123,15 @@ fun HourDetailCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Text(text = time, fontSize = 14.sp, color = colorResource(color.text_grey))
+            Text(text = time, fontSize = 14.sp)
             WeatherIcon(iconRes = icon, modifier = Modifier.size(56.dp))
             Spacer(Modifier.height(12.dp))
             Text(
                 text = temp,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = colorResource(color.text_primary)
             )
-            Text(text = clouds, fontSize = 11.sp, color = colorResource(color.blue_primary))
+            Text(text = clouds, fontSize = 11.sp)
         }
     }
 }
