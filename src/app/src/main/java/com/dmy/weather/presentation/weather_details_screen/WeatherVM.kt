@@ -68,7 +68,7 @@ class WeatherVM(
     private suspend fun loadCurrentWeather() {
         _uiState.update { it.copy(currentWeather = it.currentWeather.copy(isLoading = true)) }
 
-        val result = weatherRepository.getCurrentWeather(locationDetails)
+        val result = weatherRepository.getWeather(locationDetails)
 
         _uiState.update {
             it.copy(

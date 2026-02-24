@@ -18,7 +18,36 @@ class WeatherRepository(
         private const val TAG = "WeatherRepo"
     }
 
-    suspend fun getCurrentWeather(locationDetails: LocationDetails): Result<WeatherModel> {
+    suspend fun getCurrentWeather(): Result<WeatherModel> {
+        return runCatching {
+            val locationDetails =
+                settingsRepository.getLastKnownLocation() ?: settingsRepository.getDefaultLocation()
+
+            val weatherDTO =
+                when {
+                    locationDetails?.city != null ->
+                        weatherRemoteDataSource.getCurrentWeather(
+                            locationDetails.city
+                        )
+
+                    locationDetails?.long != null && locationDetails.lat != null ->
+                        weatherRemoteDataSource.getCurrentWeather(
+                            locationDetails.long, locationDetails.lat
+                        )
+
+                    else -> null
+                } ?: throw NullDataException()
+
+            val weatherModel = weatherDTO.toModel()
+
+            Log.i(TAG, "weatherDTO: $weatherDTO")
+            Log.i(TAG, "weatherModel: $weatherModel")
+
+            return Result.success(weatherModel)
+        }.mapFailure()
+    }
+
+    suspend fun getWeather(locationDetails: LocationDetails): Result<WeatherModel> {
         return runCatching {
             val weatherDTO =
                 when {

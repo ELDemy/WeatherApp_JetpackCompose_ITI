@@ -1,0 +1,67 @@
+package com.dmy.weather.presentation.notification
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.graphics.Color
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import androidx.core.app.NotificationCompat
+
+enum class NotificationTypes(
+    val id: String,
+    val named: String,
+    val description: String,
+    val importance: Int
+) {
+    UPDATES(
+        "weather_updates",
+        "Daily Weather Updates",
+        "Channel for regular rain or sun updates",
+        NotificationManager.IMPORTANCE_DEFAULT
+    ),
+    Notify(
+        "weather_notification",
+        "Weather Notifications",
+        "Channel for weather conditions",
+        NotificationManager.IMPORTANCE_HIGH
+    ),
+    ALARM(
+        "weather_alarm",
+        "Urgent Weather Alerts",
+        "Channel for life-threatening weather conditions",
+        NotificationManager.IMPORTANCE_MAX
+    );
+
+    fun notificationChannel(): NotificationChannel =
+        NotificationChannel(id, named, importance)
+            .apply {
+                description = this@NotificationTypes.description
+                enableLights(true)
+                lightColor = Color.RED
+                lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
+
+                when (this@NotificationTypes) {
+                    ALARM -> {
+                        enableVibration(true)
+                        vibrationPattern = longArrayOf(0, 500, 250, 500, 250, 500)
+                        val audioAttributes = AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_ALARM)
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .build()
+                        setSound(
+                            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM),
+                            audioAttributes
+                        )
+                    }
+
+                    Notify -> {
+                        enableVibration(true)
+                        vibrationPattern = longArrayOf(1000, 1000, 1000, 1000)
+                    }
+
+                    UPDATES -> {
+                        enableVibration(false)
+                    }
+                }
+            }
+}

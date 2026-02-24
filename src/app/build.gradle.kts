@@ -106,4 +106,9 @@ dependencies {
     implementation("com.google.android.libraries.places:places:5.1.1")
     implementation("com.google.maps.android:places-ktx:3.6.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    //for work manager
+    implementation("androidx.work:work-runtime-ktx:2.11.1")
+    //for notification
+    implementation("androidx.core:core-ktx:1.12.0")
 }

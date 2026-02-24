@@ -31,6 +31,7 @@ import com.dmy.weather.presentation.language_selection_screen.LanguageSelectionS
 import com.dmy.weather.presentation.location_picker_screen.LocationPickerScreen
 import com.dmy.weather.presentation.search_screen.SearchScreen
 import com.dmy.weather.presentation.settings_screen.SettingsScreen
+import com.dmy.weather.presentation.splash_screen.SplashScreen
 import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -63,9 +64,13 @@ fun MyApp() {
     { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = NavScreens.HomeScreen,
+            startDestination = NavScreens.SplashScreen,
             modifier = modifier.padding(innerPadding)
         ) {
+            composable<NavScreens.SplashScreen> {
+                SplashScreen(navController, modifier)
+            }
+
             composable<NavScreens.HomeScreen> {
                 HomeScreen(navController, appbarViewModel, snackbarHostState, modifier)
             }

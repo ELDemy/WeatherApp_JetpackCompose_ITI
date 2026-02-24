@@ -86,6 +86,10 @@ fun AppBar(
             )
         }
 
+        currentDestination?.hasRoute<NavScreens.SplashScreen>() == true -> {
+            
+        }
+
 //        currentDestination?.hasRoute<NavScreens.LanguageSelectionScreen>() == true -> {
 //            LaunchedEffect(Unit) {
 //                scrollBehavior.state.heightOffset = 0f
