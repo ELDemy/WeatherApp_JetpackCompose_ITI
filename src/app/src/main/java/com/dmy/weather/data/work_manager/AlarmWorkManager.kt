@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.dmy.weather.data.repo.WeatherRepository
-import com.dmy.weather.presentation.notification.NotificationBuilder
 import org.koin.java.KoinJavaComponent.inject
 
 private const val TAG = "WeatherWorkManager"
@@ -19,7 +18,8 @@ class AlarmWorkManager(val context: Context, params: WorkerParameters) :
             .onSuccess { weather ->
                 val temp = weather.temperature ?: return@onSuccess
                 if (temp > 0) {
-                    NotificationBuilder.showAlarmNotification(context, weather, null)
+                    val triggerTime = System.currentTimeMillis() + (2 * 60 * 1000)
+                    AlarmScheduler.scheduleNotificationAt(context, triggerTime, weather)
                 }
             }
             .fold(

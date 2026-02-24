@@ -1,5 +1,9 @@
 package com.dmy.weather.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class WeatherModel(
     val cityName: String,
     val country: String,
@@ -15,4 +19,4 @@ data class WeatherModel(
     val pressure: Int?,
     val windSpeed: Double?,
     val clouds: Int?
-)
+) : Parcelable

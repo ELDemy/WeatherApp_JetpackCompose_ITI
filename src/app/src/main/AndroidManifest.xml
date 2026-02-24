@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:name=".WeatherApp"
@@ -50,5 +51,8 @@
                 <action android:name="com.dmy.weather.ACTION_DISMISS_ALARM" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".data.broadcast.WeatherAlarmReceiver"
+            android:exported="false" />
     </application>
 </manifest>
