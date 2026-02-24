@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.components.AlertDialogForLocationPermission
@@ -87,84 +88,49 @@ fun HomeScreen(
         }
     }
 
-    val onRefresh = { viewModel.retry() }
 
-    when (val currentState = state) {
-        is HomeUiState.Loading -> {
+    when {
+        state.isLoading && state.location == null -> {
             Column(
                 Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MyLoadingComponent()
-            }
+            ) { MyLoadingComponent() }
         }
 
-
-        is HomeUiState.CurrentLocationReady -> {
-            WeatherScreen(
-                navController = navController,
-                appbarViewModel = appbarViewModel,
-                location = currentState.location,
-                warning = currentState.warning,
-                modifier = modifier,
-                onRefresh = onRefresh,
-            )
-        }
-
-        is HomeUiState.CustomLocationReady -> {
-            WeatherScreenWithCustomLocation(
-                modifier = modifier,
-                navController = navController,
-                appbarViewModel = appbarViewModel,
-                location = currentState.location,
-                warning = currentState.warning,
-                onFabClick = { viewModel.openMap() },
-                onRefresh = onRefresh,
-            )
-        }
-
-        is HomeUiState.OldLocation -> {
-            when (currentState.location) {
-                null -> NoLocationScreen(
-                    onRetry = { viewModel.retry() }
-                )
-
-                else -> {
-                    WeatherScreenWithCustomLocation(
-                        modifier = modifier,
-                        navController = navController,
-                        appbarViewModel = appbarViewModel,
-                        location = currentState.location,
-                        warning = currentState.warning,
-                        onFabClick = { viewModel.openMap() },
-                        onRefresh = onRefresh,
-                    ) {
-                        when (currentState.effect) {
-                            is HomeEffect.RequestGpsLocation ->
-                                requestLocation = true
-
-                            is HomeEffect.OpenLocationSettings ->
-                                showLocationDialog.value = true
-
-                            is HomeEffect.OpenAppSettings ->
-                                showLocationPermissionDialog.value = true
-
-                            else -> viewModel.retry()
-                        }
-
-                    }
-                }
-            }
-
-        }
-
-        is HomeUiState.NoLocation -> {
+        state.noLocation -> {
             NoLocationScreen(
+                state,
                 onRetry = { viewModel.retry() }
             )
         }
+
+        state.location != null -> {
+            if (state.locationMode == LocationMode.MAP) {
+                WeatherScreenWithCustomLocation(
+                    modifier = modifier,
+                    navController = navController,
+                    appbarViewModel = appbarViewModel,
+                    location = state.location!!,
+                    warning = state.warning,
+                    onFabClick = { viewModel.openMap() },
+                    onRefresh = { viewModel.retry() },
+                    onWarningClick = { viewModel.onWarningClicked() }
+                )
+            } else {
+                WeatherScreen(
+                    modifier = modifier,
+                    navController = navController,
+                    appbarViewModel = appbarViewModel,
+                    location = state.location!!,
+                    warning = state.warning,
+                    onRefresh = { viewModel.retry() },
+                    onWarningClick = { viewModel.onWarningClicked() }
+                )
+            }
+        }
     }
+
 
 
     if (requestLocation) {

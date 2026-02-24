@@ -30,7 +30,7 @@ fun WeatherScreenWithCustomLocation(
     modifier: Modifier,
     warning: String? = null,
     onFabClick: () -> Unit,
-    onRefresh: (() -> Unit)? = null,
+    onRefresh: (() -> Unit),
     onWarningClick: (() -> Unit)? = null,
 ) {
     Box(Modifier.fillMaxSize()) {
