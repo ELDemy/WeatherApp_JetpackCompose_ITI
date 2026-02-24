@@ -11,14 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.dmy.weather.utils.LocationUtils
+import com.dmy.weather.platform.services.LocationServices
 
 @Composable
 fun getUserLocation(onResult: (LocationResult) -> Unit) {
     val context = LocalContext.current
     val activity = context as? Activity
 
-    var hasPermission by remember { mutableStateOf(LocationUtils.hasPermission(context)) }
+    var hasPermission by remember { mutableStateOf(LocationServices.hasPermission(context)) }
 
     if (!hasPermission) {
         val launcher = rememberLauncherForActivityResult(
@@ -46,18 +46,18 @@ fun getUserLocation(onResult: (LocationResult) -> Unit) {
     LaunchedEffect(hasPermission) {
         if (!hasPermission) return@LaunchedEffect
 
-        if (!LocationUtils.isLocationEnabled(context)) {
+        if (!LocationServices.isLocationEnabled(context)) {
             onResult(LocationResult.LocationServicesOff)
             return@LaunchedEffect
         }
 
-        val current = LocationUtils.getCurrentLocation(context)
+        val current = LocationServices.getCurrentLocation(context)
         if (current != null) {
             onResult(LocationResult.Current(current))
             return@LaunchedEffect
         }
 
-        val lastKnown = LocationUtils.getLastKnownLocation(context)
+        val lastKnown = LocationServices.getLastKnownLocation(context)
         onResult(
             if (lastKnown != null) LocationResult.LastKnown(lastKnown)
             else LocationResult.Unavailable

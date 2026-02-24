@@ -1,4 +1,4 @@
-package com.dmy.weather.utils
+package com.dmy.weather.platform.services
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -15,8 +15,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 
-object LocationUtils {
-
+object LocationServices {
 
     @SuppressLint("MissingPermission")
     suspend fun getCurrentLocation(context: Context): LatLng? {

@@ -11,9 +11,9 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.dmy.weather.MainActivity
 import com.dmy.weather.R
-import com.dmy.weather.data.broadcast.AlarmDismissReceiver
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.NotificationWeatherModel
+import com.dmy.weather.platform.broadcast.AlarmDismissReceiver
 
 object NotificationBuilder {
     fun createNotificationChannels(context: Context) {

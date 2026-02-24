@@ -20,7 +20,8 @@ val dataModule = module {
     single {
         WeatherRepository(
             get<WeatherRemoteDataSource>(),
-            get<SettingsRepository>()
+            get<SettingsRepository>(),
+            androidContext()
         )
     }
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import com.dmy.weather.data.work_manager.AlertScheduler
+import com.dmy.weather.platform.work_manager.AlertScheduler
 import com.dmy.weather.presentation.my_app.NavScreens
 import com.dmy.weather.presentation.notification.NotificationBuilder
 import com.dmy.weather.presentation.permissions.notification.PermissionResult

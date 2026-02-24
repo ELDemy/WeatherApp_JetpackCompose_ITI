@@ -1,5 +1,6 @@
 package com.dmy.weather.data.repo
 
+import android.content.Context
 import android.util.Log
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
 import com.dmy.weather.data.dto.HourlyForecastDTO
@@ -11,12 +12,15 @@ import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.data.model.toLocationDetails
+import com.dmy.weather.platform.services.LocationServices
 import com.dmy.weather.utils.exceptions.NullDataException
 import com.dmy.weather.utils.mapFailure
 
 class WeatherRepository(
     val weatherRemoteDataSource: WeatherRemoteDataSource,
     val settingsRepository: SettingsRepository,
+    val context: Context
 ) {
     companion object {
         private const val TAG = "WeatherRepo"
@@ -79,20 +83,8 @@ class WeatherRepository(
 
     suspend fun getHourlyForecast(locationDetails: LocationDetails): Result<HourlyForecastModel> {
         return runCatching {
-            val hourlyForecastDTO =
-                when {
-                    locationDetails.city != null ->
-                        weatherRemoteDataSource.getHourlyForecast(
-                            locationDetails.city
-                        )
-
-                    locationDetails.long != null && locationDetails.lat != null ->
-                        weatherRemoteDataSource.getHourlyForecast(
-                            locationDetails.long, locationDetails.lat
-                        )
-
-                    else -> null
-                } ?: throw NullDataException()
+            val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(locationDetails)
+                ?: throw NullDataException()
 
             val hourlyForecastModel = hourlyForecastDTO.toModel()
 
@@ -131,11 +123,12 @@ class WeatherRepository(
     suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, Int>> {
         return runCatching {
             val locationDetails =
-                settingsRepository.getLastKnownLocation() ?: settingsRepository.getDefaultLocation()
+                LocationServices.getCurrentLocation(context)?.toLocationDetails()
+                    ?: settingsRepository.getLastKnownLocation()
+                    ?: settingsRepository.getDefaultLocation()
 
             val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(locationDetails)
                 ?: throw NullDataException()
-
 
             val item = filterBasedOnAlerts(hourlyForecastDTO)
             val notificationWeatherModel = item.toNotificationModel(hourlyForecastDTO.city)

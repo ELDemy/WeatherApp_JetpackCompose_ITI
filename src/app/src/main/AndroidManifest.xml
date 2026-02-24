@@ -45,14 +45,14 @@
             android:value="${MAPS_API_KEY}" />
 
         <receiver
-            android:name=".data.broadcast.AlarmDismissReceiver"
+            android:name=".platform.broadcast.AlarmDismissReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.dmy.weather.ACTION_DISMISS_ALARM" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".data.broadcast.WeatherAlarmReceiver"
+            android:name=".platform.broadcast.WeatherAlarmReceiver"
             android:exported="false" />
     </application>
 </manifest>

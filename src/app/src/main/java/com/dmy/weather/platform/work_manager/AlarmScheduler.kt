@@ -1,4 +1,4 @@
-package com.dmy.weather.data.work_manager
+package com.dmy.weather.platform.work_manager
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
-import com.dmy.weather.data.broadcast.WeatherAlarmReceiver
 import com.dmy.weather.data.model.NotificationWeatherModel
+import com.dmy.weather.platform.broadcast.WeatherAlarmReceiver
 
 object AlarmScheduler {
 

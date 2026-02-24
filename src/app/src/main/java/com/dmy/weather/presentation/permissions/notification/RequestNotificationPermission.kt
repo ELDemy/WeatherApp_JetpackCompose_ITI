@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.dmy.weather.utils.NotificationUtils
+import com.dmy.weather.platform.services.NotificationServices
 
 @Composable
 fun RequestNotificationPermission(onResult: (PermissionResult) -> Unit) {
@@ -21,7 +21,7 @@ fun RequestNotificationPermission(onResult: (PermissionResult) -> Unit) {
 
     // Check if we already have permission (Utility function used below)
     var hasPermission by remember {
-        mutableStateOf(NotificationUtils.hasNotificationPermission(context))
+        mutableStateOf(NotificationServices.hasNotificationPermission(context))
     }
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !hasPermission) {

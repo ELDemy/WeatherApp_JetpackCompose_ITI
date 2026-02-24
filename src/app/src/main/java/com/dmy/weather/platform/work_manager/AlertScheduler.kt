@@ -1,4 +1,4 @@
-package com.dmy.weather.data.work_manager
+package com.dmy.weather.platform.work_manager
 
 import android.content.Context
 import androidx.work.Constraints

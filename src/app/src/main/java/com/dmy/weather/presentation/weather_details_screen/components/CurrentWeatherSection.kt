@@ -29,14 +29,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.WeatherModel
-import com.dmy.weather.data.work_manager.AlertWorkManager
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.utils.toTemp

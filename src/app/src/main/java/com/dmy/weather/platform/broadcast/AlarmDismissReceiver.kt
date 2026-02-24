@@ -1,4 +1,4 @@
-package com.dmy.weather.data.broadcast
+package com.dmy.weather.platform.broadcast
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
