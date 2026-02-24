@@ -7,7 +7,7 @@ import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.toLocationDetails
 import com.dmy.weather.data.repo.SettingsRepository
-import com.dmy.weather.presentation.location_picker_screen.component.LocationResult
+import com.dmy.weather.presentation.permissions.location.LocationResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

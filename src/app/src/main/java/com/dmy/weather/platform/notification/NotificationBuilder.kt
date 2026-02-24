@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.notification
+package com.dmy.weather.platform.notification
 
 import android.app.Notification
 import android.app.NotificationManager

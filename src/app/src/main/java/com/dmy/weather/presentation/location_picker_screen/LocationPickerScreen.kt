@@ -23,8 +23,8 @@ import com.dmy.weather.R
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.toLatLng
 import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
-import com.dmy.weather.presentation.location_picker_screen.component.LocationResult
-import com.dmy.weather.presentation.location_picker_screen.component.getUserLocation
+import com.dmy.weather.presentation.permissions.location.LocationResult
+import com.dmy.weather.presentation.permissions.location.getUserLocation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng

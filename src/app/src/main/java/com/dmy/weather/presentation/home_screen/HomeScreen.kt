@@ -24,8 +24,8 @@ import com.dmy.weather.presentation.components.AlertDialogForLocationSettings
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.components.NoLocationScreen
 import com.dmy.weather.presentation.home_screen.components.WeatherScreenWithCustomLocation
-import com.dmy.weather.presentation.location_picker_screen.component.getUserLocation
 import com.dmy.weather.presentation.my_app.NavScreens
+import com.dmy.weather.presentation.permissions.location.getUserLocation
 import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
 import org.koin.androidx.compose.koinViewModel
 

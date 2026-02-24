@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.location_picker_screen.component
+package com.dmy.weather.presentation.permissions.location
 
 import android.Manifest
 import android.app.Activity

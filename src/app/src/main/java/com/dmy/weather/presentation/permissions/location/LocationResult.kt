@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.location_picker_screen.component
+package com.dmy.weather.presentation.permissions.location
 
 import com.google.android.gms.maps.model.LatLng
 

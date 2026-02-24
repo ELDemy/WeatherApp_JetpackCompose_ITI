@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.dmy.weather.data.model.NotificationWeatherModel
-import com.dmy.weather.presentation.notification.NotificationBuilder
+import com.dmy.weather.platform.notification.NotificationBuilder
 
 private const val TAG = "WeatherAlarmReceiver"
 
