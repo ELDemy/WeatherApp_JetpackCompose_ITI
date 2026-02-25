@@ -2,6 +2,7 @@ package com.dmy.weather.di
 
 import com.dmy.weather.data.repo.LocationRepository
 import com.dmy.weather.data.repo.SettingsRepository
+import com.dmy.weather.presentation.alerts_screen.AlertsVM
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.home_screen.HomeVM
 import com.dmy.weather.presentation.search_screen.SearchVM
@@ -16,4 +17,5 @@ val viewModelModule = module {
     viewModel { SettingsVM(get<SettingsRepository>()) }
     viewModel { HomeVM(get<SettingsRepository>()) }
     viewModel { SearchVM(get<LocationRepository>()) }
+    viewModel { AlertsVM(get<SettingsRepository>()) }
 }

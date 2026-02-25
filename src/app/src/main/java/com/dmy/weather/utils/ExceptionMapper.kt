@@ -8,8 +8,9 @@ import java.net.UnknownHostException
 object ExceptionMapper {
     private const val TAG = "ExceptionMapper"
     fun map(exception: Throwable?): String {
+        exception?.printStackTrace()
         Log.i(TAG, "ExceptionMapper: ${exception?.stackTrace}")
-        
+
         return when (exception) {
             is MyException -> exception.message
             is UnknownHostException -> "No internet connection"

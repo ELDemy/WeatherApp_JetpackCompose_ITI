@@ -22,9 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dmy.weather.R
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.presentation.settings_screen.SettingsVM
 
@@ -32,15 +34,15 @@ import com.dmy.weather.presentation.settings_screen.SettingsVM
 @Composable
 fun UnitSystemSettings(viewModel: SettingsVM, unitSystem: UnitSystem) {
     SettingsCard(
-        headerColor = Color(0xFFF5F3FF),
-        headerBorderColor = Color(0xFFDDD6FE),
+        headerColor = colorResource(R.color.purple_background),
+        headerBorderColor = colorResource(R.color.purple_border_light),
         header = {
             Text("📊", fontSize = 18.sp)
             Spacer(Modifier.width(8.dp))
             Text(
                 "Unit System",
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF6D28D9)
+                color = colorResource(R.color.purple_foreground)
             )
         }
     ) {
@@ -75,9 +77,19 @@ private fun UnitOption(
     onClick: () -> Unit
 ) {
     val bgBrush = if (selected)
-        Brush.linearGradient(listOf(Color(0xFF7C3AED), Color(0xFF4F46E5)))
+        Brush.linearGradient(
+            listOf(
+                colorResource(R.color.purple_dark),
+                colorResource(R.color.purple)
+            )
+        )
     else
-        Brush.linearGradient(listOf(Color(0xFFF3F4F6), Color(0xFFF3F4F6)))
+        Brush.linearGradient(
+            listOf(
+                colorResource(R.color.grey_background),
+                colorResource(R.color.grey_background)
+            )
+        )
 
     Row(
         modifier = Modifier

@@ -11,6 +11,8 @@
     <string name="Wind_Speed">Wind Speed</string>
     <string name="Humidity">Humidity</string>
     <string name="Clouds">Clouds</string>
+    <string name="Rain">Rain</string>
+    <string name="Snow">Snow</string>
     <string name="Pressure">Pressure</string>
     <string name="Next_Days_Forecast">Next Days Forecast</string>
     <string name="Today">Today</string>
@@ -22,4 +24,17 @@
     <string name="mil_h">mil/h</string>
     <string name="Weather_condition_icon">Weather condition icon</string>
     <string name="I_will_take_care">I will take care</string>
+
+    <string name="Temperature">Temperature</string>
+    <string name="Notify_when_rain_is_detected">Notify when rain is detected</string>
+    <string name="Notify_when_snow_is_detected">Notify when snow is detected</string>
+    <string name="Notify_on_heavy_cloud_cover">Notify on heavy cloud cover</string>
+
+    <string name="Tap_to_configure">Tap to configure</string>
+    <string name="Min">Min</string>
+    <string name="Max">Max</string>
+    <string name="Min_threshold">Min threshold</string>
+    <string name="Max_threshold">Max threshold</string>
+    <string name="Threshold_Alerts">Threshold Alerts</string>
+
 </resources>

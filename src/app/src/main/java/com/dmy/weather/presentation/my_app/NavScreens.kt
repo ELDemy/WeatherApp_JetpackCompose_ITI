@@ -33,4 +33,7 @@ sealed class NavScreens {
 
     @Serializable
     object LanguageSelectionScreen : NavScreens()
+
+    @Serializable
+    object AlertsScreen : NavScreens()
 }

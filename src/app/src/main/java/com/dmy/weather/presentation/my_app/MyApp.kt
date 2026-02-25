@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.dmy.weather.R
 import com.dmy.weather.data.model.LocationDetails
+import com.dmy.weather.presentation.alerts_screen.AlertsScreen
 import com.dmy.weather.presentation.app_bar.AppBar
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.home_screen.HomeScreen
@@ -33,10 +34,12 @@ import com.dmy.weather.presentation.search_screen.SearchScreen
 import com.dmy.weather.presentation.settings_screen.SettingsScreen
 import com.dmy.weather.presentation.splash_screen.SplashScreen
 import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
+import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.compose.koinViewModel
 
 private const val TAG = "WeatherApp"
 
+@OptIn(FlowPreview::class)
 @Composable
 fun MyApp() {
     val appbarViewModel = koinViewModel<AppbarViewModel>()
@@ -85,9 +88,6 @@ fun MyApp() {
                     modifier,
                 )
             }
-            composable<NavScreens.SettingsScreen> {
-                SettingsScreen(navController, modifier)
-            }
 
             composable<NavScreens.LocationPickerScreen> { backStackEntry ->
                 val screen = backStackEntry.toRoute<NavScreens.LocationPickerScreen>()
@@ -97,11 +97,21 @@ fun MyApp() {
                 }
                 LocationPickerScreen(navController, modifier, locationDetails)
             }
+
+            composable<NavScreens.SearchScreen> {
+                SearchScreen(navController, modifier)
+            }
+
+            composable<NavScreens.SettingsScreen> {
+                SettingsScreen(navController, modifier)
+            }
+
             composable<NavScreens.LanguageSelectionScreen> {
                 LanguageSelectionScreen(navController, modifier)
             }
-            composable<NavScreens.SearchScreen> {
-                SearchScreen(navController, modifier)
+
+            composable<NavScreens.AlertsScreen> {
+                AlertsScreen( modifier)
             }
         }
 

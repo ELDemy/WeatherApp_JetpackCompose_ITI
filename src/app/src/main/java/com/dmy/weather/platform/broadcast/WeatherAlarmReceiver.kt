@@ -8,7 +8,7 @@ import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.platform.notification.NotificationBuilder
 import com.dmy.weather.platform.notification.NotificationType
 import com.dmy.weather.platform.notification.NotificationType.ALARM
-import com.dmy.weather.platform.notification.NotificationType.Notify
+import com.dmy.weather.platform.notification.NotificationType.NOTIFY
 import com.dmy.weather.platform.notification.NotificationType.UPDATES
 
 private const val TAG = "WeatherAlarmReceiver"
@@ -34,7 +34,7 @@ class WeatherAlarmReceiver : BroadcastReceiver() {
                     notificationWeather,
                 )
 
-            Notify ->
+            NOTIFY ->
                 NotificationBuilder.showNotification(
                     context,
                     notificationWeather,

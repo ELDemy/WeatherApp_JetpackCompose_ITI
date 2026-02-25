@@ -3,8 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue_primary">#155DFC</color>
+    <color name="blue_inActive">#FFBFDBFE</color>
 
     <color name="white_background">#FFF5F7FA</color>
+    <color name="grey_border">#FFE5E7EB</color>
 
 
     <color name="text_primary">#FF000000</color>
@@ -41,4 +43,12 @@
 
     <color name="error_foreground">#FFE53935</color>
 
+
+    <color name="purple">#FF4F46E5</color>
+    <color name="purple_dark">#FF7C3AED</color>
+
+    <color name="purple_foreground">#FF6D28D9</color>
+    <!--    <color name="purple_background">#FFF5F3FF</color>-->
+    <color name="purple_border_light">#FFDDD6FE</color>
+    <color name="purple_border">#E9D5FF</color>
 </resources>

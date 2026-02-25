@@ -38,7 +38,7 @@ object NotificationBuilder {
         context: Context,
         weather: NotificationWeatherModel,
     ) {
-        val notification = baseBuilder(context, NotificationType.Notify, weather)
+        val notification = baseBuilder(context, NotificationType.NOTIFY, weather)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_STATUS)
             .build()

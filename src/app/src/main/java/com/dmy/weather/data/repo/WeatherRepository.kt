@@ -137,10 +137,10 @@ class WeatherRepository(
             val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(locationDetails)
                 ?: throw NullDataException()
 
+            Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
             val pair = filterBasedOnAlerts(hourlyForecastDTO)
             val notificationWeatherModel = pair.first.toNotificationModel(hourlyForecastDTO.city)
 
-            Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
             Log.i(TAG, "notificationWeatherModel: $notificationWeatherModel")
 
             notificationWeatherModel to pair.second
@@ -149,25 +149,24 @@ class WeatherRepository(
 
     private suspend fun filterBasedOnAlerts(hourlyForecastDTO: HourlyForecastDTO): Pair<HourlyForecastItem, AlertEntity> {
         val activeAlerts = settingsRepository.getActiveAlerts()
-
+        Log.i(TAG, "activeAlerts: $activeAlerts")
         hourlyForecastDTO.list?.forEach { item ->
-            
             val matchedAlert = activeAlerts.firstOrNull { alert ->
                 when (alert.alertType) {
                     TEMP ->
-                        item.main?.temp?.let { it >= alert.max || it <= alert.min }
+                        item.main?.temp?.let { return@firstOrNull it >= alert.max || it <= alert.min }
                             ?: false
 
                     HUMIDITY ->
-                        item.main?.humidity?.let { it >= alert.max || it <= alert.min }
+                        item.main?.humidity?.let { return@firstOrNull it >= alert.max || it <= alert.min }
                             ?: false
 
                     PRESSURE ->
-                        item.main?.pressure?.let { it >= alert.max || it <= alert.min }
+                        item.main?.pressure?.let { return@firstOrNull it >= alert.max || it <= alert.min }
                             ?: false
 
                     RAIN, SNOW, CLOUDS ->
-                        item.weather?.firstOrNull()?.description == alert.alertType.desc
+                        return@firstOrNull item.weather?.firstOrNull()?.description == alert.alertType.desc
 
                     null -> false
                 }

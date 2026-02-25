@@ -46,7 +46,7 @@ class SettingsRepository(private val myDataStore: MyDataStore, val alertDao: Ale
 
     suspend fun updateAlert(alert: AlertEntity) = alertDao.upsert(alert)
 
-    fun getAlerts(alert: AlertEntity): Flow<List<AlertEntity>> = alertDao.getAlerts()
+    fun getAlerts(): Flow<List<AlertEntity>> = alertDao.getAlerts()
 
     suspend fun getActiveAlerts(): List<AlertEntity> = alertDao.getActiveAlerts()
 }

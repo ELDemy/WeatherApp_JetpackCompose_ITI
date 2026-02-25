@@ -10,7 +10,7 @@ import com.dmy.weather.platform.notification.NotificationType
 data class AlertEntity(
     @PrimaryKey
     val type: String,
-    val time: Long,
+    val time: Long = 30,
     val status: Boolean,
     val notification: String,
     val max: Int,
@@ -20,5 +20,5 @@ data class AlertEntity(
     val alertType: AlertType? = AlertType.getByName(type)
 
     @Ignore
-    val notificationType: NotificationType? = NotificationType.getByName(type)
+    val notificationType: NotificationType? = NotificationType.getByName(notification)
 }

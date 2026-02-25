@@ -19,7 +19,7 @@ enum class NotificationType(
         "Channel for regular rain or sun updates",
         NotificationManager.IMPORTANCE_DEFAULT
     ),
-    Notify(
+    NOTIFY(
         "weather_notification",
         "Weather Notifications",
         "Channel for weather conditions",
@@ -34,7 +34,7 @@ enum class NotificationType(
 
     companion object {
         fun getByName(name: String?): NotificationType? =
-            entries.find { it.name == name?.uppercase() }
+            entries.find { it.name.equals(name, ignoreCase = true) }
     }
 
     fun notificationChannel(): NotificationChannel =
@@ -59,9 +59,9 @@ enum class NotificationType(
                         )
                     }
 
-                    Notify -> {
+                    NOTIFY -> {
                         enableVibration(true)
-                        vibrationPattern = longArrayOf(1000, 1000, 1000, 1000)
+                        vibrationPattern = longArrayOf(0, 80)
                     }
 
                     UPDATES -> {
