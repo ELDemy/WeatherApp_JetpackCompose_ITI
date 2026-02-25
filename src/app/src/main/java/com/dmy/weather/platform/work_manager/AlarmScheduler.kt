@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import com.dmy.weather.data.model.AlertEntity
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.platform.broadcast.WeatherAlarmReceiver
 
@@ -14,7 +15,8 @@ object AlarmScheduler {
     fun scheduleNotificationAt(
         context: Context,
         triggerAtMillis: Long,
-        notificationWeather: NotificationWeatherModel
+        notificationWeather: NotificationWeatherModel,
+        alert: AlertEntity
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
@@ -29,6 +31,7 @@ object AlarmScheduler {
         }
         val intent = Intent(context, WeatherAlarmReceiver::class.java).apply {
             putExtra("weather", notificationWeather)
+            putExtra("notification", alert.notification)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(

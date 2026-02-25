@@ -11,7 +11,6 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.dmy.weather.MainActivity
 import com.dmy.weather.R
-import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.platform.broadcast.AlarmDismissReceiver
 
@@ -19,16 +18,15 @@ object NotificationBuilder {
     fun createNotificationChannels(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.getSystemService(NotificationManager::class.java)
-                .createNotificationChannels(NotificationTypes.entries.map { it.notificationChannel() })
+                .createNotificationChannels(NotificationType.entries.map { it.notificationChannel() })
         }
     }
 
     fun showUpdatesNotification(
         context: Context,
         weather: NotificationWeatherModel,
-        dayForecast: DailyForecastModel?
     ) {
-        val notification = baseBuilder(context, NotificationTypes.UPDATES, weather, dayForecast)
+        val notification = baseBuilder(context, NotificationType.UPDATES, weather)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_STATUS)
             .build()
@@ -39,9 +37,8 @@ object NotificationBuilder {
     fun showNotification(
         context: Context,
         weather: NotificationWeatherModel,
-        dayForecast: DailyForecastModel?
     ) {
-        val notification = baseBuilder(context, NotificationTypes.Notify, weather, dayForecast)
+        val notification = baseBuilder(context, NotificationType.Notify, weather)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_STATUS)
             .build()
@@ -52,7 +49,6 @@ object NotificationBuilder {
     fun showAlarmNotification(
         context: Context,
         weather: NotificationWeatherModel,
-        dayForecast: DailyForecastModel?
     ) {
         val notificationId = System.currentTimeMillis().toInt()
 
@@ -76,7 +72,7 @@ object NotificationBuilder {
         )
 
         val notification =
-            baseBuilder(context, NotificationTypes.ALARM, weather, dayForecast)
+            baseBuilder(context, NotificationType.ALARM, weather)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setAutoCancel(false)
@@ -107,11 +103,9 @@ object NotificationBuilder {
     private fun buildRemoteViews(
         context: Context,
         weather: NotificationWeatherModel,
-        dayForecast: DailyForecastModel?
     ): Pair<RemoteViews, RemoteViews> {
         val packageName = context.packageName
-        val low = dayForecast?.forecasts?.firstOrNull()?.tempMin ?: weather.min
-        val high = dayForecast?.forecasts?.firstOrNull()?.tempMax ?: weather.max
+
 
         val expanded = RemoteViews(packageName, R.layout.custom_notification_expanded).apply {
             setTextViewText(R.id.notif_city, "${weather.cityName}, ${weather.country}")
@@ -119,13 +113,13 @@ object NotificationBuilder {
             setTextViewText(R.id.notif_desc, weather.description)
             weather.icon?.let { setImageViewResource(R.id.notif_icon, it) }
             weather.bg?.let { setImageViewResource(R.id.notif_bg, it) }
-            when (high) {
+            when (weather.max) {
                 null -> setViewVisibility(R.id.notif_high, View.GONE)
-                else -> setTextViewText(R.id.notif_high, high.toString())
+                else -> setTextViewText(R.id.notif_high, weather.max.toString())
             }
-            when (low) {
+            when (weather.min) {
                 null -> setViewVisibility(R.id.notif_low, View.GONE)
-                else -> setTextViewText(R.id.notif_low, low.toString())
+                else -> setTextViewText(R.id.notif_low, weather.min.toString())
             }
         }
 
@@ -142,11 +136,10 @@ object NotificationBuilder {
 
     private fun baseBuilder(
         context: Context,
-        type: NotificationTypes,
+        type: NotificationType,
         weather: NotificationWeatherModel,
-        dayForecast: DailyForecastModel?
     ): NotificationCompat.Builder {
-        val (collapsed, expanded) = buildRemoteViews(context, weather, dayForecast)
+        val (collapsed, expanded) = buildRemoteViews(context, weather)
         return NotificationCompat.Builder(context, type.id)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())

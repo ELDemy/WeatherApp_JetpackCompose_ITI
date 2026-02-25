@@ -5,8 +5,15 @@ import android.util.Log
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
 import com.dmy.weather.data.dto.HourlyForecastDTO
 import com.dmy.weather.data.dto.HourlyForecastItem
+import com.dmy.weather.data.enums.AlertType.CLOUDS
+import com.dmy.weather.data.enums.AlertType.HUMIDITY
+import com.dmy.weather.data.enums.AlertType.PRESSURE
+import com.dmy.weather.data.enums.AlertType.RAIN
+import com.dmy.weather.data.enums.AlertType.SNOW
+import com.dmy.weather.data.enums.AlertType.TEMP
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.mapper.toNotificationModel
+import com.dmy.weather.data.model.AlertEntity
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.LocationDetails
@@ -120,7 +127,7 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-    suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, Int>> {
+    suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, AlertEntity>> {
         return runCatching {
             val locationDetails =
                 LocationServices.getCurrentLocation(context)?.toLocationDetails()
@@ -130,20 +137,46 @@ class WeatherRepository(
             val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(locationDetails)
                 ?: throw NullDataException()
 
-            val item = filterBasedOnAlerts(hourlyForecastDTO)
-            val notificationWeatherModel = item.toNotificationModel(hourlyForecastDTO.city)
+            val pair = filterBasedOnAlerts(hourlyForecastDTO)
+            val notificationWeatherModel = pair.first.toNotificationModel(hourlyForecastDTO.city)
 
             Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
             Log.i(TAG, "notificationWeatherModel: $notificationWeatherModel")
 
-            return Result.success(notificationWeatherModel to 11)
+            notificationWeatherModel to pair.second
         }.mapFailure()
     }
 
-    private suspend fun filterBasedOnAlerts(hourlyForecastDTO: HourlyForecastDTO): HourlyForecastItem {
-        return hourlyForecastDTO.list?.find {
-            it.main?.temp != null && it.main.temp >= 11
-        } ?: throw NullDataException()
+    private suspend fun filterBasedOnAlerts(hourlyForecastDTO: HourlyForecastDTO): Pair<HourlyForecastItem, AlertEntity> {
+        val activeAlerts = settingsRepository.getActiveAlerts()
+
+        hourlyForecastDTO.list?.forEach { item ->
+            
+            val matchedAlert = activeAlerts.firstOrNull { alert ->
+                when (alert.alertType) {
+                    TEMP ->
+                        item.main?.temp?.let { it >= alert.max || it <= alert.min }
+                            ?: false
+
+                    HUMIDITY ->
+                        item.main?.humidity?.let { it >= alert.max || it <= alert.min }
+                            ?: false
+
+                    PRESSURE ->
+                        item.main?.pressure?.let { it >= alert.max || it <= alert.min }
+                            ?: false
+
+                    RAIN, SNOW, CLOUDS ->
+                        item.weather?.firstOrNull()?.description == alert.alertType.desc
+
+                    null -> false
+                }
+            }
+
+            if (matchedAlert != null) return Pair(item, matchedAlert)
+        }
+
+        throw NullDataException()
     }
 }
 

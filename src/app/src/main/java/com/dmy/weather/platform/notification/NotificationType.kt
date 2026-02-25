@@ -7,7 +7,7 @@ import android.media.AudioAttributes
 import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 
-enum class NotificationTypes(
+enum class NotificationType(
     val id: String,
     val named: String,
     val description: String,
@@ -32,15 +32,20 @@ enum class NotificationTypes(
         NotificationManager.IMPORTANCE_MAX
     );
 
+    companion object {
+        fun getByName(name: String?): NotificationType? =
+            entries.find { it.name == name?.uppercase() }
+    }
+
     fun notificationChannel(): NotificationChannel =
         NotificationChannel(id, named, importance)
             .apply {
-                description = this@NotificationTypes.description
+                description = this@NotificationType.description
                 enableLights(true)
                 lightColor = Color.RED
                 lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
 
-                when (this@NotificationTypes) {
+                when (this@NotificationType) {
                     ALARM -> {
                         enableVibration(true)
                         vibrationPattern = longArrayOf(0, 500, 250, 500, 250, 500)

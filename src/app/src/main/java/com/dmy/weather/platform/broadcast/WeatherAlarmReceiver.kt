@@ -6,6 +6,10 @@ import android.content.Intent
 import android.util.Log
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.platform.notification.NotificationBuilder
+import com.dmy.weather.platform.notification.NotificationType
+import com.dmy.weather.platform.notification.NotificationType.ALARM
+import com.dmy.weather.platform.notification.NotificationType.Notify
+import com.dmy.weather.platform.notification.NotificationType.UPDATES
 
 private const val TAG = "WeatherAlarmReceiver"
 
@@ -16,10 +20,34 @@ class WeatherAlarmReceiver : BroadcastReceiver() {
                 "weather",
                 NotificationWeatherModel::class.java
             )
+
+        val alert = intent.getStringExtra("notification")
+        val notificationType = NotificationType.getByName(alert)
+        if (notificationWeather == null) return
+
         Log.i(TAG, "onReceive: $notificationWeather ")
-//        NotificationBuilder.testAlarmNotification(context, weather, null)
-        notificationWeather?.let {
-            NotificationBuilder.showAlarmNotification(context, notificationWeather, null)
+
+        when (notificationType) {
+            UPDATES, null ->
+                NotificationBuilder.showUpdatesNotification(
+                    context,
+                    notificationWeather,
+                )
+
+            Notify ->
+                NotificationBuilder.showNotification(
+                    context,
+                    notificationWeather,
+
+                    )
+
+            ALARM ->
+                NotificationBuilder.showAlarmNotification(
+                    context,
+                    notificationWeather,
+                )
+
+
         }
     }
 }

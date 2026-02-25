@@ -16,10 +16,15 @@ class AlertWorkManager(val context: Context, params: WorkerParameters) :
 
     override suspend fun doWork(): Result {
         return weatherRepository.getAlertWeather()
-            .onSuccess { (notificationWeather, minutes) ->
-                val triggerTime = notificationWeather.dt * 1000 - (minutes * 60 * 1000)
+            .onSuccess { (notificationWeather, alert) ->
+                val triggerTime = notificationWeather.dt * 1000 - (alert.time * 60 * 1000)
                 Log.i(TAG, "doWork: at $triggerTime")
-                AlarmScheduler.scheduleNotificationAt(context, triggerTime, notificationWeather)
+                AlarmScheduler.scheduleNotificationAt(
+                    context,
+                    triggerTime,
+                    notificationWeather,
+                    alert
+                )
             }
             .fold(
                 onSuccess = { Result.success() },
