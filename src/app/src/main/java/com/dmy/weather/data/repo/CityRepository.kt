@@ -1,16 +1,19 @@
 package com.dmy.weather.data.repo
 
 import android.util.Log
+import com.dmy.weather.data.data_source.local.CitiesDataSource
 import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.model.CityModel
 import com.dmy.weather.utils.exceptions.NullDataException
 import com.dmy.weather.utils.mapFailure
+import kotlinx.coroutines.flow.Flow
 
 private const val TAG = "WeatherRepo"
 
-class LocationRepository(
-    val geocodingRemoteDataSource: GeocodingRemoteDataSource
+class CityRepository(
+    private val geocodingRemoteDataSource: GeocodingRemoteDataSource,
+    private val citiesDataSource: CitiesDataSource,
 ) {
     suspend fun getGeocodingCityInfoByCity(city: String): Result<CityModel> {
         return runCatching {
@@ -47,4 +50,24 @@ class LocationRepository(
 
         return cityModel
     }
+
+    fun getAllFav(): Result<Flow<List<CityModel>>> {
+        return runCatching {
+            citiesDataSource.getAllFav()
+        }.mapFailure()
+    }
+
+    suspend fun addFav(city: CityModel): Result<Unit> {
+        return runCatching {
+            citiesDataSource.addFav(city)
+        }.mapFailure()
+    }
+
+    suspend fun removeFav(city: CityModel): Result<Unit> {
+        return runCatching {
+            citiesDataSource.removeFav(city)
+        }.mapFailure()
+    }
+
+
 }

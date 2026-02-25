@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.enums.AlertType
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.repo.AlertRepository
 import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.platform.notification.NotificationType
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,9 +16,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class AlertsVM(private val settingsRepository: SettingsRepository) : ViewModel() {
+class AlertsVM(
+    private val alertRepository: AlertRepository,
+    private val settingsRepository: SettingsRepository,
+) : ViewModel() {
 
-    val alerts: StateFlow<List<AlertEntity>> = settingsRepository
+    val alerts: StateFlow<List<AlertEntity>> = alertRepository
         .getAlerts()
         .stateIn(
             viewModelScope,
@@ -45,28 +49,28 @@ class AlertsVM(private val settingsRepository: SettingsRepository) : ViewModel()
                 max = defaultMax(type),
                 min = defaultMin(type)
             )
-            settingsRepository.updateAlert(updated)
+            alertRepository.updateAlert(updated)
         }
     }
 
     fun updateMinutesBefore(type: AlertType, minutes: Int) {
         viewModelScope.launch {
             val existing = alerts.value.find { it.alertType == type } ?: return@launch
-            settingsRepository.updateAlert(existing.copy(time = minutes.toLong()))
+            alertRepository.updateAlert(existing.copy(time = minutes.toLong()))
         }
     }
 
     fun updateNotificationType(type: AlertType, notificationType: NotificationType) {
         viewModelScope.launch {
             val existing = alerts.value.find { it.alertType == type } ?: return@launch
-            settingsRepository.updateAlert(existing.copy(notification = notificationType.name))
+            alertRepository.updateAlert(existing.copy(notification = notificationType.name))
         }
     }
 
     fun updateRange(type: AlertType, min: Int, max: Int) {
         viewModelScope.launch {
             val existing = alerts.value.find { it.alertType == type } ?: return@launch
-            settingsRepository.updateAlert(existing.copy(min = min, max = max))
+            alertRepository.updateAlert(existing.copy(min = min, max = max))
         }
     }
 

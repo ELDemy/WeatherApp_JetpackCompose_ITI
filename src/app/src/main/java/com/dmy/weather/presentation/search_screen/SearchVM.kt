@@ -3,7 +3,7 @@ package com.dmy.weather.presentation.search_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.model.CityModel
-import com.dmy.weather.data.repo.LocationRepository
+import com.dmy.weather.data.repo.CityRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "SearchVM"
 
 @FlowPreview
-class SearchVM(val locationRepository: LocationRepository) : ViewModel() {
+class SearchVM(val cityRepository: CityRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState = _uiState.asStateFlow()
@@ -46,7 +46,7 @@ class SearchVM(val locationRepository: LocationRepository) : ViewModel() {
 
     private suspend fun search(query: String) {
         _uiState.update { it.copy(isLoading = true, error = null) }
-        locationRepository.getCitiesByName(query).fold(
+        cityRepository.getCitiesByName(query).fold(
             onSuccess = {
                 _uiState.update { state ->
                     state.copy(

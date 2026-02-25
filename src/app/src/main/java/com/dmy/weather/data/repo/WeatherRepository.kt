@@ -3,14 +3,7 @@ package com.dmy.weather.data.repo
 import android.content.Context
 import android.util.Log
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
-import com.dmy.weather.data.dto.HourlyForecastDTO
-import com.dmy.weather.data.dto.HourlyForecastItem
-import com.dmy.weather.data.enums.AlertType.CLOUDS
-import com.dmy.weather.data.enums.AlertType.HUMIDITY
-import com.dmy.weather.data.enums.AlertType.PRESSURE
-import com.dmy.weather.data.enums.AlertType.RAIN
-import com.dmy.weather.data.enums.AlertType.SNOW
-import com.dmy.weather.data.enums.AlertType.TEMP
+import com.dmy.weather.data.mapper.filterBasedOnAlerts
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.mapper.toNotificationModel
 import com.dmy.weather.data.model.AlertEntity
@@ -27,6 +20,7 @@ import com.dmy.weather.utils.mapFailure
 class WeatherRepository(
     val weatherRemoteDataSource: WeatherRemoteDataSource,
     val settingsRepository: SettingsRepository,
+    val alertRepository: AlertRepository,
     val context: Context
 ) {
     companion object {
@@ -136,9 +130,14 @@ class WeatherRepository(
 
             val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(locationDetails)
                 ?: throw NullDataException()
-
             Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
-            val pair = filterBasedOnAlerts(hourlyForecastDTO)
+
+            val activeAlerts = alertRepository.getActiveAlerts()
+            Log.i(TAG, "activeAlerts: $activeAlerts")
+
+            val pair = hourlyForecastDTO.filterBasedOnAlerts(activeAlerts)
+                ?: throw NullDataException()
+
             val notificationWeatherModel = pair.first.toNotificationModel(hourlyForecastDTO.city)
 
             Log.i(TAG, "notificationWeatherModel: $notificationWeatherModel")
@@ -147,35 +146,5 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-    private suspend fun filterBasedOnAlerts(hourlyForecastDTO: HourlyForecastDTO): Pair<HourlyForecastItem, AlertEntity> {
-        val activeAlerts = settingsRepository.getActiveAlerts()
-        Log.i(TAG, "activeAlerts: $activeAlerts")
-        hourlyForecastDTO.list?.forEach { item ->
-            val matchedAlert = activeAlerts.firstOrNull { alert ->
-                when (alert.alertType) {
-                    TEMP ->
-                        item.main?.temp?.let { return@firstOrNull it >= alert.max || it <= alert.min }
-                            ?: false
-
-                    HUMIDITY ->
-                        item.main?.humidity?.let { return@firstOrNull it >= alert.max || it <= alert.min }
-                            ?: false
-
-                    PRESSURE ->
-                        item.main?.pressure?.let { return@firstOrNull it >= alert.max || it <= alert.min }
-                            ?: false
-
-                    RAIN, SNOW, CLOUDS ->
-                        return@firstOrNull item.weather?.firstOrNull()?.description == alert.alertType.desc
-
-                    null -> false
-                }
-            }
-
-            if (matchedAlert != null) return Pair(item, matchedAlert)
-        }
-
-        throw NullDataException()
-    }
 }
 

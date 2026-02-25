@@ -1,4 +1,4 @@
-package com.dmy.weather.data.data_source.local.data_store
+package com.dmy.weather.data.data_source.local
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
