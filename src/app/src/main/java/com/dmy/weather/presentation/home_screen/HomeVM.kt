@@ -8,12 +8,12 @@ import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.toLocationDetails
 import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.presentation.permissions.location.LocationResult
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,8 +24,8 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    private val _effect = Channel<HomeEffect>(Channel.BUFFERED)
-    val effect = _effect.receiveAsFlow()
+    private val _effect = MutableSharedFlow<HomeEffect>()
+    val effect = _effect.asSharedFlow()
 
     private var activeLocation: LocationDetails? = null
 
@@ -52,7 +52,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
         when (getLocationMode()) {
             LocationMode.GPS -> {
                 _uiState.update { it.copy(locationMode = LocationMode.GPS) }
-                _effect.send(HomeEffect.RequestGpsLocation)
+                _effect.emit(HomeEffect.RequestGpsLocation)
             }
 
             LocationMode.MAP -> {
@@ -112,7 +112,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
 
     fun openMap() {
         viewModelScope.launch {
-            _effect.send(HomeEffect.GetLocationFromMap(activeLocation))
+            _effect.emit(HomeEffect.GetLocationFromMap(activeLocation))
         }
     }
 
@@ -168,7 +168,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                     )
                 }
                 viewModelScope.launch {
-                    _effect.send(HomeEffect.ShowWarning("GPS is off. Showing last known location."))
+                    _effect.emit(HomeEffect.ShowWarning("GPS is off. Showing last known location."))
                 }
             }
 
@@ -186,7 +186,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             noLocation = oldLocation == null
                         )
                     }
-                    _effect.send(HomeEffect.OpenLocationSettings)
+                    _effect.emit(HomeEffect.OpenLocationSettings)
                 }
             }
 
@@ -204,7 +204,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             noLocation = oldLocation == null
                         )
                     }
-                    _effect.send(HomeEffect.ShowWarning("Location permission is required."))
+                    _effect.emit(HomeEffect.ShowWarning("Location permission is required."))
                 }
             }
 
@@ -222,7 +222,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             noLocation = oldLocation == null
                         )
                     }
-                    _effect.send(HomeEffect.OpenAppSettings)
+                    _effect.emit(HomeEffect.OpenAppSettings)
                 }
             }
 
@@ -248,9 +248,9 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
     fun onWarningClicked() {
         viewModelScope.launch {
             when (_uiState.value.warningEffect) {
-                is HomeEffect.OpenLocationSettings -> _effect.send(HomeEffect.OpenLocationSettings)
-                is HomeEffect.OpenAppSettings -> _effect.send(HomeEffect.OpenAppSettings)
-                is HomeEffect.RequestGpsLocation -> _effect.send(HomeEffect.RequestGpsLocation)
+                is HomeEffect.OpenLocationSettings -> _effect.emit(HomeEffect.OpenLocationSettings)
+                is HomeEffect.OpenAppSettings -> _effect.emit(HomeEffect.OpenAppSettings)
+                is HomeEffect.RequestGpsLocation -> _effect.emit(HomeEffect.RequestGpsLocation)
                 else -> retry()
             }
         }

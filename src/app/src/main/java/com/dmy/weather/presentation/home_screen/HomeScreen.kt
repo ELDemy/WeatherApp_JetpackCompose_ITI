@@ -88,6 +88,19 @@ fun HomeScreen(
         }
     }
 
+    if (requestLocation) {
+        getUserLocation { result ->
+            requestLocation = false
+            viewModel.onLocationResult(result)
+        }
+    }
+    if (showLocationDialog.value) {
+        AlertDialogForLocationSettings(showLocationDialog)
+    }
+
+    if (showLocationPermissionDialog.value) {
+        AlertDialogForLocationPermission(showLocationPermissionDialog)
+    }
 
     when {
         state.isLoading && state.location == null -> {
@@ -130,22 +143,6 @@ fun HomeScreen(
                 )
             }
         }
-    }
-
-
-
-    if (requestLocation) {
-        getUserLocation { result ->
-            requestLocation = false
-            viewModel.onLocationResult(result)
-        }
-    }
-    if (showLocationDialog.value) {
-        AlertDialogForLocationSettings(showLocationDialog)
-    }
-
-    if (showLocationPermissionDialog.value) {
-        AlertDialogForLocationPermission(showLocationPermissionDialog)
     }
 }
 

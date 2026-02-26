@@ -7,6 +7,7 @@ import com.dmy.weather.data.repo.CityRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -32,14 +33,13 @@ class SearchVM(val cityRepository: CityRepository) : ViewModel() {
                 .debounce(300L)
                 .distinctUntilChanged()
                 .filter { it.isNotBlank() }
-                .collect { query -> search(query) }
+                .collectLatest { query -> search(query) }
         }
     }
 
     fun onQueryChanged(query: String) {
         _searchQuery.value = query
         if (query.isBlank()) {
-            // Clear suggestions immediately when query is cleared
             _uiState.value = SearchUiState()
         }
     }
