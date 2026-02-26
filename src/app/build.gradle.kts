@@ -94,22 +94,40 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     //data store light weight db
-    implementation("androidx.datastore:datastore-preferences:1.2.0")
-    implementation("androidx.datastore:datastore:1.2.0")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore)
 
     //for DI
-    implementation("io.insert-koin:koin-android:4.1.1")
-    implementation("io.insert-koin:koin-androidx-compose:4.1.1")
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.android)
+    implementation(libs.koin.core.coroutines)
+    implementation(libs.koin.androidx.workmanager)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.compose.viewmodel)
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.koin.android.test)
 
     //Maps
-    implementation("com.google.maps.android:maps-compose:8.1.0")
+    implementation(libs.maps.compose)
     //for auto complete locations
-    implementation("com.google.android.libraries.places:places:5.1.1")
-    implementation("com.google.maps.android:places-ktx:3.6.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.places)
+    implementation(libs.places.ktx)
+    implementation(libs.play.services.location)
 
     //for work manager
-    implementation("androidx.work:work-runtime-ktx:2.11.1")
-    //for notification
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(libs.androidx.work.runtime.ktx)
+
+    //Testing
+    testImplementation(libs.hamcrest.hamcrest.all)
+    // AndroidX Test - JVM testing
+    testImplementation(libs.ext.junit.ktx)
+    testImplementation(libs.core.ktx)
+    testImplementation(libs.robolectric)
+
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.core.testing)
 }
