@@ -2,9 +2,14 @@ package com.dmy.weather.presentation.weather_details_screen
 
 import CurrentWeatherSection
 import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -12,16 +17,21 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dmy.weather.R.color
 import com.dmy.weather.data.model.LocationDetails
+import com.dmy.weather.data.model.WeatherModel
+import com.dmy.weather.data.repo.CityRepository
 import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.data.repo.WeatherRepository
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
+import com.dmy.weather.presentation.components.CustomFAB
 import com.dmy.weather.presentation.weather_details_screen.components.DailyForecast
 import com.dmy.weather.presentation.weather_details_screen.components.HourlyForecast
 import com.dmy.weather.presentation.weather_details_screen.components.WarningBox
@@ -35,6 +45,7 @@ fun WeatherScreen(
     navController: NavController,
     appbarViewModel: AppbarViewModel,
     location: LocationDetails,
+    showFavFab: Boolean,
     modifier: Modifier,
     warning: String? = null,
     onRefresh: (() -> Unit)? = null,
@@ -44,6 +55,7 @@ fun WeatherScreen(
         viewModel<WeatherVM>(
             factory = WeatherVMFactory(
                 getKoin().get<WeatherRepository>(),
+                getKoin().get<CityRepository>(),
                 getKoin().get<SettingsRepository>()
             )
         )
@@ -65,27 +77,43 @@ fun WeatherScreen(
         onRefresh = onRefresh ?: { viewModel.loadWeatherData(location) },
         modifier = modifier
     ) {
-        CompositionLocalProvider(LocalContentColor provides colorResource(color.text_white)) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                CurrentWeatherSection(
-                    state = uiState.currentWeather,
-                    dayForecast = uiState.dailyForecast.data,
-                    unit = settingsState.unit!!
+        Box(Modifier.fillMaxSize()) {
+            CompositionLocalProvider(LocalContentColor provides colorResource(color.text_white)) {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                ) {
+                    CurrentWeatherSection(
+                        state = uiState.currentWeather,
+                        dayForecast = uiState.dailyForecast.data,
+                        unit = settingsState.unit!!
+                    )
+
+                    if (warning != null) {
+                        WarningBox(
+                            warning = warning,
+                            onButtonClick = onWarningClick
+                        )
+                    }
+                    HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
+
+                    WeatherDetails(state = uiState.currentWeather, settingsState.unit!!)
+
+                    DailyForecast(state = uiState.dailyForecast)
+                }
+            }
+
+            if (uiState.currentWeather.data != null && showFavFab) {
+                val weather: WeatherModel = uiState.currentWeather.data!!
+                CustomFAB(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(bottom = 15.dp),
+                    icon = Icons.Default.Favorite,
+                    onFabClick = {
+                        viewModel.addToFav(weather.cityName)
+                    }
                 )
 
-                if (warning != null) {
-                    WarningBox(
-                        warning = warning,
-                        onButtonClick = onWarningClick
-                    )
-                }
-                HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
-
-                WeatherDetails(state = uiState.currentWeather, settingsState.unit!!)
-
-                DailyForecast(state = uiState.dailyForecast)
             }
         }
     }

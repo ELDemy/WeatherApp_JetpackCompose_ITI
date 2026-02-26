@@ -123,6 +123,7 @@ fun HomeScreen(
                     navController = navController,
                     appbarViewModel = appbarViewModel,
                     location = state.location!!,
+                    showFavFab = false,
                     warning = state.warning,
                     onRefresh = { viewModel.retry() },
                     onWarningClick = { viewModel.onWarningClicked() }

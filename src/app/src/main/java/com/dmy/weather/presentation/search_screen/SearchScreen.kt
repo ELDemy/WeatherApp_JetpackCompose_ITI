@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.HorizontalDivider
@@ -53,7 +53,7 @@ import androidx.navigation.NavController
 import com.dmy.weather.R
 import com.dmy.weather.data.enums.AppLanguage
 import com.dmy.weather.data.model.LocationDetails
-import com.dmy.weather.presentation.components.LocationFAB
+import com.dmy.weather.presentation.components.CustomFAB
 import com.dmy.weather.presentation.my_app.NavScreens
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.compose.koinViewModel
@@ -287,11 +287,10 @@ fun SearchScreen(
             }
         }
 
-        LocationFAB(
+        CustomFAB(
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .navigationBarsPadding()
-                .padding(end = 20.dp, bottom = 24.dp),
+                .align(Alignment.BottomEnd),
+            icon = Icons.Default.LocationOn,
             onFabClick = { navController.navigate(NavScreens.LocationPickerScreen()) }
         )
     }

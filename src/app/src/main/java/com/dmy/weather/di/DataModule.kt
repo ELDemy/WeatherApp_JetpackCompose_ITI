@@ -7,6 +7,7 @@ import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
 import com.dmy.weather.data.db.AlertDao
 import com.dmy.weather.data.db.AppDatabase
+import com.dmy.weather.data.db.FavLocationsDao
 import com.dmy.weather.data.network.GeocodingService
 import com.dmy.weather.data.network.WeatherService
 import com.dmy.weather.data.repo.AlertRepository
@@ -26,6 +27,7 @@ val dataModule = module {
     single { WeatherRemoteDataSource(get<WeatherService>()) }
     single { GeocodingRemoteDataSource(get<GeocodingService>()) }
     single { AlertsDataSource(get<AlertDao>()) }
+    single { CitiesDataSource(get<FavLocationsDao>()) }
 
 
     single { SettingsRepository(get<MyDataStore>()) }

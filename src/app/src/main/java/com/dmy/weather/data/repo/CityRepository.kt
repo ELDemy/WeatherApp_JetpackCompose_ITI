@@ -5,6 +5,7 @@ import com.dmy.weather.data.data_source.local.CitiesDataSource
 import com.dmy.weather.data.data_source.remote.GeocodingRemoteDataSource
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.model.CityModel
+import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.utils.exceptions.NullDataException
 import com.dmy.weather.utils.mapFailure
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,8 @@ class CityRepository(
     private val geocodingRemoteDataSource: GeocodingRemoteDataSource,
     private val citiesDataSource: CitiesDataSource,
 ) {
-    suspend fun getGeocodingCityInfoByCity(city: String): Result<CityModel> {
+    suspend fun getGeocodingCityInfoByCity(city: String): Result<CityModel?> {
+        Log.i(TAG, "getGeocodingCityInfoByCity: ")
         return runCatching {
             val geocodingCityDTO =
                 geocodingRemoteDataSource.getGeocodingCityByCity(city) ?: throw NullDataException()
@@ -41,14 +43,19 @@ class CityRepository(
         }.mapFailure()
     }
 
-    suspend fun getGeocodingCityInfoByCoord(long: String, lat: String): CityModel? {
-        val geocodingCityDTO = geocodingRemoteDataSource.getGeocodingCityByCoord(long, lat)
-        val cityModel = geocodingCityDTO?.toModel()
+    suspend fun getGeocodingCityInfoByCoord(long: String, lat: String): Result<CityModel?> {
+        Log.i(TAG, "getGeocodingCityInfoByCoord: long:$long , lat:$lat")
+        return runCatching {
+            val geocodingCityDTO = geocodingRemoteDataSource.getGeocodingCityByCoord(long, lat)
+                ?: throw NullDataException()
 
-        Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
-        Log.i(TAG, "cityModel: $cityModel")
+            val cityModel = geocodingCityDTO.toModel()
 
-        return cityModel
+            Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
+            Log.i(TAG, "cityModel: $cityModel")
+
+            cityModel
+        }.mapFailure()
     }
 
     fun getAllFav(): Result<Flow<List<CityModel>>> {
@@ -57,9 +64,32 @@ class CityRepository(
         }.mapFailure()
     }
 
-    suspend fun addFav(city: CityModel): Result<Unit> {
+    suspend fun addFav(locationDetails: LocationDetails): Result<Unit> {
         return runCatching {
+            val city: CityModel = when {
+                locationDetails.city != null -> {
+                    getGeocodingCityInfoByCity(locationDetails.city).fold(
+                        onSuccess = { it },
+                        onFailure = { null }
+                    )
+                }
+
+                locationDetails.lat != null && locationDetails.long != null -> {
+                    getGeocodingCityInfoByCoord(
+                        locationDetails.long,
+                        locationDetails.lat
+                    ).fold(
+                        onSuccess = { it },
+                        onFailure = { null }
+                    )
+                }
+
+                else -> null
+            } ?: throw NullDataException()
+
             citiesDataSource.addFav(city)
+
+            return Result.success(Unit)
         }.mapFailure()
     }
 

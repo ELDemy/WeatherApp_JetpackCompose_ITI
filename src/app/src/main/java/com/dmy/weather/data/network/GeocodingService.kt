@@ -11,7 +11,7 @@ interface GeocodingService {
         @Query("limit") limit: Int = 1,
     ): List<GeocodingCityDTO>?
 
-    @GET("geo/1.0/direct")
+    @GET("geo/1.0/reverse")
     suspend fun getGeocodingCityByCoord(
         @Query("lon") lon: String,
         @Query("lat") lat: String,

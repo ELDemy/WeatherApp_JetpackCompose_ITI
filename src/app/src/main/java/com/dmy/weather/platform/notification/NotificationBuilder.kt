@@ -22,6 +22,25 @@ object NotificationBuilder {
         }
     }
 
+    fun showTestNotification(
+        context: Context,
+        title: String,
+        subtitle: String
+    ) {
+        val notification = NotificationCompat
+            .Builder(context, NotificationType.NOTIFY.id)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setContentTitle(title)
+            .setContentText(subtitle)
+            .setAutoCancel(true)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_STATUS)
+            .build()
+
+        notify(context, notification)
+    }
+
     fun showUpdatesNotification(
         context: Context,
         weather: NotificationWeatherModel,

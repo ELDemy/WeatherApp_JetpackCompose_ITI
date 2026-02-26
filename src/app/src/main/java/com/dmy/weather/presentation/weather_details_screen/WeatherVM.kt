@@ -8,6 +8,7 @@ import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.UserSettings
+import com.dmy.weather.data.repo.CityRepository
 import com.dmy.weather.data.repo.SettingsRepository
 import com.dmy.weather.data.repo.WeatherRepository
 import kotlinx.coroutines.SupervisorJob
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 class WeatherVM(
     val weatherRepository: WeatherRepository,
+    val cityRepository: CityRepository,
     val settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
@@ -40,7 +42,9 @@ class WeatherVM(
             settingsRepository.settingsFlow
                 .distinctUntilChanged()
                 .collect {
-                    loadWeatherData(locationDetails)
+                    if (::locationDetails.isInitialized) {
+                        loadWeatherData(locationDetails)
+                    }
                 }
         }
     }
@@ -137,5 +141,12 @@ class WeatherVM(
         }
     }
 
+    fun addToFav(cityName: String) {
+        viewModelScope.launch {
+            if (::locationDetails.isInitialized) {
+                cityRepository.addFav(locationDetails.copy(city = cityName))
+            }
+        }
+    }
 
 }

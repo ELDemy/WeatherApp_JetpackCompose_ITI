@@ -1,5 +1,3 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,6 +31,7 @@ import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.presentation.components.MyErrorComponent
 import com.dmy.weather.presentation.components.MyLoadingComponent
+import com.dmy.weather.presentation.components.WeatherBackground
 import com.dmy.weather.presentation.utils.toTemp
 import com.dmy.weather.presentation.weather_details_screen.UiState
 import com.dmy.weather.presentation.weather_details_screen.components.WeatherIcon
@@ -54,28 +50,10 @@ fun CurrentWeatherSection(
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
             .defaultMinSize(minHeight = 200.dp)
     ) {
-        if (state.data?.bg != null) {
-            Image(
-                painter = painterResource(id = state.data.bg!!),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.matchParentSize()
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                colorResource(color.blue_grad1),
-                                colorResource(color.blue_primary),
-                                colorResource(color.blue_grad3),
-                            )
-                        )
-                    )
-            )
-        }
+        WeatherBackground(
+            bg = state.data?.bg,
+            modifier = Modifier.matchParentSize()
+        )
 
         Box(modifier = Modifier.padding(vertical = 36.dp, horizontal = 24.dp)) {
             when {

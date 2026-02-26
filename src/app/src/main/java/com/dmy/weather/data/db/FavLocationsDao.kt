@@ -2,8 +2,8 @@ package com.dmy.weather.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Upsert
 import com.dmy.weather.data.model.CityModel
 import kotlinx.coroutines.flow.Flow
 
@@ -12,7 +12,7 @@ interface FavLocationsDao {
     @Query("Select * from favLocations")
     fun getAll(): Flow<List<CityModel>>
 
-    @Insert
+    @Upsert
     suspend fun insert(city: CityModel)
 
     @Delete

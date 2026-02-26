@@ -27,6 +27,7 @@ import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.presentation.alerts_screen.AlertsScreen
 import com.dmy.weather.presentation.app_bar.AppBar
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
+import com.dmy.weather.presentation.favorites_screen.FavoritesScreen
 import com.dmy.weather.presentation.home_screen.HomeScreen
 import com.dmy.weather.presentation.language_selection_screen.LanguageSelectionScreen
 import com.dmy.weather.presentation.location_picker_screen.LocationPickerScreen
@@ -85,6 +86,7 @@ fun MyApp() {
                     navController,
                     appbarViewModel,
                     locationDetails,
+                    showFavFab = true,
                     modifier,
                 )
             }
@@ -96,6 +98,10 @@ fun MyApp() {
                     locationDetails = LocationDetails(long = screen.long, lat = screen.lat)
                 }
                 LocationPickerScreen(navController, modifier, locationDetails)
+            }
+
+            composable<NavScreens.FavoritesScreen> {
+                FavoritesScreen(navController, modifier)
             }
 
             composable<NavScreens.SearchScreen> {
@@ -111,7 +117,7 @@ fun MyApp() {
             }
 
             composable<NavScreens.AlertsScreen> {
-                AlertsScreen( modifier)
+                AlertsScreen(modifier)
             }
         }
 
