@@ -63,7 +63,6 @@ fun CurrentWeatherSection(
 //                    )
                     WeatherContent(state.data, dayForecast, unit)
                 }
-
                 state.isLoading -> MyLoadingComponent(color = color.white)
                 state.error != null -> MyErrorComponent(state.error)
             }

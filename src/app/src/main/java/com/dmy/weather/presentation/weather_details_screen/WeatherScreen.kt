@@ -27,9 +27,9 @@ import androidx.navigation.NavController
 import com.dmy.weather.R.color
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.WeatherModel
-import com.dmy.weather.data.repo.CityRepository
-import com.dmy.weather.data.repo.SettingsRepository
-import com.dmy.weather.data.repo.WeatherRepository
+import com.dmy.weather.data.repo.city_repo.CityRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
+import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.components.CustomFAB
 import com.dmy.weather.presentation.weather_details_screen.components.DailyForecast

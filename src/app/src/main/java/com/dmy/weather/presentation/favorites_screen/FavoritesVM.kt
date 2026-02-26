@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.model.CityModel
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.WeatherModel
-import com.dmy.weather.data.repo.CityRepository
-import com.dmy.weather.data.repo.WeatherRepository
+import com.dmy.weather.data.repo.city_repo.CityRepository
+import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

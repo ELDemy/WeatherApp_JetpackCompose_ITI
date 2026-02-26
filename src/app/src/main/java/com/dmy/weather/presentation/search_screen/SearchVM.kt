@@ -3,7 +3,7 @@ package com.dmy.weather.presentation.search_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.model.CityModel
-import com.dmy.weather.data.repo.CityRepository
+import com.dmy.weather.data.repo.city_repo.CityRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.dmy.weather.data.mapper.getTimeInFullDate
-import com.dmy.weather.data.repo.WeatherRepository
+import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import com.dmy.weather.platform.notification.NotificationBuilder
 import org.koin.java.KoinJavaComponent.inject
 

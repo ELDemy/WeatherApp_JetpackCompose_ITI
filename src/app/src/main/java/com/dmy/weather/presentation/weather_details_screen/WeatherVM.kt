@@ -8,9 +8,9 @@ import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.UserSettings
-import com.dmy.weather.data.repo.CityRepository
-import com.dmy.weather.data.repo.SettingsRepository
-import com.dmy.weather.data.repo.WeatherRepository
+import com.dmy.weather.data.repo.city_repo.CityRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
+import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

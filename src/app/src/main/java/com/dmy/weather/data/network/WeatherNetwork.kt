@@ -1,7 +1,7 @@
 package com.dmy.weather.data.network
 
 import com.dmy.weather.BuildConfig
-import com.dmy.weather.data.repo.SettingsRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient

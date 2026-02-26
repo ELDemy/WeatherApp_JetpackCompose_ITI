@@ -2,9 +2,9 @@ package com.dmy.weather.presentation.weather_details_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dmy.weather.data.repo.CityRepository
-import com.dmy.weather.data.repo.SettingsRepository
-import com.dmy.weather.data.repo.WeatherRepository
+import com.dmy.weather.data.repo.city_repo.CityRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
+import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 
 @Suppress("UNCHECKED_CAST")
 class WeatherVMFactory(

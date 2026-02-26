@@ -1,4 +1,4 @@
-package com.dmy.weather.data.data_source.local
+package com.dmy.weather.data.data_source.local.settings_data_source
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
@@ -13,10 +13,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 
-private val Context.dataStore by preferencesDataStore("app_settings")
+class SettingsDataSourceImpl(
+    private val context: Context
+) : SettingsDataSource {
 
-class MyDataStore(private val context: Context) {
     companion object {
+        val Context.dataStore by preferencesDataStore("app_settings")
+
         private val LANG_KEY = stringPreferencesKey("language")
         private val UNITS_KEY = stringPreferencesKey("units")
         private val LOCATION_MODE_KEY = stringPreferencesKey("location_mode")
@@ -25,7 +28,7 @@ class MyDataStore(private val context: Context) {
         private val LAST_KNOWN_LOCATION_KEY = stringPreferencesKey("last_knowm_location")
     }
 
-    val settingsFlow: Flow<UserSettings> = context.dataStore.data.map { pref ->
+    override val settingsFlow: Flow<UserSettings> = context.dataStore.data.map { pref ->
         UserSettings(
             lang = AppLanguage.fromName(pref[LANG_KEY]),
             unit = UnitSystem.fromName(pref[UNITS_KEY]),
@@ -33,7 +36,7 @@ class MyDataStore(private val context: Context) {
         )
     }
 
-    suspend fun saveSettings(userSettings: UserSettings) {
+    override suspend fun saveSettings(userSettings: UserSettings) {
         context.dataStore.edit { pref ->
             userSettings.lang?.let { pref[LANG_KEY] = it.name }
             userSettings.unit?.let { pref[UNITS_KEY] = it.name }
@@ -41,27 +44,28 @@ class MyDataStore(private val context: Context) {
         }
     }
 
-    val defaultLocationFlow: Flow<LocationDetails?> = context.dataStore.data.map { pref ->
+    override val defaultLocationFlow: Flow<LocationDetails?> = context.dataStore.data.map { pref ->
         pref[DEFAULT_LOCATION_KEY]?.let {
             Json.decodeFromString<LocationDetails>(it)
         }
     }
 
-    suspend fun saveDefaultLocation(locationDetails: LocationDetails) {
+    override suspend fun saveDefaultLocation(locationDetails: LocationDetails) {
         context.dataStore.edit { pref ->
             pref[DEFAULT_LOCATION_KEY] = Json.encodeToString(locationDetails)
         }
     }
 
-    val lastKnownLocationFlow: Flow<LocationDetails?> = context.dataStore.data.map { pref ->
-        pref[LAST_KNOWN_LOCATION_KEY]?.let {
-            Json.decodeFromString<LocationDetails>(it)
+    override val lastKnownLocationFlow: Flow<LocationDetails?> =
+        context.dataStore.data.map { pref ->
+            pref[LAST_KNOWN_LOCATION_KEY]?.let {
+                Json.decodeFromString<LocationDetails>(it)
+            }
         }
-    }
 
-    suspend fun saveLastKnownLocation(locationDetails: LocationDetails) {
+    override suspend fun saveLastKnownLocation(locationDetails: LocationDetails) {
         context.dataStore.edit { pref ->
-            pref[LAST_KNOWN_LOCATION_KEY] = Json.encodeToString(locationDetails)
+            pref[LAST_KNOWN_LOCATION_KEY] = Json.Default.encodeToString(locationDetails)
         }
     }
 

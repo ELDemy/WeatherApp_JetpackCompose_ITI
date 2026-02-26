@@ -1,9 +1,9 @@
 package com.dmy.weather.di
 
-import com.dmy.weather.data.repo.AlertRepository
-import com.dmy.weather.data.repo.CityRepository
-import com.dmy.weather.data.repo.SettingsRepository
-import com.dmy.weather.data.repo.WeatherRepository
+import com.dmy.weather.data.repo.alert_repo.AlertRepository
+import com.dmy.weather.data.repo.city_repo.CityRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
+import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import com.dmy.weather.presentation.alerts_screen.AlertsVM
 import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.favorites_screen.FavoritesVM

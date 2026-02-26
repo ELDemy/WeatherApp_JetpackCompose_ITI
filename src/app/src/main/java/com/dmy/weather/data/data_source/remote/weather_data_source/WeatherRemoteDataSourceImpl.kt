@@ -1,4 +1,4 @@
-package com.dmy.weather.data.data_source.remote
+package com.dmy.weather.data.data_source.remote.weather_data_source
 
 import com.dmy.weather.data.dto.DailyForecastDTO
 import com.dmy.weather.data.dto.HourlyForecastDTO
@@ -6,36 +6,38 @@ import com.dmy.weather.data.dto.WeatherDTO
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.network.WeatherService
 
-class WeatherRemoteDataSource(val weatherService: WeatherService) {
+class WeatherRemoteDataSourceImpl(
+    val weatherService: WeatherService
+) : WeatherRemoteDataSource {
     companion object {
         private const val TAG = "WeatherRemoteDataSource"
     }
 
-    suspend fun getCurrentWeather(city: String): WeatherDTO? {
+    override suspend fun getCurrentWeather(city: String): WeatherDTO? {
         return weatherService.getCurrentWeather(city)
     }
 
-    suspend fun getCurrentWeather(long: String, lat: String): WeatherDTO? {
+    override suspend fun getCurrentWeather(long: String, lat: String): WeatherDTO? {
         return weatherService.getCurrentWeather(long, lat)
     }
 
-    suspend fun getDailyForecast(city: String): DailyForecastDTO? {
+    override suspend fun getDailyForecast(city: String): DailyForecastDTO? {
         return weatherService.getDailyForecast(city)
     }
 
-    suspend fun getDailyForecast(long: String, lat: String): DailyForecastDTO? {
+    override suspend fun getDailyForecast(long: String, lat: String): DailyForecastDTO? {
         return weatherService.getDailyForecast(long, lat)
     }
 
-    suspend fun getClimateForecast(city: String): DailyForecastDTO? {
+    override suspend fun getClimateForecast(city: String): DailyForecastDTO? {
         return weatherService.getClimateForecast(city)
     }
 
-    suspend fun getClimateForecast(long: String, lat: String): DailyForecastDTO? {
+    override suspend fun getClimateForecast(long: String, lat: String): DailyForecastDTO? {
         return weatherService.getClimateForecast(long, lat)
     }
 
-    suspend fun getHourlyForecast(locationDetails: LocationDetails?): HourlyForecastDTO? {
+    override suspend fun getHourlyForecast(locationDetails: LocationDetails?): HourlyForecastDTO? {
         return when {
             locationDetails?.city != null ->
                 weatherService.getHourlyForecast(
@@ -51,11 +53,11 @@ class WeatherRemoteDataSource(val weatherService: WeatherService) {
         }
     }
 
-    suspend fun getHourlyForecast(city: String): HourlyForecastDTO? {
+    override suspend fun getHourlyForecast(city: String): HourlyForecastDTO? {
         return weatherService.getHourlyForecast(city)
     }
 
-    suspend fun getHourlyForecast(long: String, lat: String): HourlyForecastDTO? {
+    override suspend fun getHourlyForecast(long: String, lat: String): HourlyForecastDTO? {
         return weatherService.getHourlyForecast(long, lat)
     }
 

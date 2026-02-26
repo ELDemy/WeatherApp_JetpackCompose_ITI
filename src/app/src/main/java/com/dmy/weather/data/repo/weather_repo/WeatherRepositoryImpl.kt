@@ -1,8 +1,8 @@
-package com.dmy.weather.data.repo
+package com.dmy.weather.data.repo.weather_repo
 
 import android.content.Context
 import android.util.Log
-import com.dmy.weather.data.data_source.remote.WeatherRemoteDataSource
+import com.dmy.weather.data.data_source.remote.weather_data_source.WeatherRemoteDataSource
 import com.dmy.weather.data.mapper.filterBasedOnAlerts
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.mapper.toNotificationModel
@@ -13,21 +13,22 @@ import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.data.model.toLocationDetails
+import com.dmy.weather.data.repo.alert_repo.AlertRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.platform.services.LocationServices
 import com.dmy.weather.utils.exceptions.NullDataException
 import com.dmy.weather.utils.mapFailure
 
-class WeatherRepository(
+private const val TAG = "WeatherRepo"
+
+class WeatherRepositoryImpl(
     val weatherRemoteDataSource: WeatherRemoteDataSource,
     val settingsRepository: SettingsRepository,
     val alertRepository: AlertRepository,
     val context: Context
-) {
-    companion object {
-        private const val TAG = "WeatherRepo"
-    }
+) : WeatherRepository {
 
-    suspend fun getCurrentWeather(): Result<WeatherModel> {
+    override suspend fun getCurrentWeather(): Result<WeatherModel> {
         return runCatching {
             val locationDetails =
                 settingsRepository.getLastKnownLocation() ?: settingsRepository.getDefaultLocation()
@@ -56,7 +57,7 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-    suspend fun getWeather(locationDetails: LocationDetails): Result<WeatherModel> {
+    override suspend fun getWeather(locationDetails: LocationDetails): Result<WeatherModel> {
         return runCatching {
             val weatherDTO =
                 when {
@@ -82,7 +83,7 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-    suspend fun getHourlyForecast(locationDetails: LocationDetails): Result<HourlyForecastModel> {
+    override suspend fun getHourlyForecast(locationDetails: LocationDetails): Result<HourlyForecastModel> {
         return runCatching {
             val hourlyForecastDTO = weatherRemoteDataSource.getHourlyForecast(locationDetails)
                 ?: throw NullDataException()
@@ -96,7 +97,7 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-    suspend fun getDailyForecast(locationDetails: LocationDetails): Result<DailyForecastModel> {
+    override suspend fun getDailyForecast(locationDetails: LocationDetails): Result<DailyForecastModel> {
         return runCatching {
             val dailyForecastDTO =
                 when {
@@ -121,7 +122,7 @@ class WeatherRepository(
         }.mapFailure()
     }
 
-    suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, AlertEntity>> {
+    override suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, AlertEntity>> {
         return runCatching {
             val locationDetails =
                 LocationServices.getCurrentLocation(context)?.toLocationDetails()

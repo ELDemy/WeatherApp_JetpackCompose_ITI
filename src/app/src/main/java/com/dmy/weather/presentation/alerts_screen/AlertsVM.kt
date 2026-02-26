@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.enums.AlertType
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.AlertEntity
-import com.dmy.weather.data.repo.AlertRepository
-import com.dmy.weather.data.repo.SettingsRepository
+import com.dmy.weather.data.repo.alert_repo.AlertRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.platform.notification.NotificationType
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

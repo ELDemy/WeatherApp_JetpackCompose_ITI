@@ -9,7 +9,7 @@ import com.dmy.weather.data.enums.AppLanguage
 import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.enums.UnitSystem
 import com.dmy.weather.data.model.UserSettings
-import com.dmy.weather.data.repo.SettingsRepository
+import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
