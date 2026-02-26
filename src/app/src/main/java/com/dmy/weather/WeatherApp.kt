@@ -2,6 +2,7 @@ package com.dmy.weather
 
 import android.app.Application
 import com.dmy.weather.di.dataModule
+import com.dmy.weather.di.databaseModule
 import com.dmy.weather.di.networkModule
 import com.dmy.weather.di.viewModelModule
 import com.google.android.libraries.places.api.Places
@@ -20,6 +21,7 @@ class WeatherApp : Application() {
         startKoin {
             androidContext(this@WeatherApp)
             modules(
+                databaseModule,
                 networkModule,
                 dataModule,
                 viewModelModule,

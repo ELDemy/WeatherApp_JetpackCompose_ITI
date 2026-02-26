@@ -26,7 +26,7 @@ class CityRepositoryImpl(
             Log.i(TAG, "geocodingCityDTO: $geocodingCityDTO")
             Log.i(TAG, "cityModel: $cityModel")
 
-            return Result.success(cityModel)
+            cityModel
         }.mapFailure()
     }
 
@@ -39,7 +39,7 @@ class CityRepositoryImpl(
             Log.i(TAG, "geocodingCityDTO: $geocodingCitiesDTOs")
             Log.i(TAG, "cityModel: $cityModels")
 
-            return Result.success(cityModels)
+            cityModels
         }.mapFailure()
     }
 
@@ -92,7 +92,7 @@ class CityRepositoryImpl(
 
             citiesDataSource.addFav(city)
 
-            return Result.success(Unit)
+            Unit
         }.mapFailure()
     }
 
