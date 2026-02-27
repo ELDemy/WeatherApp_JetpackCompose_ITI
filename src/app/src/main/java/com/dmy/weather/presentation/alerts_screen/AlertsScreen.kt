@@ -1,5 +1,8 @@
 package com.dmy.weather.presentation.alerts_screen
 
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,8 +15,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,10 +34,24 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AlertsScreen(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     val viewModel: AlertsVM = koinViewModel()
     val alerts by viewModel.alerts.collectAsStateWithLifecycle()
     val unit by viewModel::unit
 
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is AlertEvent.RequestAlarmPermission -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                        context.startActivity(intent)
+                    }
+                }
+            }
+        }
+    }
+    
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -66,7 +85,7 @@ fun AlertsScreen(modifier: Modifier = Modifier) {
                             onRangeChange = { min, max -> viewModel.updateRange(type, min, max) },
                             onMinutesChange = { viewModel.updateMinutesBefore(type, it) },
                             onNotificationTypeChange = {
-                                viewModel.updateNotificationType(type, it)
+                                viewModel.updateNotificationType(type, it, context)
                             }
 
                         )
@@ -105,10 +124,10 @@ fun AlertsScreen(modifier: Modifier = Modifier) {
                             onNotificationTypeChange = {
                                 viewModel.updateNotificationType(
                                     type,
-                                    it
+                                    it,
+                                    context
                                 )
                             }
-
                         )
 
                         if (type != AlertType.RAIN) Spacer(Modifier.height(8.dp))

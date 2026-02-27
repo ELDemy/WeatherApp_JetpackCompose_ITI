@@ -1,5 +1,8 @@
 package com.dmy.weather.presentation.alerts_screen
 
+import android.app.AlarmManager
+import android.content.Context
+import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,8 +14,10 @@ import com.dmy.weather.data.model.AlertEntity
 import com.dmy.weather.data.repo.alert_repo.AlertRepository
 import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.platform.notification.NotificationType
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -20,6 +25,9 @@ class AlertsVM(
     private val alertRepository: AlertRepository,
     private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
+
+    private val _events = MutableSharedFlow<AlertEvent>()
+    val events = _events.asSharedFlow()
 
     val alerts: StateFlow<List<AlertEntity>> = alertRepository
         .getAlerts()
@@ -60,11 +68,21 @@ class AlertsVM(
         }
     }
 
-    fun updateNotificationType(type: AlertType, notificationType: NotificationType) {
+    fun updateNotificationType(
+        type: AlertType,
+        notificationType: NotificationType,
+        context: Context
+    ) {
         viewModelScope.launch {
             val existing = alerts.value.find { it.alertType == type } ?: return@launch
             alertRepository.updateAlert(existing.copy(notification = notificationType.name))
+
+            if (notificationType == NotificationType.ALARM) {
+                checkAlarmPermission(context)
+            }
         }
+
+
     }
 
     fun updateRange(type: AlertType, min: Int, max: Int) {
@@ -87,4 +105,14 @@ class AlertsVM(
         AlertType.PRESSURE -> 1050
         else -> 0
     }
+
+    private suspend fun checkAlarmPermission(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                _events.emit(AlertEvent.RequestAlarmPermission)
+            }
+        }
+    }
 }
+

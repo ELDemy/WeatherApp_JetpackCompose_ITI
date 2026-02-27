@@ -21,7 +21,7 @@ object AlertScheduler {
         val weatherRequest =
             PeriodicWorkRequestBuilder<AlertWorkManager>(
 //                1, TimeUnit.HOURS
-                15, TimeUnit.MINUTES
+                20, TimeUnit.MINUTES
             ).setConstraints(constraints).build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
