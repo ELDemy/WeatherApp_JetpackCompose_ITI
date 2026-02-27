@@ -20,8 +20,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
+import com.dmy.weather.data.mapper.toLatLng
 import com.dmy.weather.data.model.LocationDetails
-import com.dmy.weather.data.model.toLatLng
 import com.dmy.weather.presentation.location_picker_screen.component.ConfirmButton
 import com.dmy.weather.presentation.permissions.location.LocationResult
 import com.dmy.weather.presentation.permissions.location.getUserLocation

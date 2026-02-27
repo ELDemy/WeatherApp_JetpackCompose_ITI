@@ -8,8 +8,6 @@ import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.data.model.WeatherModel
 
 interface WeatherRepository {
-    suspend fun getCurrentWeather(): Result<WeatherModel>
-
     suspend fun getWeather(locationDetails: LocationDetails): Result<WeatherModel>
 
     suspend fun getHourlyForecast(locationDetails: LocationDetails): Result<HourlyForecastModel>

@@ -6,21 +6,11 @@ import com.dmy.weather.data.dto.WeatherDTO
 import com.dmy.weather.data.model.LocationDetails
 
 interface WeatherRemoteDataSource {
-    suspend fun getCurrentWeather(city: String): WeatherDTO?
-
-    suspend fun getCurrentWeather(long: String, lat: String): WeatherDTO?
-    
-    suspend fun getDailyForecast(city: String): DailyForecastDTO?
-
-    suspend fun getDailyForecast(long: String, lat: String): DailyForecastDTO?
-
-    suspend fun getClimateForecast(city: String): DailyForecastDTO?
-
-    suspend fun getClimateForecast(long: String, lat: String): DailyForecastDTO?
+    suspend fun getCurrentWeather(locationDetails: LocationDetails?): WeatherDTO?
 
     suspend fun getHourlyForecast(locationDetails: LocationDetails?): HourlyForecastDTO?
 
-    suspend fun getHourlyForecast(city: String): HourlyForecastDTO?
+    suspend fun getDailyForecast(locationDetails: LocationDetails?): DailyForecastDTO?
 
-    suspend fun getHourlyForecast(long: String, lat: String): HourlyForecastDTO?
+    suspend fun getClimateForecast(locationDetails: LocationDetails?): DailyForecastDTO?
 }

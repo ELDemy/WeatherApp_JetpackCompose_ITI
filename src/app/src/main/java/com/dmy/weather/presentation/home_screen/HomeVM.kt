@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.enums.LocationMode
+import com.dmy.weather.data.mapper.toLocationDetails
 import com.dmy.weather.data.model.LocationDetails
-import com.dmy.weather.data.model.toLocationDetails
 import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.presentation.permissions.location.LocationResult
 import kotlinx.coroutines.flow.MutableSharedFlow

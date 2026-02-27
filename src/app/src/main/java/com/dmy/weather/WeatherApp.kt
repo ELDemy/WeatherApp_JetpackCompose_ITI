@@ -4,6 +4,7 @@ import android.app.Application
 import com.dmy.weather.di.dataModule
 import com.dmy.weather.di.databaseModule
 import com.dmy.weather.di.networkModule
+import com.dmy.weather.di.serviceModule
 import com.dmy.weather.di.viewModelModule
 import com.google.android.libraries.places.api.Places
 import org.koin.android.ext.koin.androidContext
@@ -23,6 +24,7 @@ class WeatherApp : Application() {
             modules(
                 databaseModule,
                 networkModule,
+                serviceModule,
                 dataModule,
                 viewModelModule,
             )

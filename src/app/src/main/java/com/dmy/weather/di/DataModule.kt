@@ -21,7 +21,7 @@ import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.data.repo.settings_repo.SettingsRepositoryImpl
 import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import com.dmy.weather.data.repo.weather_repo.WeatherRepositoryImpl
-import org.koin.android.ext.koin.androidContext
+import com.dmy.weather.platform.services.LocationService
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -45,7 +45,7 @@ val dataModule = module {
             get<WeatherRemoteDataSource>(),
             get<SettingsRepository>(),
             get<AlertRepository>(),
-            androidContext()
+            get<LocationService>(),
         )
     }
 }
