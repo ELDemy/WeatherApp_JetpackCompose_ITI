@@ -88,7 +88,11 @@ class CityRepositoryImpl(
                 }
 
                 else -> null
-            } ?: throw NullDataException()
+            } ?: CityModel(
+                name = locationDetails.city ?: "Unknown",
+                latitude = locationDetails.lat?.toDouble() ?: 30.0444,
+                longitude = locationDetails.long?.toDouble() ?: 31.2327
+            )
 
             citiesDataSource.addFav(city)
 

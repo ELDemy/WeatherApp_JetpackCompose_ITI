@@ -88,7 +88,6 @@ class WeatherVM(
                     onFailure = { error ->
                         it.currentWeather.copy(
                             isLoading = false,
-                            data = null,
                             error = error.message ?: "Unknown Error"
                         )
                     }
@@ -111,7 +110,6 @@ class WeatherVM(
                     onFailure = { error ->
                         it.hourlyForecast.copy(
                             isLoading = false,
-                            data = null,
                             error = error.message ?: "Unknown Error"
                         )
                     }
@@ -134,7 +132,6 @@ class WeatherVM(
                     onFailure = { error ->
                         it.dailyForecast.copy(
                             isLoading = false,
-                            data = null,
                             error = error.message ?: "Unknown Error"
                         )
                     }

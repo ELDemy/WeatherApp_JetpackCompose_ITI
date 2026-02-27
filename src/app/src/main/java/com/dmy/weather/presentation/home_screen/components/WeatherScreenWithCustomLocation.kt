@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
 @Composable
 fun WeatherScreenWithCustomLocation(
     navController: NavController,
+    snackbarHostState: SnackbarHostState,
     appbarViewModel: AppbarViewModel,
     location: LocationDetails,
     modifier: Modifier,
@@ -28,6 +30,7 @@ fun WeatherScreenWithCustomLocation(
     Box(Modifier.fillMaxSize()) {
         WeatherScreen(
             navController = navController,
+            snackbarHostState = snackbarHostState,
             appbarViewModel = appbarViewModel,
             location = location,
             showFavFab = false,

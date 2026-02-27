@@ -83,6 +83,7 @@ fun MyApp() {
                 val locationDetails = LocationDetails(screen.city, screen.long, screen.lat)
                 WeatherScreen(
                     navController,
+                    snackbarHostState,
                     appbarViewModel,
                     locationDetails,
                     showFavFab = true,

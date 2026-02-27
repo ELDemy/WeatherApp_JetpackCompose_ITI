@@ -11,12 +11,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -36,6 +39,7 @@ import com.dmy.weather.presentation.weather_details_screen.components.DailyForec
 import com.dmy.weather.presentation.weather_details_screen.components.HourlyForecast
 import com.dmy.weather.presentation.weather_details_screen.components.WarningBox
 import com.dmy.weather.presentation.weather_details_screen.components.WeatherDetails
+import kotlinx.coroutines.launch
 import org.koin.compose.getKoin
 
 private const val TAG = "WeatherScreen"
@@ -43,6 +47,7 @@ private const val TAG = "WeatherScreen"
 @Composable
 fun WeatherScreen(
     navController: NavController,
+    snackbarHostState: SnackbarHostState,
     appbarViewModel: AppbarViewModel,
     location: LocationDetails,
     showFavFab: Boolean,
@@ -51,6 +56,7 @@ fun WeatherScreen(
     onRefresh: (() -> Unit)? = null,
     onWarningClick: (() -> Unit)? = null,
 ) {
+    val scope = rememberCoroutineScope()
     val viewModel =
         viewModel<WeatherVM>(
             factory = WeatherVMFactory(
@@ -111,6 +117,15 @@ fun WeatherScreen(
                     icon = Icons.Default.Favorite,
                     onFabClick = {
                         viewModel.addToFav(weather.cityName)
+
+                        scope.launch {
+                            snackbarHostState.currentSnackbarData?.dismiss()
+                            
+                            snackbarHostState.showSnackbar(
+                                message = "${weather.cityName} added to Favorites",
+                                duration = SnackbarDuration.Long
+                            )
+                        }
                     }
                 )
 

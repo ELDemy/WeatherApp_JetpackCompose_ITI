@@ -124,6 +124,7 @@ fun HomeScreen(
                 WeatherScreenWithCustomLocation(
                     modifier = modifier,
                     navController = navController,
+                    snackbarHostState = snackbarHostState,
                     appbarViewModel = appbarViewModel,
                     location = state.location!!,
                     warning = state.warning,
@@ -135,6 +136,7 @@ fun HomeScreen(
                 WeatherScreen(
                     modifier = modifier,
                     navController = navController,
+                    snackbarHostState = snackbarHostState,
                     appbarViewModel = appbarViewModel,
                     location = state.location!!,
                     showFavFab = false,
