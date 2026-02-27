@@ -23,9 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dmy.weather.R
 import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.presentation.settings_screen.SettingsVM
 
@@ -44,22 +46,22 @@ fun LocationSettings(viewModel: SettingsVM, locationMode: LocationMode) {
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                "Location Settings",
+                stringResource(R.string.Location_Settings),
                 fontWeight = FontWeight.SemiBold,
                 color = Color(0xFF1D4ED8)
             )
         }
     ) {
         LocationOption(
-            label = "GPS Location",
-            subtitle = "Use device GPS",
+            stringResource(R.string.GPS_Location),
+            subtitle = stringResource(R.string.Use_device_GPS),
             selected = locationMode == LocationMode.GPS,
             onClick = { viewModel.updateLocationMode(LocationMode.GPS) }
         )
         Spacer(Modifier.height(8.dp))
         LocationOption(
-            label = "Map Selection",
-            subtitle = "Pick location on map",
+            label = stringResource(R.string.Map_Selection),
+            subtitle = stringResource(R.string.Pick_location_on_map),
             selected = locationMode == LocationMode.MAP,
             onClick = { viewModel.updateLocationMode(LocationMode.MAP) }
         )

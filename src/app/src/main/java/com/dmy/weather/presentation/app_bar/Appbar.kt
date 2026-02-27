@@ -13,10 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.dmy.weather.R
 import com.dmy.weather.presentation.my_app.NavScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +54,7 @@ fun AppBar(
         currentDestination?.hasRoute<NavScreens.SettingsScreen>() == true -> {
             DefaultTopBar(
                 navController,
-                "Settings",
+                stringResource(R.string.Settings),
                 icon = Icons.Filled.Settings,
                 scrollBehavior
             )
@@ -61,7 +63,7 @@ fun AppBar(
         currentDestination?.hasRoute<NavScreens.FavoritesScreen>() == true -> {
             DefaultTopBar(
                 navController,
-                "Saved Locations",
+                stringResource(R.string.Saved_Locations),
                 icon = Icons.Filled.Favorite,
                 scrollBehavior
             )
@@ -70,7 +72,7 @@ fun AppBar(
         currentDestination?.hasRoute<NavScreens.LocationSearchScreen>() == true -> {
             DefaultTopBar(
                 navController,
-                "Select Location",
+                stringResource(R.string.Select_Location),
                 icon = Icons.Filled.LocationOn,
                 scrollBehavior
             )
@@ -79,19 +81,6 @@ fun AppBar(
         currentDestination?.hasRoute<NavScreens.SplashScreen>() == true -> {
 
         }
-
-//        currentDestination?.hasRoute<NavScreens.LanguageSelectionScreen>() == true -> {
-//            LaunchedEffect(Unit) {
-//                scrollBehavior.state.heightOffset = 0f
-//                scrollBehavior.state.contentOffset = 0f
-//            }
-//            SearchAppbar(
-//                navController,
-//                "Search Location",
-//                icon = Icons.Filled.Search,
-//                scrollBehavior
-//            )
-//        }
 
         else -> {
             ShrinkAppBar()

@@ -37,4 +37,31 @@
     <string name="Max_threshold">Max threshold</string>
     <string name="Threshold_Alerts">Threshold Alerts</string>
 
+
+    <string name="Settings">Settings</string>
+    <string name="Saved_Locations">Saved Locations</string>
+    <string name="Select_Location">Select Location</string>
+    <string name="Location_Settings">Location Settings</string>
+    <string name="GPS_Location">GPS Location</string>
+    <string name="Use_device_GPS">Use device GPS</string>
+    <string name="Map_Selection">Map Selection</string>
+    <string name="Pick_location_on_map">Pick location on map</string>
+    <string name="Unit_System">"Unit System"</string>
+    <string name="Metric">Metric</string>
+    <string name="Celsius_">Celsius (°C) • Meter/sec (m/s)</string>
+    <string name="Imperial">Imperial</string>
+    <string name="Fahrenheit_">Fahrenheit (°F) • Miles/hour (mph)</string>
+    <string name="Standard">Standard</string>
+    <string name="Kelvin_">Kelvin (K) • Meter/sec (m/s)</string>
+    <string name="Current_language">Current language</string>
+    <string name="Weather_Alerts">Weather Alerts</string>
+    <string name="Manage_notifications">Manage notifications and alarms</string>
+    <string name="Alerts">Alerts</string>
+    
+    <string name="Settings">Settings</string>
+    <string name="Settings">Settings</string>
+    <string name="Settings">Settings</string>
+    <string name="Settings">Settings</string>
+
+
 </resources>

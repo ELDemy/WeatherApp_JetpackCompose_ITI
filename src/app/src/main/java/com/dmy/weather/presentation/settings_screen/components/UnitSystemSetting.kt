@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,29 +41,29 @@ fun UnitSystemSettings(viewModel: SettingsVM, unitSystem: UnitSystem) {
             Text("📊", fontSize = 18.sp)
             Spacer(Modifier.width(8.dp))
             Text(
-                "Unit System",
+                stringResource(R.string.Unit_System),
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.purple_foreground)
             )
         }
     ) {
         UnitOption(
-            label = "Metric",
-            subtitle = "Celsius (°C) • Meter/sec (m/s)",
+            label = stringResource(R.string.Metric),
+            subtitle = stringResource(R.string.Celsius_),
             selected = unitSystem == UnitSystem.METRIC,
             onClick = { viewModel.updateUnitSystem(UnitSystem.METRIC) }
         )
         Spacer(Modifier.height(8.dp))
         UnitOption(
-            label = "Imperial",
-            subtitle = "Fahrenheit (°F) • Miles/hour (mph)",
+            label = stringResource(R.string.Imperial),
+            subtitle = stringResource(R.string.Fahrenheit_),
             selected = unitSystem == UnitSystem.IMPERIAL,
             onClick = { viewModel.updateUnitSystem(UnitSystem.IMPERIAL) }
         )
         Spacer(Modifier.height(8.dp))
         UnitOption(
-            label = "Standard",
-            subtitle = "Kelvin (K) • Meter/sec (m/s)",
+            label = stringResource(R.string.Standard),
+            subtitle = stringResource(R.string.Kelvin_),
             selected = unitSystem == UnitSystem.STANDARD,
             onClick = { viewModel.updateUnitSystem(UnitSystem.STANDARD) }
         )

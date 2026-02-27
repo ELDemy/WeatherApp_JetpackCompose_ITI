@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
@@ -17,8 +18,8 @@ import com.dmy.weather.presentation.settings_screen.SettingsVM
 @Composable
 fun AlertSettingCard(viewModel: SettingsVM, navController: NavController) {
     CustomSettingItem(
-        title = "Weather Alerts",
-        subtitle = "Manage notifications and alarms",
+        title = stringResource(R.string.Weather_Alerts),
+        subtitle = stringResource(R.string.Manage_notifications),
         backgroundGradient = listOf(
             colorResource(R.color.warning_background),
             colorResource(R.color.warning_foreground),
@@ -27,7 +28,7 @@ fun AlertSettingCard(viewModel: SettingsVM, navController: NavController) {
     ) {
         Icon(
             Icons.Filled.Notifications,
-            contentDescription = "Alerts",
+            contentDescription = stringResource(R.string.Alerts),
             tint = Color.White,
             modifier = Modifier.size(24.dp)
         )
