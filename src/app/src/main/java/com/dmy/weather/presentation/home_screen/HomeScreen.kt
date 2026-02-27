@@ -72,9 +72,10 @@ fun HomeScreen(
                 is HomeEffect.GetLocationFromMap -> {
                     Log.i(TAG, "HomeScreen: activeLocation ${effect.currentLocation}")
                     navController.navigate(
-                        NavScreens.LocationPickerScreen(
+                        NavScreens.LocationSearchScreen(
                             effect.currentLocation?.long,
-                            effect.currentLocation?.lat
+                            effect.currentLocation?.lat,
+                            popOnLocationPicked = "1"
                         )
                     )
                 }

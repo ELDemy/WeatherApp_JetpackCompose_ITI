@@ -30,8 +30,7 @@ import com.dmy.weather.presentation.app_bar.AppbarViewModel
 import com.dmy.weather.presentation.favorites_screen.FavoritesScreen
 import com.dmy.weather.presentation.home_screen.HomeScreen
 import com.dmy.weather.presentation.language_selection_screen.LanguageSelectionScreen
-import com.dmy.weather.presentation.location_picker_screen.LocationPickerScreen
-import com.dmy.weather.presentation.search_screen.SearchScreen
+import com.dmy.weather.presentation.location_search_screen.LocationSearchScreen
 import com.dmy.weather.presentation.settings_screen.SettingsScreen
 import com.dmy.weather.presentation.splash_screen.SplashScreen
 import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
@@ -91,21 +90,22 @@ fun MyApp() {
                 )
             }
 
-            composable<NavScreens.LocationPickerScreen> { backStackEntry ->
-                val screen = backStackEntry.toRoute<NavScreens.LocationPickerScreen>()
+            composable<NavScreens.LocationSearchScreen> { backStackEntry ->
+                val screen = backStackEntry.toRoute<NavScreens.LocationSearchScreen>()
                 var locationDetails: LocationDetails? = null
                 if (screen.lat != null && screen.long != null) {
                     locationDetails = LocationDetails(long = screen.long, lat = screen.lat)
                 }
-                LocationPickerScreen(navController, modifier, locationDetails)
+                LocationSearchScreen(
+                    navController,
+                    modifier,
+                    locationDetails,
+                    screen.popOnLocationPicked
+                )
             }
 
             composable<NavScreens.FavoritesScreen> {
                 FavoritesScreen(navController, modifier)
-            }
-
-            composable<NavScreens.SearchScreen> {
-                SearchScreen(navController, modifier)
             }
 
             composable<NavScreens.SettingsScreen> {

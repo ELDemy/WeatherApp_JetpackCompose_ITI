@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.location_picker_screen.component
+package com.dmy.weather.presentation.location_search_screen.component
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button

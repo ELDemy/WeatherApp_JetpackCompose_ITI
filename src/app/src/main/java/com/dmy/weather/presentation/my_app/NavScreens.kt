@@ -17,12 +17,10 @@ sealed class NavScreens {
     ) : NavScreens()
 
     @Serializable
-    object SearchScreen : NavScreens()
-
-    @Serializable
-    data class LocationPickerScreen(
+    data class LocationSearchScreen(
         val long: String? = null,
         val lat: String? = null,
+        val popOnLocationPicked: String,
     ) : NavScreens()
 
     @Serializable

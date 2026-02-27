@@ -1,4 +1,4 @@
-package com.dmy.weather.presentation.search_screen
+package com.dmy.weather.presentation.location_search_screen.component.search_field
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

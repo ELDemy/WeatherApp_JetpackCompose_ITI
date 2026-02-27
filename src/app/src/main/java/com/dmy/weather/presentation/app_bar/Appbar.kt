@@ -3,7 +3,6 @@ package com.dmy.weather.presentation.app_bar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -68,16 +67,7 @@ fun AppBar(
             )
         }
 
-        currentDestination?.hasRoute<NavScreens.SearchScreen>() == true -> {
-            DefaultTopBar(
-                navController,
-                "Search Location",
-                icon = Icons.Filled.Search,
-                scrollBehavior
-            )
-        }
-
-        currentDestination?.hasRoute<NavScreens.LocationPickerScreen>() == true -> {
+        currentDestination?.hasRoute<NavScreens.LocationSearchScreen>() == true -> {
             DefaultTopBar(
                 navController,
                 "Select Location",
@@ -87,7 +77,7 @@ fun AppBar(
         }
 
         currentDestination?.hasRoute<NavScreens.SplashScreen>() == true -> {
-            
+
         }
 
 //        currentDestination?.hasRoute<NavScreens.LanguageSelectionScreen>() == true -> {
