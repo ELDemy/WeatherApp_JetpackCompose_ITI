@@ -11,6 +11,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import junit.framework.TestCase.assertFalse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -51,12 +52,31 @@ class CityRepositoryImplTest {
     }
 
     @Test
-    fun getGeocodingCityInfoByCity_requestCityInfoFromCitiesDataSource_returnCityModel() = runTest {
+    fun getCitiesByName_requestCitiesByName_returnCitiesList() = runTest {
         //Given
-        coEvery { remoteDataSource.getGeocodingCityByCity(any()) } returns fakeDto
+        val cityName = "Cairo"
+        val citiesList = listOf(fakeDto)
+        coEvery { remoteDataSource.getCitiesByName(cityName) } returns citiesList
+
+        //When
+        val result = cityRepository.getCitiesByName(cityName)
+
+        //Then
+        assertTrue(result.isSuccess)
+        val resultList = result.getOrThrow()
+        val expectedList = citiesList.map { it.toModel() }
+        assertThat(expectedList, `is`(resultList))
+    }
+
+    @Test
+    fun getGeocodingCityInfoByCity_requestCityInfo_returnCityModel() = runTest {
+        //Given
+        val cityName = "Cairo"
+        coEvery { remoteDataSource.getGeocodingCityByCity(cityName) } returns fakeDto
 
         //when requesting city Info
-        val result = cityRepository.getGeocodingCityInfoByCity("Cairo")
+        val result = cityRepository.getGeocodingCityInfoByCity(cityName)
+        
         //then the result should be success
         assert(result.isSuccess)
 
@@ -66,7 +86,7 @@ class CityRepositoryImplTest {
     }
 
     @Test
-    fun getGeocodingCityInfoByCoord_requestCityInfoFromCitiesDataSource_returnCityModel() =
+    fun getGeocodingCityInfoByCoord_requestCityInfo_returnCityModel() =
         runTest {
             //Given
             coEvery { remoteDataSource.getGeocodingCityByCoord(any(), any()) } returns fakeDto
@@ -83,29 +103,56 @@ class CityRepositoryImplTest {
         }
 
     @Test
-    fun getAllFav_requestFavCitiesFromLocalCitiesDataSource_returnFlowOfCities() = runTest {
-        //Given
-        val favCities = mutableListOf<CityModel>()
+    fun getAllFavWithCityName_requestFavCities_returnFlowOfCities() =
+        runTest {
+            //Given
+            val cityName = "Cairo"
+            val favCities = mutableListOf<CityModel>()
 
-        coEvery { remoteDataSource.getGeocodingCityByCity(any()) } returns fakeDto
-        coEvery { localDataSource.addFav(any()) } answers { favCities.add(fakeDto.toModel()) }
-        coEvery { localDataSource.getAllFav() } returns MutableStateFlow(favCities)
+            coEvery { remoteDataSource.getGeocodingCityByCity(cityName) } returns fakeDto
+            coEvery { localDataSource.addFav(any()) } answers { favCities.add(fakeDto.toModel()) }
+            coEvery { localDataSource.getAllFav() } returns MutableStateFlow(favCities)
 
-        //when
-        cityRepository.addFav(LocationDetails("Cairo"))
-        val result = cityRepository.getAllFav()
+            //when
+            val actionResult = cityRepository.addFav(LocationDetails(cityName))
+            val result = cityRepository.getAllFav()
 
-        //then
-        assertTrue(result.isSuccess)
+            //then
+            assertTrue(actionResult.isSuccess)
+            assertTrue(result.isSuccess)
 
-        val flowOfCities: Flow<List<CityModel>> = result.getOrThrow()
-        val resultList = flowOfCities.first()
+            val flowOfCities: Flow<List<CityModel>> = result.getOrThrow()
+            val resultList = flowOfCities.first()
 
-        assertThat(favCities, `is`(resultList))
-    }
+            assertThat(favCities, `is`(resultList))
+        }
 
     @Test
-    fun removeFav_requestRemoveFavCityFromLocalCitiesDataSource_returnSuccess() = runTest {
+    fun getAllFavWithCoord_requestFavCities_returnSuccess() =
+        runTest {
+            //Given
+            val favCities = mutableListOf<CityModel>()
+
+            coEvery { remoteDataSource.getGeocodingCityByCoord(any(), any()) } returns fakeDto
+            coEvery { localDataSource.addFav(any()) } answers { favCities.add(fakeDto.toModel()) }
+            coEvery { localDataSource.getAllFav() } returns MutableStateFlow(favCities)
+
+            //when
+            val actionResult = cityRepository.addFav(LocationDetails(long = "", lat = ""))
+            val result = cityRepository.getAllFav()
+
+            //then
+            assertTrue(actionResult.isSuccess)
+            assertTrue(result.isSuccess)
+
+            val flowOfCities: Flow<List<CityModel>> = result.getOrThrow()
+            val resultList = flowOfCities.first()
+
+            assertThat(favCities, `is`(resultList))
+        }
+
+    @Test
+    fun removeFav_requestRemoveFavCity_returnSuccess() = runTest {
         //Given
         val favCities = mutableListOf<CityModel>(fakeDto.toModel())
 
@@ -119,6 +166,43 @@ class CityRepositoryImplTest {
         //then
         assertTrue(result.isSuccess)
         assertTrue(favCities.isEmpty())
+    }
+
+    @Test
+    fun addFav_requestAddFavCityByName_returnSuccess() = runTest {
+        //Given
+        val cityName = "Cairo"
+        val favCities = mutableListOf<CityModel>()
+        coEvery { remoteDataSource.getGeocodingCityByCity(cityName) } returns fakeDto
+        coEvery { localDataSource.addFav(any()) } answers {
+            favCities.add(fakeDto.toModel())
+        }
+
+        //When
+        val result = cityRepository.addFav(LocationDetails(cityName))
+
+        //then
+        assertTrue(result.isSuccess)
+        assertFalse(favCities.isEmpty())
+        assertThat(favCities.first(), `is`(fakeDto.toModel()))
+    }
+
+    @Test
+    fun addFav_requestAddFavCityByCoord_returnSuccess() = runTest {
+        //Given
+        val favCities = mutableListOf<CityModel>()
+        coEvery { remoteDataSource.getGeocodingCityByCoord(any(), any()) } returns fakeDto
+        coEvery { localDataSource.addFav(any()) } answers {
+            favCities.add(fakeDto.toModel())
+        }
+
+        //When
+        val result = cityRepository.addFav(LocationDetails(long = "", lat = ""))
+
+        //then
+        assertTrue(result.isSuccess)
+        assertFalse(favCities.isEmpty())
+        assertThat(favCities.first(), `is`(fakeDto.toModel()))
     }
 
 }
