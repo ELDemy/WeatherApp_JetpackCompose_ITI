@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertTrue
@@ -46,9 +45,18 @@ class CityRepositoryImplTest {
         fakeDto = GeocodingCityDTO()
     }
 
-    @After
-    fun tearDown() {
+    @Test
+    fun getCitiesByName_requestCitiesByEmpty_returnFailure() = runTest {
+        //Given
+        val cityName = ""
+        val citiesList = listOf(fakeDto)
+        coEvery { remoteDataSource.getCitiesByName(cityName) } throws Exception()
 
+        //When
+        val result = cityRepository.getCitiesByName(cityName)
+
+        //Then
+        assertTrue(result.isFailure)
     }
 
     @Test
@@ -76,7 +84,7 @@ class CityRepositoryImplTest {
 
         //when requesting city Info
         val result = cityRepository.getGeocodingCityInfoByCity(cityName)
-        
+
         //then the result should be success
         assert(result.isSuccess)
 

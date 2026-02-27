@@ -43,7 +43,9 @@ class FavoritesVM(
                 onSuccess = { it: Flow<List<CityModel>> ->
                     it.distinctUntilChanged()
                         .collect { favCities ->
-                            _uiState.update { FavoritesUiState(data = favCities) }
+                            _uiState.update {
+                                FavoritesUiState(data = favCities, isLoading = false)
+                            }
                         }
                 },
                 onFailure = { error ->

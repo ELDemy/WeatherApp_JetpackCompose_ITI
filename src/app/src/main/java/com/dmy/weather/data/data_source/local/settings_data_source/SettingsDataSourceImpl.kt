@@ -65,7 +65,7 @@ class SettingsDataSourceImpl(
 
     override suspend fun saveLastKnownLocation(locationDetails: LocationDetails) {
         context.dataStore.edit { pref ->
-            pref[LAST_KNOWN_LOCATION_KEY] = Json.Default.encodeToString(locationDetails)
+            pref[LAST_KNOWN_LOCATION_KEY] = Json.encodeToString(locationDetails)
         }
     }
 
