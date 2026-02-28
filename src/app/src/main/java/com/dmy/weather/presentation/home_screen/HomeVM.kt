@@ -51,8 +51,12 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
         Log.i(TAG, "resolveLocation: ")
         when (getLocationMode()) {
             LocationMode.GPS -> {
-                _uiState.update { it.copy(locationMode = LocationMode.GPS) }
-                _effect.emit(HomeEffect.RequestGpsLocation)
+                _uiState.update {
+                    it.copy(
+                        locationMode = LocationMode.GPS,
+                        isLoadingGPSLocation = true
+                    )
+                }
             }
 
             LocationMode.MAP -> {
@@ -135,6 +139,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
 
     fun onLocationResult(result: LocationResult) {
         Log.i(TAG, "onLocationResult: $result")
+        _uiState.update { it.copy(isLoadingGPSLocation = false) }
         when (result) {
             is LocationResult.Current -> {
                 val locationDetails = result.latLng.toLocationDetails()

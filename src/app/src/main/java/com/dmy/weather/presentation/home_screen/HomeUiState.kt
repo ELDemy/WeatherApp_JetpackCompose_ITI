@@ -6,6 +6,7 @@ import com.dmy.weather.data.model.LocationDetails
 data class HomeUiState(
     val location: LocationDetails? = null,
     val locationMode: LocationMode = LocationMode.GPS,
+    val isLoadingGPSLocation: Boolean = false,
     val isOldLocation: Boolean = false,
     val isLoading: Boolean = true,
     val isRefreshing: Boolean = false,

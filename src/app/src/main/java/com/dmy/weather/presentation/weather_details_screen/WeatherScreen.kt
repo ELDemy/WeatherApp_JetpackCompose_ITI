@@ -55,6 +55,7 @@ fun WeatherScreen(
     showFavFab: Boolean,
     modifier: Modifier,
     warning: String? = null,
+    isLoading: Boolean = false,
     onRefresh: (() -> Unit)? = null,
     onWarningClick: (() -> Unit)? = null,
 ) {
@@ -69,7 +70,7 @@ fun WeatherScreen(
         )
     Log.i(TAG, "WeatherScreenLocation is: $location")
 
-    LaunchedEffect(location) { viewModel.loadWeatherData(location) }
+    LaunchedEffect(location.lat, location.lat) { viewModel.loadWeatherData(location) }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val settingsState by viewModel.settingsState.collectAsState()
@@ -81,7 +82,7 @@ fun WeatherScreen(
     val isRefreshing = uiState.currentWeather.isLoading
 
     PullToRefreshBox(
-        isRefreshing = isRefreshing,
+        isRefreshing = isRefreshing || isLoading,
         onRefresh = onRefresh ?: { viewModel.loadWeatherData(location) },
         modifier = modifier
     ) {
@@ -95,7 +96,7 @@ fun WeatherScreen(
                         dayForecast = uiState.dailyForecast.data,
                         unit = settingsState.unit!!
                     )
-                    
+
                     WarningBox(
                         state = uiState,
                         warning = warning,

@@ -11,7 +11,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -24,7 +23,7 @@ import com.dmy.weather.presentation.components.AlertDialogForLocationSettings
 import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.home_screen.components.NoLocationScreen
 import com.dmy.weather.presentation.home_screen.components.WeatherScreenWithCustomLocation
-import com.dmy.weather.presentation.my_app.NavScreens
+import com.dmy.weather.presentation.my_app.NavScreens.LocationSearchScreen
 import com.dmy.weather.presentation.permissions.location.getUserLocation
 import com.dmy.weather.presentation.weather_details_screen.WeatherScreen
 import org.koin.androidx.compose.koinViewModel
@@ -39,8 +38,10 @@ fun HomeScreen(
     modifier: Modifier,
     viewModel: HomeVM = koinViewModel()
 ) {
+
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    var requestLocation by remember { mutableStateOf(false) }
+    val isLoadingGpsLocation = state.isLoadingGPSLocation
+
     val showLocationDialog = remember { mutableStateOf(false) }
     val showLocationPermissionDialog = remember { mutableStateOf(false) }
 
@@ -65,14 +66,13 @@ fun HomeScreen(
         viewModel.effect.collect { effect ->
             Log.i(TAG, "HomeScreen: $effect")
             when (effect) {
-                is HomeEffect.RequestGpsLocation -> requestLocation = true
                 is HomeEffect.OpenLocationSettings -> showLocationDialog.value = true
                 is HomeEffect.OpenAppSettings -> showLocationPermissionDialog.value = true
 
                 is HomeEffect.GetLocationFromMap -> {
                     Log.i(TAG, "HomeScreen: activeLocation ${effect.currentLocation}")
                     navController.navigate(
-                        NavScreens.LocationSearchScreen(
+                        LocationSearchScreen(
                             effect.currentLocation?.long,
                             effect.currentLocation?.lat,
                             popOnLocationPicked = "1"
@@ -85,16 +85,19 @@ fun HomeScreen(
                         message = effect.message,
                         duration = SnackbarDuration.Long
                     )
+
+                HomeEffect.RequestGpsLocation -> {}
             }
         }
     }
 
-    if (requestLocation) {
-        requestLocation = false
+
+    if (isLoadingGpsLocation) {
         getUserLocation { result ->
             viewModel.onLocationResult(result)
         }
     }
+
     if (showLocationDialog.value) {
         AlertDialogForLocationSettings(showLocationDialog)
     }
@@ -128,6 +131,7 @@ fun HomeScreen(
                     appbarViewModel = appbarViewModel,
                     location = state.location!!,
                     warning = state.warning,
+                    isLoading = isLoadingGpsLocation,
                     onFabClick = { viewModel.openMap() },
                     onRefresh = { viewModel.retry() },
                     onWarningClick = { viewModel.onWarningClicked() }
