@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Weather</string>
+    <string name="app_name">Weezzy</string>
     <string name="Selected_Language">Selected Language</string>
     <string name="Select_Language">Select Language</string>
     <string name="Search_Languages">Search Languages…</string>
@@ -72,7 +72,6 @@
     <string name="Please_turn_on_location">Please turn on location services to get weather for your current location.</string>
     <string name="Open_Settings">Open Settings</string>
     <string name="Cancel">Cancel</string>
-    <string name="Weather">Weather</string>
     <string name="Notify_me_before">Notify me before (minutes)</string>
     <string name="Notification_type">Notification type</string>
     <string name="Silent">Silent</string>

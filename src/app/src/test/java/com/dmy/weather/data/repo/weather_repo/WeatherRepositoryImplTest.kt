@@ -74,7 +74,7 @@ class WeatherRepositoryImplTest {
         )
     }
 
-    //Get Weather
+    //Get app_name
     @Test
     fun getWeather_whenDataSourceReturnsData_returnsSuccess() = runTest {
         // Given

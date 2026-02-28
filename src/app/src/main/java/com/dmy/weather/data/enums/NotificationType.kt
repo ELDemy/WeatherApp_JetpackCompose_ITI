@@ -15,19 +15,19 @@ enum class NotificationType(
 ) {
     UPDATES(
         "weather_updates",
-        "Daily Weather Updates",
+        "Daily app_name Updates",
         "Channel for regular rain or sun updates",
         NotificationManager.IMPORTANCE_DEFAULT
     ),
     NOTIFY(
         "weather_notification",
-        "Weather Notifications",
+        "app_name Notifications",
         "Channel for weather conditions",
         NotificationManager.IMPORTANCE_HIGH
     ),
     ALARM(
         "weather_alarm",
-        "Urgent Weather Alerts",
+        "Urgent app_name Alerts",
         "Channel for life-threatening weather conditions",
         NotificationManager.IMPORTANCE_MAX
     );

@@ -1,6 +1,7 @@
 package com.dmy.weather.presentation.app_bar
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Settings
@@ -41,7 +42,6 @@ fun AppBar(
             currentDestination = navBackStackEntry?.destination
         }
     }
-
     when {
         currentDestination?.hasRoute<NavScreens.HomeScreen>() == true -> {
             HomeTopBar(navController, scrollBehavior, appbarViewModel.background)
@@ -74,6 +74,15 @@ fun AppBar(
                 navController,
                 stringResource(R.string.Select_Location),
                 icon = Icons.Filled.LocationOn,
+                scrollBehavior
+            )
+        }
+
+        currentDestination?.hasRoute<NavScreens.AlertsScreen>() == true -> {
+            DefaultTopBar(
+                navController,
+                stringResource(R.string.Alerts),
+                icon = Icons.Filled.Alarm,
                 scrollBehavior
             )
         }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Weather</string>
     <string name="Selected_Language">Lingua selezionata</string>
     <string name="Select_Language">Seleziona lingua</string>
     <string name="Search_Languages">Cerca lingua…</string>
@@ -72,7 +71,6 @@
     <string name="Please_turn_on_location">Attiva i servizi di localizzazione per ottenere il meteo della tua posizione attuale.</string>
     <string name="Open_Settings">Apri impostazioni</string>
     <string name="Cancel">Annulla</string>
-    <string name="Weather">Meteo</string>
     <string name="Notify_me_before">Notifica prima (minuti)</string>
     <string name="Notification_type">Tipo di notifica</string>
     <string name="Silent">Silenzioso</string>

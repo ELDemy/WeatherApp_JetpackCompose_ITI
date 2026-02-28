@@ -2,7 +2,6 @@ package com.dmy.weather.presentation.app_bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
@@ -24,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
+import com.dmy.weather.presentation.components.AnimatedLogo
 import com.dmy.weather.presentation.my_app.NavScreens
 
 
@@ -54,15 +54,10 @@ fun HomeTopBar(
                 actionIconContentColor = colorResource(R.color.white),
             ),
             title = {
-                Text(stringResource(R.string.Weather))
+                Text(stringResource(R.string.app_name))
             },
             navigationIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.app_icon),
-                    contentDescription = "App Icon",
-                    modifier = Modifier.size(56.dp),
-                    tint = Color.Unspecified
-                )
+                AnimatedLogo()
             },
             actions = {
                 IconButton(onClick = {

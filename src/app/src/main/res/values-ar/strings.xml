@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Weather</string>
+    <string name="app_name">ويـــزي</string>
     <string name="Selected_Language">اللغة المحددة</string>
     <string name="Select_Language">اختر اللغة</string>
     <string name="Search_Languages">ابحث عن لغة…</string>
@@ -27,7 +27,7 @@
     <string name="m_s">م/ث</string>
     <string name="mil_h">ميل/س</string>
     <string name="Weather_condition_icon">أيقونة حالة الطقس</string>
-    <string name="I_will_take_care">سأتولى الأمر</string>
+    <string name="I_will_take_care">هاخد بالي</string>
 
     <string name="Temperature">درجة الحرارة</string>
     <string name="Notify_when_rain_is_detected">إشعار عند توقع المطر</string>
@@ -72,7 +72,6 @@
     <string name="Please_turn_on_location">يرجى تشغيل خدمات الموقع للحصول على الطقس لموقعك الحالي.</string>
     <string name="Open_Settings">فتح الإعدادات</string>
     <string name="Cancel">إلغاء</string>
-    <string name="Weather">الطقس</string>
     <string name="Notify_me_before">إشعار قبل (بالدقائق)</string>
     <string name="Notification_type">نوع الإشعار</string>
     <string name="Silent">صامت</string>
