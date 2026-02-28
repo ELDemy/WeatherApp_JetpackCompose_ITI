@@ -23,7 +23,7 @@ fun FavoritesList(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(cities) { city ->
+        items(cities, key = { it.name + it.longitude + it.latitude }) { city ->
             FavoriteCard(
                 city = city,
                 onClick = {
