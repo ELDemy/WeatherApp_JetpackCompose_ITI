@@ -1,4 +1,4 @@
-package com.dmy.weather.platform.notification
+package com.dmy.weather.data.enums
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dmy.weather.R
 import com.dmy.weather.data.enums.AlertType
+import com.dmy.weather.data.enums.NotificationType
 import com.dmy.weather.data.model.AlertEntity
-import com.dmy.weather.platform.notification.NotificationType
 
 @Composable
 fun ConditionAlertItem(

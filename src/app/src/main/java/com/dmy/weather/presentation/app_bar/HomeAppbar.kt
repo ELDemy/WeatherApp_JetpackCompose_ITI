@@ -2,6 +2,7 @@ package com.dmy.weather.presentation.app_bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
@@ -57,8 +58,10 @@ fun HomeTopBar(
             },
             navigationIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "App Icon"
+                    painter = painterResource(R.drawable.app_icon),
+                    contentDescription = "App Icon",
+                    modifier = Modifier.size(56.dp),
+                    tint = Color.Unspecified
                 )
             },
             actions = {

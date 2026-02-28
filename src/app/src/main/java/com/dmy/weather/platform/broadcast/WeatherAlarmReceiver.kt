@@ -4,12 +4,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.dmy.weather.data.enums.NotificationType
+import com.dmy.weather.data.enums.NotificationType.ALARM
+import com.dmy.weather.data.enums.NotificationType.NOTIFY
+import com.dmy.weather.data.enums.NotificationType.UPDATES
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.platform.notification.NotificationBuilder
-import com.dmy.weather.platform.notification.NotificationType
-import com.dmy.weather.platform.notification.NotificationType.ALARM
-import com.dmy.weather.platform.notification.NotificationType.NOTIFY
-import com.dmy.weather.platform.notification.NotificationType.UPDATES
 
 private const val TAG = "WeatherAlarmReceiver"
 

@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -85,6 +86,7 @@ fun LocationSearchScreen(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             properties = MapProperties(isMyLocationEnabled = userLatLng != null),
+            uiSettings = MapUiSettings(myLocationButtonEnabled = false),
             onMapLoaded = { mapLoaded = true },
             onMapClick = { latLng ->
                 pickedLocation.value = latLng
@@ -111,7 +113,7 @@ fun LocationSearchScreen(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(end = 16.dp, bottom = 115.dp)
-                        .size(32.dp),
+                        .size(48.dp),
                     containerColor = colorResource(R.color.white),
                     onClick = {
                         userLatLng?.let {
@@ -125,6 +127,7 @@ fun LocationSearchScreen(
                         imageVector = Icons.Default.MyLocation,
                         contentDescription = "My Location",
                         tint = colorResource(R.color.blue_primary),
+                        modifier = Modifier.size(32.dp)
                     )
                 }
 

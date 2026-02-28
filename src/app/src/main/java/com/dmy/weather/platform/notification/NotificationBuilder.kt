@@ -11,6 +11,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.dmy.weather.MainActivity
 import com.dmy.weather.R
+import com.dmy.weather.data.enums.NotificationType
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.platform.broadcast.AlarmDismissReceiver
 
@@ -29,7 +30,7 @@ object NotificationBuilder {
     ) {
         val notification = NotificationCompat
             .Builder(context, NotificationType.NOTIFY.id)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.app_icon)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setContentTitle(title)
             .setContentText(subtitle)
@@ -98,7 +99,7 @@ object NotificationBuilder {
                 .setOngoing(true)
                 .setFullScreenIntent(fullScreenPendingIntent, true)
                 .addAction(
-                    R.drawable.ic_launcher_foreground,
+                    R.drawable.app_icon,
                     context.getString(R.string.I_will_take_care),
                     dismissPendingIntent
                 )
@@ -160,7 +161,7 @@ object NotificationBuilder {
     ): NotificationCompat.Builder {
         val (collapsed, expanded) = buildRemoteViews(context, weather)
         return NotificationCompat.Builder(context, type.id)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.app_icon)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(collapsed)
             .setCustomBigContentView(expanded)

@@ -2,6 +2,7 @@ package com.dmy.weather.presentation.app_bar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,8 +60,10 @@ fun WeatherTopBar(
             },
             actions = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                    contentDescription = "App Icon"
+                    painter = painterResource(R.drawable.app_icon),
+                    contentDescription = "App Icon",
+                    modifier = Modifier.size(56.dp),
+                    tint = Color.Unspecified
                 )
             }
         )

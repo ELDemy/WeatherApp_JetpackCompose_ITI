@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.dmy.weather.data.enums.AlertType
-import com.dmy.weather.platform.notification.NotificationType
+import com.dmy.weather.data.enums.NotificationType
 
 @Entity(tableName = "alerts")
 data class AlertEntity(
