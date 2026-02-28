@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -79,7 +80,7 @@ fun MapsSearchField(modifier: Modifier = Modifier, onSelect: (city: CityModel) -
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
-                        "City name, country…",
+                        stringResource(R.string.City_name),
                         color = colorResource(R.color.text_grey),
                         fontSize = 15.sp
                     )
@@ -212,7 +213,7 @@ fun MapsSearchField(modifier: Modifier = Modifier, onSelect: (city: CityModel) -
                 Text("🔍", fontSize = 40.sp)
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    "No results for \"$searchQuery\"",
+                    stringResource(R.string.No_results_for) + "\"$searchQuery\"",
                     color = colorResource(R.color.text_grey),
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center

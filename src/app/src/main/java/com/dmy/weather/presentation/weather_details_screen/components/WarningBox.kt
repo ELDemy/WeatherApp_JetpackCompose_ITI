@@ -22,70 +22,78 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dmy.weather.R
+import com.dmy.weather.presentation.weather_details_screen.WeatherUiState
 
 
 @Composable
 fun WarningBox(
     modifier: Modifier = Modifier,
-    warning: String,
+    state: WeatherUiState,
+    warning: String?,
     onButtonClick: (() -> Unit)?,
-    buttonText: String = "resolve"
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = colorResource(R.color.warning_background),
-        ),
-        border = BorderStroke(1.dp, colorResource(R.color.warning_border)),
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Row(
-            modifier = Modifier
+    val warningMessage =
+        warning ?: state.currentWeather.error ?: state.hourlyForecast.error
+        ?: state.dailyForecast.error
+
+    if (warningMessage != null) {
+        Card(
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 8.dp, vertical = 8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = colorResource(R.color.warning_background),
+            ),
+            border = BorderStroke(1.dp, colorResource(R.color.warning_border)),
+            shape = RoundedCornerShape(12.dp)
         ) {
             Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f)
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Warning,
-                    contentDescription = null,
-                    tint = colorResource(R.color.warning_foreground),
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = warning,
-                    color = colorResource(R.color.warning_foreground),
-                    fontSize = 12.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-            if (onButtonClick != null) {
-                Spacer(modifier = Modifier.width(4.dp))
-                Button(
-                    onClick = onButtonClick,
-                    modifier = Modifier.padding(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.white)
-                    )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(
-                        text = buttonText,
-                        color = colorResource(R.color.warning_foreground),
-                        style = MaterialTheme.typography.labelMedium
+                    Icon(
+                        imageVector = Icons.Outlined.Warning,
+                        contentDescription = null,
+                        tint = colorResource(R.color.warning_foreground),
+                        modifier = Modifier.size(20.dp)
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = warningMessage,
+                        color = colorResource(R.color.warning_foreground),
+                        fontSize = 12.sp,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                if (onButtonClick != null && warning != null) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Button(
+                        onClick = onButtonClick,
+                        modifier = Modifier.padding(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorResource(R.color.white)
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(R.string.resolve),
+                            color = colorResource(R.color.warning_foreground),
+                            style = MaterialTheme.typography.labelMedium
+                        )
+                    }
                 }
             }
         }

@@ -25,9 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dmy.weather.R
 
 @Composable
 fun CustomSettingItem(
@@ -75,11 +80,16 @@ fun CustomSettingItem(
                     color = Color(0xFF6B7280)
                 )
             }
+            val layoutDirection = LocalLayoutDirection.current
             Icon(
-                Icons.Filled.KeyboardArrowRight,
+                imageVector = Icons.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = Color(0xFF9CA3AF)
+                tint = colorResource(R.color.text_grey),
+                modifier = Modifier.graphicsLayer {
+                    scaleX = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
+                }
             )
+
         }
     }
 }

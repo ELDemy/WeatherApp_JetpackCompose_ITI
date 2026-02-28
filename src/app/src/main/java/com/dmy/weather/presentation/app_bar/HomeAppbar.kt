@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
@@ -52,7 +53,7 @@ fun HomeTopBar(
                 actionIconContentColor = colorResource(R.color.white),
             ),
             title = {
-                Text("Weather")
+                Text(stringResource(R.string.Weather))
             },
             navigationIcon = {
                 Icon(
@@ -67,7 +68,7 @@ fun HomeTopBar(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "Settings"
+                        contentDescription = "Search"
                     )
                 }
 
@@ -76,7 +77,7 @@ fun HomeTopBar(
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
-                        contentDescription = "Settings"
+                        contentDescription = "Favorite"
                     )
                 }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.dmy.weather.R
@@ -49,7 +50,7 @@ fun WeatherTopBar(
                 actionIconContentColor = colorResource(R.color.white),
             ),
             title = {
-                Text("Weather")
+                Text(stringResource(R.string.Weather))
             },
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {

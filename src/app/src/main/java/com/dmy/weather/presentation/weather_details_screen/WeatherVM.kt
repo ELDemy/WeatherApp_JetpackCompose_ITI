@@ -28,7 +28,7 @@ class WeatherVM(
 ) : ViewModel() {
 
     companion object {
-        private const val TAG = "HomeViewModel"
+        private const val TAG = "WeatherVM"
         var counter = 1
     }
 
@@ -44,6 +44,11 @@ class WeatherVM(
                 .drop(1)
                 .distinctUntilChanged()
                 .collect {
+                    Log.i(
+                        TAG,
+                        "settings changed in WeatherVM: $it"
+                    )
+
                     if (::locationDetails.isInitialized) {
                         loadWeatherData(locationDetails)
                     }
@@ -82,7 +87,8 @@ class WeatherVM(
                     onSuccess = { model ->
                         it.currentWeather.copy(
                             isLoading = false,
-                            data = model
+                            data = model,
+                            error = null
                         )
                     },
                     onFailure = { error ->
@@ -105,7 +111,7 @@ class WeatherVM(
             it.copy(
                 hourlyForecast = result.fold(
                     onSuccess = { model ->
-                        it.hourlyForecast.copy(isLoading = false, data = model)
+                        it.hourlyForecast.copy(isLoading = false, data = model, error = null)
                     },
                     onFailure = { error ->
                         it.hourlyForecast.copy(
@@ -127,7 +133,7 @@ class WeatherVM(
             it.copy(
                 dailyForecast = result.fold(
                     onSuccess = { model ->
-                        it.dailyForecast.copy(isLoading = false, data = model)
+                        it.dailyForecast.copy(isLoading = false, data = model, error = null)
                     },
                     onFailure = { error ->
                         it.dailyForecast.copy(

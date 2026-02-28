@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -97,7 +98,7 @@ fun SearchBar(navController: NavController, settingsVM: SettingsVM) {
                 }
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Select Language",
+                    stringResource(R.string.Select_Language),
                     color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp
@@ -135,7 +136,7 @@ fun SearchTextField(viewModel: SettingsVM) {
                 modifier = Modifier.weight(1f),
                 decorationBox = { inner ->
                     if (search.isEmpty()) Text(
-                        "Search languages...",
+                        stringResource(R.string.Search_Languages),
                         fontSize = 14.sp,
                         color = Color.Gray
                     )

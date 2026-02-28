@@ -23,10 +23,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.WeatherModel
@@ -93,13 +95,13 @@ fun WeatherScreen(
                         dayForecast = uiState.dailyForecast.data,
                         unit = settingsState.unit!!
                     )
+                    
+                    WarningBox(
+                        state = uiState,
+                        warning = warning,
+                        onButtonClick = onWarningClick
+                    )
 
-                    if (warning != null) {
-                        WarningBox(
-                            warning = warning,
-                            onButtonClick = onWarningClick
-                        )
-                    }
                     HourlyForecast(state = uiState.hourlyForecast, uiState.currentWeather.data)
 
                     WeatherDetails(state = uiState.currentWeather, settingsState.unit!!)
@@ -110,6 +112,7 @@ fun WeatherScreen(
 
             if (uiState.currentWeather.data != null && showFavFab) {
                 val weather: WeatherModel = uiState.currentWeather.data!!
+                val message = weather.cityName + stringResource(R.string.added_to_Favorites)
                 CustomFAB(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
@@ -117,12 +120,11 @@ fun WeatherScreen(
                     icon = Icons.Default.Favorite,
                     onFabClick = {
                         viewModel.addToFav(weather.cityName)
-
                         scope.launch {
                             snackbarHostState.currentSnackbarData?.dismiss()
-                            
+
                             snackbarHostState.showSnackbar(
-                                message = "${weather.cityName} added to Favorites",
+                                message = message,
                                 duration = SnackbarDuration.Long
                             )
                         }

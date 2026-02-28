@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -59,7 +60,7 @@ fun AlertExtraConfig(
                     input.toIntOrNull()?.let { onMinutesChange(it) }
                 }
             },
-            label = { Text("Notify me before (minutes)", fontSize = 12.sp) },
+            label = { Text(stringResource(R.string.Notify_me_before), fontSize = 12.sp) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
@@ -75,7 +76,7 @@ fun AlertExtraConfig(
         )
 
         Text(
-            "Notification type",
+            stringResource(R.string.Notification_type),
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
             color = colorResource(R.color.text_grey)
@@ -87,9 +88,9 @@ fun AlertExtraConfig(
             NotificationType.entries.forEach { type ->
                 val selected = currentType == type
                 val (label, emoji) = when (type) {
-                    NotificationType.UPDATES -> "Silent" to "🔕"
-                    NotificationType.NOTIFY -> "Notify" to "🔔"
-                    NotificationType.ALARM -> "Alarm" to "🚨"
+                    NotificationType.UPDATES -> stringResource(R.string.Silent) to "🔕"
+                    NotificationType.NOTIFY -> stringResource(R.string.Notify) to "🔔"
+                    NotificationType.ALARM -> stringResource(R.string.Alarm) to "⏰"
                 }
                 NotificationTypeChip(
                     label = label,

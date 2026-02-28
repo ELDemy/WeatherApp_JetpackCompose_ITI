@@ -20,6 +20,9 @@
     <string name="C">C</string>
     <string name="F">F</string>
     <string name="K">K</string>
+    <string name="H">H</string>
+    <string name="L">L</string>
+    <string name="Feels">Feels</string>
     <string name="m_s">m/s</string>
     <string name="mil_h">mil/h</string>
     <string name="Weather_condition_icon">Weather condition icon</string>
@@ -46,7 +49,7 @@
     <string name="Use_device_GPS">Use device GPS</string>
     <string name="Map_Selection">Map Selection</string>
     <string name="Pick_location_on_map">Pick location on map</string>
-    <string name="Unit_System">"Unit System"</string>
+    <string name="Unit_System">Unit System</string>
     <string name="Metric">Metric</string>
     <string name="Celsius_">Celsius (°C) • Meter/sec (m/s)</string>
     <string name="Imperial">Imperial</string>
@@ -57,11 +60,25 @@
     <string name="Weather_Alerts">Weather Alerts</string>
     <string name="Manage_notifications">Manage notifications and alarms</string>
     <string name="Alerts">Alerts</string>
-    
-    <string name="Settings">Settings</string>
-    <string name="Settings">Settings</string>
-    <string name="Settings">Settings</string>
-    <string name="Settings">Settings</string>
+    <string name="added_to_Favorites"> added to Favorites</string>
+    <string name="Confirm_Location">Confirm Location</string>
+    <string name="No_results_for">No results for</string>
+    <string name="Save_Language">Save Language</string>
+    <string name="Location_Unavailable">Location Unavailable</string>
+    <string name="We_Couldnt_determine">We could not determine your location.\nPlease check your GPS or select a location manually.</string>
 
+    <string name="Retry">Retry</string>
+    <string name="Location_is_Off">Location is Off</string>
+    <string name="Please_turn_on_location">Please turn on location services to get weather for your current location.</string>
+    <string name="Open_Settings">Open Settings</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Weather">Weather</string>
+    <string name="Notify_me_before">Notify me before (minutes)</string>
+    <string name="Notification_type">Notification type</string>
+    <string name="Silent">Silent</string>
+    <string name="Notify">Notify</string>
+    <string name="Alarm">Alarm</string>
+    <string name="City_name">City name, country…</string>
+    <string name="resolve">resolve</string>
 
 </resources>

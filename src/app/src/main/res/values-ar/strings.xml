@@ -1,35 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Weather</string>
-
-    <string name="Selected_Language">اللغة المختارة</string>
+    <string name="Selected_Language">اللغة المحددة</string>
     <string name="Select_Language">اختر اللغة</string>
     <string name="Search_Languages">ابحث عن لغة…</string>
     <string name="All_Languages">جميع اللغات</string>
-
-    <string name="Selected_Location">الموقع المختار</string>
-
+    <string name="Selected_Location">الموقع المحدد</string>
     <string name="Now">الآن</string>
     <string name="Forecast">التوقعات</string>
     <string name="Details">التفاصيل</string>
-
     <string name="Wind_Speed">سرعة الرياح</string>
     <string name="Humidity">الرطوبة</string>
-    <string name="Clouds">السحب</string>
+    <string name="Clouds">الغيوم</string>
+    <string name="Rain">المطر</string>
+    <string name="Snow">الثلج</string>
     <string name="Pressure">الضغط</string>
-
     <string name="Next_Days_Forecast">توقعات الأيام القادمة</string>
     <string name="Today">اليوم</string>
-
-    <string name="hPa">هكتو</string>
+    <string name="hPa">هكتوباسكال</string>
     <string name="C">م</string>
     <string name="F">ف</string>
     <string name="K">ك</string>
-
+    <string name="H">ع</string>
+    <string name="L">ص</string>
+    <string name="Feels">المحسوس</string>
     <string name="m_s">م/ث</string>
     <string name="mil_h">ميل/س</string>
-
     <string name="Weather_condition_icon">أيقونة حالة الطقس</string>
+    <string name="I_will_take_care">سأتولى الأمر</string>
 
-    <string name="I_will_take_care">هاخد بالي</string>
+    <string name="Temperature">درجة الحرارة</string>
+    <string name="Notify_when_rain_is_detected">إشعار عند توقع المطر</string>
+    <string name="Notify_when_snow_is_detected">إشعار عند توقع الثلوج</string>
+    <string name="Notify_on_heavy_cloud_cover">إشعار عند كثافة الغيوم</string>
+
+    <string name="Tap_to_configure">اضغط للإعداد</string>
+    <string name="Min">أدنى</string>
+    <string name="Max">أقصى</string>
+    <string name="Min_threshold">الحد الأدنى</string>
+    <string name="Max_threshold">الحد الأقصى</string>
+    <string name="Threshold_Alerts">تنبيهات الحدود</string>
+
+    <string name="Settings">الإعدادات</string>
+    <string name="Saved_Locations">المواقع المحفوظة</string>
+    <string name="Select_Location">اختر الموقع</string>
+    <string name="Location_Settings">إعدادات الموقع</string>
+    <string name="GPS_Location">موقع GPS</string>
+    <string name="Use_device_GPS">استخدام GPS الجهاز</string>
+    <string name="Map_Selection">اختيار من الخريطة</string>
+    <string name="Pick_location_on_map">اختر موقعاً على الخريطة</string>
+    <string name="Unit_System">نظام الوحدات</string>
+    <string name="Metric">متري</string>
+    <string name="Celsius_">سيلسيوس (°م) • متر/ثانية</string>
+    <string name="Imperial">إمبريالي</string>
+    <string name="Fahrenheit_">فهرنهايت (°ف) • ميل/ساعة</string>
+    <string name="Standard">قياسي</string>
+    <string name="Kelvin_">كلفن (ك) • متر/ثانية</string>
+    <string name="Current_language">اللغة الحالية</string>
+    <string name="Weather_Alerts">تنبيهات الطقس</string>
+    <string name="Manage_notifications">إدارة الإشعارات والتنبيهات</string>
+    <string name="Alerts">التنبيهات</string>
+    <string name="added_to_Favorites"> تمت إضافته إلى المفضلة</string>
+    <string name="Confirm_Location">تأكيد الموقع</string>
+    <string name="No_results_for">لا توجد نتائج لـ</string>
+    <string name="Save_Language">حفظ اللغة</string>
+    <string name="Location_Unavailable">الموقع غير متاح</string>
+    <string name="We_Couldnt_determine">تعذر تحديد موقعك.\nيرجى التحقق من GPS أو اختيار موقع يدويًا.</string>
+
+    <string name="Retry">إعادة المحاولة</string>
+    <string name="Location_is_Off">الموقع متوقف</string>
+    <string name="Please_turn_on_location">يرجى تشغيل خدمات الموقع للحصول على الطقس لموقعك الحالي.</string>
+    <string name="Open_Settings">فتح الإعدادات</string>
+    <string name="Cancel">إلغاء</string>
+    <string name="Weather">الطقس</string>
+    <string name="Notify_me_before">إشعار قبل (بالدقائق)</string>
+    <string name="Notification_type">نوع الإشعار</string>
+    <string name="Silent">صامت</string>
+    <string name="Notify">إشعار</string>
+    <string name="Alarm">منبه</string>
+    <string name="City_name">اسم المدينة، الدولة…</string>
+    <string name="resolve">حل</string>
+
 </resources>

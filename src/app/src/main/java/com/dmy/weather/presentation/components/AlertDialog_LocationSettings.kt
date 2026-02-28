@@ -12,6 +12,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.dmy.weather.R
 
 @Composable
 fun AlertDialogForLocationSettings(showLocationDialog: MutableState<Boolean>) {
@@ -19,16 +21,18 @@ fun AlertDialogForLocationSettings(showLocationDialog: MutableState<Boolean>) {
     AlertDialog(
         onDismissRequest = { showLocationDialog.value = false },
         icon = { Icon(Icons.Outlined.LocationOff, contentDescription = null) },
-        title = { Text("Location is Off") },
-        text = { Text("Please turn on location services to get weather for your current location.") },
+        title = { Text(stringResource(R.string.Location_is_Off)) },
+        text = { Text(stringResource(R.string.Please_turn_on_location)) },
         confirmButton = {
             TextButton(onClick = {
                 showLocationDialog.value = false
                 context.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-            }) { Text("Open Settings") }
+            }) { Text(stringResource(R.string.Open_Settings)) }
         },
         dismissButton = {
-            TextButton(onClick = { showLocationDialog.value = false }) { Text("Cancel") }
+            TextButton(onClick = {
+                showLocationDialog.value = false
+            }) { Text(stringResource(R.string.Cancel)) }
         }
     )
 }
@@ -39,8 +43,8 @@ fun AlertDialogForLocationPermission(showDialog: MutableState<Boolean>) {
     AlertDialog(
         onDismissRequest = { showDialog.value = false },
         icon = { Icon(Icons.Outlined.LocationOff, contentDescription = null) },
-        title = { Text("Location is Off") },
-        text = { Text("Please turn on location services to get weather for your current location.") },
+        title = { Text(stringResource(R.string.Location_is_Off)) },
+        text = { Text(stringResource(R.string.Please_turn_on_location)) },
         confirmButton = {
             TextButton(onClick = {
                 showDialog.value = false
@@ -49,10 +53,12 @@ fun AlertDialogForLocationPermission(showDialog: MutableState<Boolean>) {
                         data = Uri.fromParts("package", context.packageName, null)
                     }
                 )
-            }) { Text("Open Settings") }
+            }) { Text(stringResource(R.string.Open_Settings)) }
         },
         dismissButton = {
-            TextButton(onClick = { showDialog.value = false }) { Text("Cancel") }
+            TextButton(onClick = {
+                showDialog.value = false
+            }) { Text(stringResource(R.string.Cancel)) }
         }
     )
 }

@@ -21,9 +21,11 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.dmy.weather.R
 import com.dmy.weather.presentation.home_screen.HomeUiState
 
 @Composable
@@ -54,7 +56,7 @@ fun NoLocationScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Location Unavailable",
+                text = stringResource(R.string.Location_Unavailable),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -62,7 +64,7 @@ fun NoLocationScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "We couldn't determine your location.\nPlease check your GPS or select a location manually.",
+                text = stringResource(R.string.We_Couldnt_determine),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -74,7 +76,7 @@ fun NoLocationScreen(
             Button(onClick = onRetry) {
                 Icon(imageVector = Icons.Default.Refresh, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Retry")
+                Text(stringResource(R.string.Retry))
             }
         }
     }

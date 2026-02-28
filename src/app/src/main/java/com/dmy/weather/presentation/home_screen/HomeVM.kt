@@ -36,7 +36,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
             settingsRepository.settingsFlow
                 .distinctUntilChanged()
                 .collect {
-                    Log.i(TAG, "settings changed: $it")
+                    Log.i(TAG, "settings changed in HomeVM: $it")
                     resolveLocation()
                 }
         }

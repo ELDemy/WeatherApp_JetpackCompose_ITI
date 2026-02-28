@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dmy.weather.R
 
@@ -21,6 +22,6 @@ fun ConfirmButton(enabled: Boolean, modifier: Modifier = Modifier, onClick: () -
             contentColor = colorResource(R.color.white),
         ),
     ) {
-        Text("Confirm Location")
+        Text(stringResource(R.string.Confirm_Location))
     }
 }

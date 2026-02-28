@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Weather</string>
+    <string name="Selected_Language">Ausgewählte Sprache</string>
+    <string name="Select_Language">Sprache auswählen</string>
+    <string name="Search_Languages">Sprachen suchen…</string>
+    <string name="All_Languages">Alle Sprachen</string>
+    <string name="Selected_Location">Ausgewählter Standort</string>
+    <string name="Now">Jetzt</string>
+    <string name="Forecast">Vorhersage</string>
+    <string name="Details">Details</string>
+    <string name="Wind_Speed">Windgeschwindigkeit</string>
+    <string name="Humidity">Luftfeuchtigkeit</string>
+    <string name="Clouds">Bewölkung</string>
+    <string name="Rain">Regen</string>
+    <string name="Snow">Schnee</string>
+    <string name="Pressure">Luftdruck</string>
+    <string name="Next_Days_Forecast">Vorhersage für die nächsten Tage</string>
+    <string name="Today">Heute</string>
+    <string name="hPa">hPa</string>
+    <string name="C">C</string>
+    <string name="F">F</string>
+    <string name="K">K</string>
+    <string name="H">H</string>
+    <string name="L">T</string>
+    <string name="Feels">Gefühlt</string>
+    <string name="m_s">m/s</string>
+    <string name="mil_h">mph</string>
+    <string name="Weather_condition_icon">Wettersymbol</string>
+    <string name="I_will_take_care">Ich kümmere mich darum</string>
+
+    <string name="Temperature">Temperatur</string>
+    <string name="Notify_when_rain_is_detected">Benachrichtigen, wenn Regen erkannt wird</string>
+    <string name="Notify_when_snow_is_detected">Benachrichtigen, wenn Schnee erkannt wird</string>
+    <string name="Notify_on_heavy_cloud_cover">Benachrichtigen bei starker Bewölkung</string>
+
+    <string name="Tap_to_configure">Zum Konfigurieren tippen</string>
+    <string name="Min">Min</string>
+    <string name="Max">Max</string>
+    <string name="Min_threshold">Mindestgrenze</string>
+    <string name="Max_threshold">Höchstgrenze</string>
+    <string name="Threshold_Alerts">Schwellenwert-Warnungen</string>
+
+    <string name="Settings">Einstellungen</string>
+    <string name="Saved_Locations">Gespeicherte Standorte</string>
+    <string name="Select_Location">Standort auswählen</string>
+    <string name="Location_Settings">Standorteinstellungen</string>
+    <string name="GPS_Location">GPS-Standort</string>
+    <string name="Use_device_GPS">Geräte-GPS verwenden</string>
+    <string name="Map_Selection">Kartenauswahl</string>
+    <string name="Pick_location_on_map">Standort auf der Karte auswählen</string>
+    <string name="Unit_System">Einheitensystem</string>
+    <string name="Metric">Metrisch</string>
+    <string name="Celsius_">Celsius (°C) • Meter/Sekunde (m/s)</string>
+    <string name="Imperial">Imperial</string>
+    <string name="Fahrenheit_">Fahrenheit (°F) • Meilen/Stunde (mph)</string>
+    <string name="Standard">Standard</string>
+    <string name="Kelvin_">Kelvin (K) • Meter/Sekunde (m/s)</string>
+    <string name="Current_language">Aktuelle Sprache</string>
+    <string name="Weather_Alerts">Wetterwarnungen</string>
+    <string name="Manage_notifications">Benachrichtigungen und Alarme verwalten</string>
+    <string name="Alerts">Warnungen</string>
+    <string name="added_to_Favorites"> zu Favoriten hinzugefügt</string>
+    <string name="Confirm_Location">Standort bestätigen</string>
+    <string name="No_results_for">Keine Ergebnisse für</string>
+    <string name="Save_Language">Sprache speichern</string>
+    <string name="Location_Unavailable">Standort nicht verfügbar</string>
+    <string name="We_Couldnt_determine">Ihr Standort konnte nicht ermittelt werden.\nBitte überprüfen Sie Ihr GPS oder wählen Sie manuell einen Standort aus.</string>
+
+    <string name="Retry">Erneut versuchen</string>
+    <string name="Location_is_Off">Standort ist deaktiviert</string>
+    <string name="Please_turn_on_location">Bitte aktivieren Sie die Standortdienste, um das aktuelle Wetter zu erhalten.</string>
+    <string name="Open_Settings">Einstellungen öffnen</string>
+    <string name="Cancel">Abbrechen</string>
+    <string name="Weather">Wetter</string>
+    <string name="Notify_me_before">Benachrichtigen vor (Minuten)</string>
+    <string name="Notification_type">Benachrichtigungstyp</string>
+    <string name="Silent">Stumm</string>
+    <string name="Notify">Benachrichtigen</string>
+    <string name="Alarm">Alarm</string>
+    <string name="City_name">Stadtname, Land…</string>
+</resources>

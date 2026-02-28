@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.dmy.weather.data.model.CityModel
+import junit.framework.TestCase.assertFalse
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -72,15 +74,25 @@ class FavLocationsDaoTest {
     @Test
     fun insertAndDeleteData_returnsCorrectData() = runTest {
         //Given
-        val city = CityModel()
+        val city = CityModel(name = "city", country = "Country", longitude = 1.0, latitude = 1.0)
+        val city2 = CityModel(name = "city2", country = "Country2", longitude = 2.0, latitude = 2.0)
+        val city3 = CityModel(name = "city3", country = "Country3", longitude = 3.0, latitude = 3.0)
+        val city4 = CityModel(name = "city4", country = "Country4", longitude = 4.0, latitude = 4.0)
 
         //When
         dao.insert(city)
+        dao.insert(city2)
+        dao.insert(city3)
+        dao.insert(city4)
+        delay(1000)
         dao.delete(city)
+        delay(5000)
         val favCities = dao.getAll().first()
 
         //Then
-        assert(!favCities.contains(city))
+        assertFalse(favCities.contains(city))
+        assert(favCities.size == 3)
+
     }
 
     @Test

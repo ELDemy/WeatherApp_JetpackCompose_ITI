@@ -19,11 +19,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dmy.weather.R
 import com.dmy.weather.R.color
 import com.dmy.weather.R.drawable
 import com.dmy.weather.data.enums.UnitSystem
@@ -110,9 +112,9 @@ private fun WeatherContent(
         val low = dayForecast?.forecasts?.firstOrNull()?.tempMin ?: weather.min
         val high = dayForecast?.forecasts?.firstOrNull()?.tempMax ?: weather.max
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            WeatherStatChip(label = "H", value = high.toTemp())
-            WeatherStatChip(label = "L", value = low.toTemp())
-            WeatherStatChip(label = "Feels", value = weather.feelsLike.toTemp())
+            WeatherStatChip(label = stringResource(R.string.H), value = high.toTemp())
+            WeatherStatChip(label = stringResource(R.string.L), value = low.toTemp())
+            WeatherStatChip(label = stringResource(R.string.Feels), value = weather.feelsLike.toTemp())
         }
     }
 }
