@@ -90,8 +90,8 @@ fun HomeScreen(
     }
 
     if (requestLocation) {
+        requestLocation = false
         getUserLocation { result ->
-            requestLocation = false
             viewModel.onLocationResult(result)
         }
     }
