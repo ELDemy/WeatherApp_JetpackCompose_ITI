@@ -58,8 +58,8 @@ class AlertRepositoryImpl(
 
                     NotificationBuilder.showNormalNotification(
                         context,
-                        "${alert.alertType?.name} Alarm Set Successfully",
-                        "Alarm will fire on ${(triggerTime / 1000).getTimeInFullDate()}"
+                        "${alert.alertType?.name} ${alert.notificationType?.name} Set Successfully",
+                        "${alert.notificationType?.name} will fire on ${(triggerTime / 1000).getTimeInFullDate()}"
                     )
 
                     AlarmScheduler.scheduleNotificationAt(

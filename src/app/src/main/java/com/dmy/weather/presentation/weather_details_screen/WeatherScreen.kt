@@ -83,7 +83,10 @@ fun WeatherScreen(
 
     PullToRefreshBox(
         isRefreshing = isRefreshing || isLoading,
-        onRefresh = onRefresh ?: { viewModel.loadWeatherData(location) },
+        onRefresh = {
+            onRefresh?.invoke()
+            viewModel.loadWeatherData(location)
+        },
         modifier = modifier
     ) {
         Box(Modifier.fillMaxSize()) {
