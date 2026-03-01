@@ -80,4 +80,9 @@
     <string name="City_name">اسم المدينة، الدولة…</string>
     <string name="resolve">حل</string>
 
+    <string name="GPS_is_off">نظام GPS متوقف. يتم عرض آخر موقع معروف.</string>
+    <string name="Location_services_are_off">خدمات الموقع متوقفة. يرجى تشغيل GPS.</string>
+    <string name="Location_permission_is_required">إذن الوصول إلى الموقع مطلوب.</string>
+    <string name="Location_permission_is_permanently_denied.">تم رفض إذن الموقع بشكل دائم.</string>
+    <string name="Location_is_not_available">الموقع غير متاح.</string>
 </resources>

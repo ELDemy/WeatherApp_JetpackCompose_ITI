@@ -77,4 +77,10 @@
     <string name="Notify">Benachrichtigen</string>
     <string name="Alarm">Alarm</string>
     <string name="City_name">Stadtname, Land…</string>
+
+    <string name="GPS_is_off">GPS ist deaktiviert. Letzter bekannter Standort wird angezeigt.</string>
+    <string name="Location_services_are_off">Standortdienste sind deaktiviert. Bitte aktiviere GPS.</string>
+    <string name="Location_permission_is_required">Standortberechtigung ist erforderlich.</string>
+    <string name="Location_permission_is_permanently_denied.">Die Standortberechtigung wurde dauerhaft verweigert.</string>
+    <string name="Location_is_not_available">Standort ist nicht verfügbar.</string>
 </resources>

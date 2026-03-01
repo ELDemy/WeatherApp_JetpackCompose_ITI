@@ -80,4 +80,11 @@
     <string name="City_name">City name, country…</string>
     <string name="resolve">resolve</string>
 
+    <string name="GPS_is_off">GPS is off. Showing last known location.</string>
+    <string name="Location_services_are_off">Location services are off. Please turn on GPS.</string>
+    <string name="Location_permission_is_required">Location permission is required.</string>
+    <string name="Location_permission_is_permanently_denied.">Location permission is permanently denied.</string>
+    <string name="Location_is_not_available">Location is not available.</string>
+
+
 </resources>

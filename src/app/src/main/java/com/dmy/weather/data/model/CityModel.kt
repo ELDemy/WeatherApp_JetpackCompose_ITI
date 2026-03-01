@@ -7,10 +7,10 @@ import androidx.room.Entity
     primaryKeys = ["longitude", "latitude"]
 )
 data class CityModel(
-    val name: String = "Cairo",
-    val localName: String = "Cairo",
-    val latitude: Double = 30.0444,
-    val longitude: Double = 31.2357,
-    val country: String = "EG",
-    val state: String = "Cairo"
+    val name: String = "",
+    val localName: String = "",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
+    val country: String = "",
+    val state: String = ""
 )

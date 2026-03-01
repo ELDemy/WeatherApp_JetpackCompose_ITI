@@ -14,9 +14,9 @@ object ExceptionMapper {
         return when (exception) {
             is MyException -> exception.message
             is UnknownHostException -> "No internet connection"
-            is SocketTimeoutException -> "Request timed out"
+            is SocketTimeoutException -> "Request timed out Check your connection!!"
             is HttpException -> when (exception.code()) {
-                401 -> "Unauthorized, please login again"
+                401 -> "Unauthorized, please Contact Support"
                 404 -> "Not found"
                 500 -> "Server error, try again later"
                 else -> "Something went wrong"

@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.dmy.weather.data.enums.LocationMode
@@ -38,6 +39,7 @@ fun HomeScreen(
     modifier: Modifier,
     viewModel: HomeVM = koinViewModel()
 ) {
+    val context = LocalContext.current
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val isLoadingGpsLocation = state.isLoadingGPSLocation
@@ -94,7 +96,7 @@ fun HomeScreen(
 
     if (isLoadingGpsLocation) {
         getUserLocation { result ->
-            viewModel.onLocationResult(result)
+            viewModel.onLocationResult(result, context)
         }
     }
 

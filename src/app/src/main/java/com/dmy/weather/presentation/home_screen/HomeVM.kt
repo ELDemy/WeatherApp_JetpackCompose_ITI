@@ -1,8 +1,10 @@
 package com.dmy.weather.presentation.home_screen
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dmy.weather.R
 import com.dmy.weather.data.enums.LocationMode
 import com.dmy.weather.data.mapper.toLocationDetails
 import com.dmy.weather.data.model.LocationDetails
@@ -137,7 +139,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
         }
     }
 
-    fun onLocationResult(result: LocationResult) {
+    fun onLocationResult(result: LocationResult, context: Context) {
         Log.i(TAG, "onLocationResult: $result")
         _uiState.update { it.copy(isLoadingGPSLocation = false) }
         when (result) {
@@ -165,7 +167,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                     it.copy(
                         location = locationDetails,
                         locationMode = LocationMode.GPS,
-                        warning = "GPS is off. Showing last known location.",
+                        warning = context.getString(R.string.GPS_is_off),
                         warningEffect = HomeEffect.OpenLocationSettings,
                         isLoading = false,
                         isRefreshing = false,
@@ -173,7 +175,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                     )
                 }
                 viewModelScope.launch {
-                    _effect.emit(HomeEffect.ShowWarning("GPS is off. Showing last known location."))
+                    _effect.emit(HomeEffect.ShowWarning(context.getString(R.string.GPS_is_off)))
                 }
             }
 
@@ -186,7 +188,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             location = oldLocation,
                             isLoading = false,
                             isRefreshing = false,
-                            warning = "Location services are off. Please turn on GPS.",
+                            warning = context.getString(R.string.Location_services_are_off),
                             warningEffect = HomeEffect.OpenLocationSettings,
                             noLocation = oldLocation == null
                         )
@@ -204,12 +206,12 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             location = oldLocation,
                             isLoading = false,
                             isRefreshing = false,
-                            warning = "Location permission is required.",
+                            warning = context.getString(R.string.Location_permission_is_required),
                             warningEffect = HomeEffect.RequestGpsLocation,
                             noLocation = oldLocation == null
                         )
                     }
-                    _effect.emit(HomeEffect.ShowWarning("Location permission is required."))
+                    _effect.emit(HomeEffect.ShowWarning(context.getString(R.string.Location_permission_is_required)))
                 }
             }
 
@@ -222,7 +224,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             location = oldLocation,
                             isLoading = false,
                             isRefreshing = false,
-                            warning = "Location permission is permanently denied.",
+                            warning = context.getString(R.string.Location_permission_is_permanently_denied_),
                             warningEffect = HomeEffect.OpenAppSettings,
                             noLocation = oldLocation == null
                         )
@@ -240,7 +242,7 @@ class HomeVM(val settingsRepository: SettingsRepository) : ViewModel() {
                             location = oldLocation,
                             isLoading = false,
                             isRefreshing = false,
-                            warning = "Location is not available.",
+                            warning = context.getString(R.string.Location_is_not_available),
                             warningEffect = HomeEffect.RequestGpsLocation,
                             noLocation = oldLocation == null
                         )

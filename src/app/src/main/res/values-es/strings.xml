@@ -77,4 +77,10 @@
     <string name="Notify">Notificar</string>
     <string name="Alarm">Alarma</string>
     <string name="City_name">Nombre de la ciudad, país…</string>
+
+    <string name="GPS_is_off">El GPS está desactivado. Mostrando la última ubicación conocida.</string>
+    <string name="Location_services_are_off">Los servicios de ubicación están desactivados. Por favor, activa el GPS.</string>
+    <string name="Location_permission_is_required">Se requiere permiso de ubicación.</string>
+    <string name="Location_permission_is_permanently_denied.">El permiso de ubicación ha sido denegado permanentemente.</string>
+    <string name="Location_is_not_available">La ubicación no está disponible.</string>
 </resources>
