@@ -47,6 +47,7 @@ enum class NotificationType(
 
                 when (this@NotificationType) {
                     ALARM -> {
+                        setBypassDnd(true)
                         enableVibration(true)
                         vibrationPattern = longArrayOf(0, 500, 250, 500, 250, 500)
                         val audioAttributes = AudioAttributes.Builder()

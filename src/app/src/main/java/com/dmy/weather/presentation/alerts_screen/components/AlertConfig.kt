@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,22 +46,26 @@ fun AlertExtraConfig(
     val currentMinutes = alert?.time ?: 30
     val currentType = alert?.notificationType ?: NotificationType.NOTIFY
     var minutesText by remember(currentMinutes) { mutableStateOf(currentMinutes.toString()) }
-
+    val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
         OutlinedTextField(
             value = minutesText,
             onValueChange = { input ->
                 if (input.length <= 4 && input.all { it.isDigit() }) {
                     minutesText = input
-                    input.toIntOrNull()?.let { onMinutesChange(it) }
                 }
             },
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    minutesText.toIntOrNull()?.let { onMinutesChange(it) }
+                    focusManager.clearFocus()
+                },
+            ),
             label = { Text(stringResource(R.string.Notify_me_before), fontSize = 12.sp) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

@@ -11,4 +11,6 @@ interface AlertRepository {
 
     suspend fun getActiveAlerts(): List<AlertEntity>
 
+    suspend fun createAlarms(alerts: List<AlertEntity>? = null): Result<Unit>
+
 }

@@ -36,7 +36,7 @@ object AlarmScheduler {
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            alert.alertType?.ordinal ?: 0,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -48,11 +48,11 @@ object AlarmScheduler {
         )
     }
 
-    fun cancel(context: Context) {
+    fun cancel(context: Context, alert: AlertEntity) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val pendingIntent = PendingIntent.getBroadcast(
             context,
-            0,
+            alert.alertType?.ordinal ?: 0,
             Intent(context, WeatherAlarmReceiver::class.java),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

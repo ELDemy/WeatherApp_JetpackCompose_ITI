@@ -10,32 +10,28 @@ import com.dmy.weather.data.enums.AlertType.SNOW
 import com.dmy.weather.data.enums.AlertType.TEMP
 import com.dmy.weather.data.model.AlertEntity
 
-fun HourlyForecastDTO.filterBasedOnAlerts(activeAlerts: List<AlertEntity>): Pair<HourlyForecastItem, AlertEntity>? {
-    if (activeAlerts.isEmpty()) return null
-    
+fun HourlyForecastDTO.filterBasedOnAlerts(alert: AlertEntity): Pair<HourlyForecastItem, AlertEntity>? {
     this.list?.forEach { item ->
-        val matchedAlert = activeAlerts.firstOrNull { alert ->
-            when (alert.alertType) {
-                TEMP ->
-                    item.main?.temp?.let { return@firstOrNull it >= alert.max || it <= alert.min }
-                        ?: false
+        val matchedAlert = when (alert.alertType) {
+            TEMP ->
+                item.main?.temp?.let { it >= alert.max || it <= alert.min }
+                    ?: false
 
-                HUMIDITY ->
-                    item.main?.humidity?.let { return@firstOrNull it >= alert.max || it <= alert.min }
-                        ?: false
+            HUMIDITY ->
+                item.main?.humidity?.let { it >= alert.max || it <= alert.min }
+                    ?: false
 
-                PRESSURE ->
-                    item.main?.pressure?.let { return@firstOrNull it >= alert.max || it <= alert.min }
-                        ?: false
+            PRESSURE ->
+                item.main?.pressure?.let { it >= alert.max || it <= alert.min }
+                    ?: false
 
-                RAIN, SNOW, CLOUDS ->
-                    return@firstOrNull item.weather?.firstOrNull()?.description == alert.alertType.desc
+            RAIN, SNOW, CLOUDS ->
+                item.weather?.firstOrNull()?.description == alert.alertType.desc
 
-                null -> false
-            }
+            null -> false
         }
 
-        if (matchedAlert != null) return Pair(item, matchedAlert)
+        if (matchedAlert) return Pair(item, alert)
     }
 
     return null

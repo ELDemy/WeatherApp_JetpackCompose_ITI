@@ -23,7 +23,7 @@ object NotificationBuilder {
         }
     }
 
-    fun showTestNotification(
+    fun showNormalNotification(
         context: Context,
         title: String,
         subtitle: String
@@ -95,7 +95,7 @@ object NotificationBuilder {
             baseBuilder(context, NotificationType.ALARM, weather)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setAutoCancel(false)
+                .setAutoCancel(true)
                 .setOngoing(true)
                 .setFullScreenIntent(fullScreenPendingIntent, true)
                 .addAction(

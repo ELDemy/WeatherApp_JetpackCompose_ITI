@@ -21,4 +21,7 @@ data class AlertEntity(
 
     @Ignore
     val notificationType: NotificationType? = NotificationType.getByName(notification)
+
+    @Ignore
+    val id: Int = alertType?.ordinal ?: 0
 }

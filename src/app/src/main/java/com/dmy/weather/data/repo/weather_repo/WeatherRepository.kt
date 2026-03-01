@@ -14,6 +14,6 @@ interface WeatherRepository {
 
     suspend fun getDailyForecast(locationDetails: LocationDetails): Result<DailyForecastModel>
 
-    suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, AlertEntity>>
+    suspend fun getWeatherAlerts(activeAlerts: List<AlertEntity>): Result<List<Pair<NotificationWeatherModel, AlertEntity>>>
 
 }

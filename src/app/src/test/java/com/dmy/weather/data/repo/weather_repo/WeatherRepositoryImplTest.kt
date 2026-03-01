@@ -6,24 +6,16 @@ import android.util.Log
 import com.dmy.weather.data.data_source.remote.weather_data_source.WeatherRemoteDataSource
 import com.dmy.weather.data.dto.DailyForecastDTO
 import com.dmy.weather.data.dto.HourlyForecastDTO
-import com.dmy.weather.data.dto.HourlyForecastItem
 import com.dmy.weather.data.dto.WeatherDTO
-import com.dmy.weather.data.mapper.filterBasedOnAlerts
-import com.dmy.weather.data.mapper.toLocationDetails
 import com.dmy.weather.data.mapper.toModel
-import com.dmy.weather.data.mapper.toNotificationModel
-import com.dmy.weather.data.model.AlertEntity
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.LocationDetails
-import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.data.model.WeatherModel
 import com.dmy.weather.data.repo.alert_repo.AlertRepository
 import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.platform.services.LocationService
-import com.google.android.gms.maps.model.LatLng
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -63,13 +55,11 @@ class WeatherRepositoryImplTest {
 
         weatherRemoteDataSource = mockk()
         settingsRepository = mockk()
-        alertRepository = mockk()
         locationService = mockk()
 
         repository = WeatherRepositoryImpl(
             weatherRemoteDataSource,
             settingsRepository,
-            alertRepository,
             locationService
         )
     }
@@ -178,57 +168,4 @@ class WeatherRepositoryImplTest {
         assertTrue(result.isFailure)
     }
 
-    // ALERT
-    @Test
-    fun getAlertWeather_whenLocationFromGPS_usesGPSLocation() = runTest {
-        // Given
-        val fakeGPSLocation = mockk<LatLng>()
-        val fakeDTO = mockk<HourlyForecastDTO>()
-        val fakeHourlyForecastItem = mockk<HourlyForecastItem>()
-        val fakeNotificationModel = mockk<NotificationWeatherModel>()
-        val fakeAlerts = listOf<AlertEntity>(mockk())
-        val fakeAlertEntity = mockk<AlertEntity>()
-
-        coEvery { locationService.getCurrentLocation() } returns fakeGPSLocation
-        every { fakeGPSLocation.toLocationDetails() } returns fakeLocation
-
-        coEvery { weatherRemoteDataSource.getHourlyForecast(fakeLocation) } returns fakeDTO
-        coEvery { alertRepository.getActiveAlerts() } returns fakeAlerts
-
-        every { fakeDTO.filterBasedOnAlerts(fakeAlerts) } returns (fakeHourlyForecastItem to fakeAlertEntity)
-        every { fakeHourlyForecastItem.toNotificationModel(fakeDTO.city) } returns fakeNotificationModel
-
-        // When
-        val result = repository.getAlertWeather()
-
-        // Then
-        assertTrue(result.isSuccess)
-        assertEquals(fakeNotificationModel, result.getOrNull()?.first)
-        assertEquals(fakeAlertEntity, result.getOrNull()?.second)
-
-        // Verify GPS location was used (settings not called)
-        coVerify(exactly = 0) { settingsRepository.getLastKnownLocation() }
-        coVerify(exactly = 0) { settingsRepository.getDefaultLocation() }
-    }
-
-    @Test
-    fun getAlertWeather_whenFilterReturnsNull_returnsNullDataException() = runTest {
-        // Given
-        coEvery { locationService.getCurrentLocation() } returns null
-        coEvery { settingsRepository.getLastKnownLocation() } returns fakeLocation
-
-        val fakeDTO = mockk<HourlyForecastDTO>()
-        val fakeAlerts = listOf<AlertEntity>(mockk())
-
-        coEvery { weatherRemoteDataSource.getHourlyForecast(fakeLocation) } returns fakeDTO
-        coEvery { alertRepository.getActiveAlerts() } returns fakeAlerts
-
-        every { fakeDTO.filterBasedOnAlerts(fakeAlerts) } returns null
-
-        // When
-        val result = repository.getAlertWeather()
-
-        // Then
-        assertTrue(result.isFailure)
-    }
 }

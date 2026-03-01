@@ -22,6 +22,7 @@ import com.dmy.weather.data.repo.settings_repo.SettingsRepositoryImpl
 import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import com.dmy.weather.data.repo.weather_repo.WeatherRepositoryImpl
 import com.dmy.weather.platform.services.LocationService
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -31,7 +32,6 @@ val dataModule = module {
     single<CitiesDataSource> { CitiesDataSourceImpl(get<FavLocationsDao>()) }
 
     single<SettingsRepository> { SettingsRepositoryImpl(get<SettingsDataSource>()) }
-    single<AlertRepository> { AlertRepositoryImpl(get<AlertsDataSource>()) }
 
     single<CityRepository> {
         CityRepositoryImpl(
@@ -44,8 +44,15 @@ val dataModule = module {
         WeatherRepositoryImpl(
             get<WeatherRemoteDataSource>(),
             get<SettingsRepository>(),
-            get<AlertRepository>(),
             get<LocationService>(),
+        )
+    }
+    
+    single<AlertRepository> {
+        AlertRepositoryImpl(
+            get<AlertsDataSource>(),
+            get<WeatherRepository>(),
+            androidContext(),
         )
     }
 }

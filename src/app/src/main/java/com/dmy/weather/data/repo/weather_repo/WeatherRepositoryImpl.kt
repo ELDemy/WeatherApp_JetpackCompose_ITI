@@ -12,7 +12,6 @@ import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.LocationDetails
 import com.dmy.weather.data.model.NotificationWeatherModel
 import com.dmy.weather.data.model.WeatherModel
-import com.dmy.weather.data.repo.alert_repo.AlertRepository
 import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import com.dmy.weather.platform.services.LocationService
 import com.dmy.weather.utils.exceptions.NullDataException
@@ -23,7 +22,6 @@ private const val TAG = "WeatherRepo"
 class WeatherRepositoryImpl(
     val weatherRemoteDataSource: WeatherRemoteDataSource,
     val settingsRepository: SettingsRepository,
-    val alertRepository: AlertRepository,
     val locationService: LocationService
 ) : WeatherRepository {
 
@@ -69,7 +67,7 @@ class WeatherRepositoryImpl(
         }.mapFailure()
     }
 
-    override suspend fun getAlertWeather(): Result<Pair<NotificationWeatherModel, AlertEntity>> {
+    override suspend fun getWeatherAlerts(activeAlerts: List<AlertEntity>): Result<List<Pair<NotificationWeatherModel, AlertEntity>>> {
         return runCatching {
             val locationDetails =
                 locationService.getCurrentLocation()?.toLocationDetails()
@@ -80,17 +78,18 @@ class WeatherRepositoryImpl(
                 ?: throw NullDataException()
             Log.i(TAG, "hourlyForecastDTO: $hourlyForecastDTO")
 
-            val activeAlerts = alertRepository.getActiveAlerts()
-            Log.i(TAG, "activeAlerts: $activeAlerts")
+            activeAlerts.map { alert ->
+                val pair = hourlyForecastDTO.filterBasedOnAlerts(alert)
+                    ?: throw NullDataException()
 
-            val pair = hourlyForecastDTO.filterBasedOnAlerts(activeAlerts)
-                ?: throw NullDataException()
+                val notificationWeatherModel =
+                    pair.first.toNotificationModel(hourlyForecastDTO.city)
 
-            val notificationWeatherModel = pair.first.toNotificationModel(hourlyForecastDTO.city)
+                Log.i(TAG, "notificationWeatherModel: $notificationWeatherModel")
 
-            Log.i(TAG, "notificationWeatherModel: $notificationWeatherModel")
+                notificationWeatherModel to pair.second
+            }
 
-            notificationWeatherModel to pair.second
         }.mapFailure()
     }
 
