@@ -35,11 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dmy.weather.R
 import com.dmy.weather.data.enums.NotificationType
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 
 @Composable
 fun AlertExtraConfig(
-    alert: AlertEntity?,
+    alert: AlertModel?,
     onMinutesChange: (Int) -> Unit,
     onNotificationTypeChange: (NotificationType) -> Unit
 ) {

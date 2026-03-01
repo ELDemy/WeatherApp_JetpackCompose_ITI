@@ -7,7 +7,7 @@ import com.dmy.weather.data.enums.AlertType
 import com.dmy.weather.data.enums.NotificationType
 
 @Entity(tableName = "alerts")
-data class AlertEntity(
+data class AlertModel(
     @PrimaryKey
     val type: String,
     val time: Long = 30,

@@ -5,7 +5,7 @@ import android.util.Log
 import com.dmy.weather.data.data_source.local.alerts_data_source.AlertsDataSource
 import com.dmy.weather.data.enums.NotificationType
 import com.dmy.weather.data.mapper.getTimeInFullDate
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 import com.dmy.weather.data.repo.weather_repo.WeatherRepository
 import com.dmy.weather.platform.notification.NotificationBuilder
 import com.dmy.weather.platform.work_manager.AlarmScheduler
@@ -19,7 +19,7 @@ class AlertRepositoryImpl(
     private val context: Context,
 ) : AlertRepository {
 
-    override suspend fun updateAlert(alert: AlertEntity) {
+    override suspend fun updateAlert(alert: AlertModel) {
         alertsDataSource.updateAlert(alert)
         when (alert.status && alert.notificationType == NotificationType.ALARM) {
             true -> createAlarms(listOf(alert))
@@ -28,22 +28,22 @@ class AlertRepositoryImpl(
         }
     }
 
-    override fun getAlerts(): Flow<List<AlertEntity>> = alertsDataSource.getAlerts()
+    override fun getAlerts(): Flow<List<AlertModel>> = alertsDataSource.getAlerts()
 
-    override suspend fun getActiveAlerts(): List<AlertEntity> = alertsDataSource.getActiveAlerts()
+    override suspend fun getActiveAlerts(): List<AlertModel> = alertsDataSource.getActiveAlerts()
 
-    private fun cancelAlert(alert: AlertEntity) {
+    private fun cancelAlert(alert: AlertModel) {
         AlarmScheduler.cancel(context, alert)
         if (!alert.status) {
             NotificationBuilder.showNormalNotification(
                 context,
+                "${alert.alertType?.name} ${alert.notificationType?.name} is canceled",
                 "Alert Canceled Successfully",
-                "${alert.alertType?.name} ${alert.notificationType?.name} is canceled"
             )
         }
     }
 
-    override suspend fun createAlarms(alerts: List<AlertEntity>?): Result<Unit> {
+    override suspend fun createAlarms(alerts: List<AlertModel>?): Result<Unit> {
         val activeAlerts = alerts ?: getActiveAlerts()
 
         return weatherRepository.getWeatherAlerts(activeAlerts)

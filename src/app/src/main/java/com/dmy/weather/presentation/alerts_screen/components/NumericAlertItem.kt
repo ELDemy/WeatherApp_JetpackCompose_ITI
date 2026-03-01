@@ -38,13 +38,13 @@ import com.dmy.weather.R
 import com.dmy.weather.data.enums.AlertType
 import com.dmy.weather.data.enums.NotificationType
 import com.dmy.weather.data.enums.UnitSystem
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 
 
 @Composable
 fun NumericAlertItem(
     type: AlertType,
-    alert: AlertEntity?,
+    alert: AlertModel?,
     unitSystem: UnitSystem,
     onToggle: (Boolean) -> Unit,
     onRangeChange: (Int, Int) -> Unit,

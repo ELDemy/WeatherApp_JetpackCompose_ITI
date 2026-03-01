@@ -4,27 +4,27 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface AlertDao {
     @Query("SELECT * FROM alerts")
-    fun getAlerts(): Flow<List<AlertEntity>>
+    fun getAlerts(): Flow<List<AlertModel>>
 
     @Query("SELECT * FROM alerts WHERE status = 1")
-    suspend fun getActiveAlerts(): List<AlertEntity>
+    suspend fun getActiveAlerts(): List<AlertModel>
 
     @Query("SELECT * FROM alerts WHERE type = :type")
-    suspend fun getAlertByType(type: String): AlertEntity
+    suspend fun getAlertByType(type: String): AlertModel
 
     @Upsert
-    suspend fun upsert(alert: AlertEntity)
+    suspend fun upsert(alert: AlertModel)
 
     @Upsert
-    suspend fun upsertAll(vararg alerts: AlertEntity)
+    suspend fun upsertAll(vararg alerts: AlertModel)
 
     @Delete
-    suspend fun delete(alert: AlertEntity)
+    suspend fun delete(alert: AlertModel)
 }

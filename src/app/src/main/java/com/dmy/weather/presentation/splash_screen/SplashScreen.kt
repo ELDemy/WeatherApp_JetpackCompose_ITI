@@ -3,7 +3,6 @@ package com.dmy.weather.presentation.splash_screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.dmy.weather.platform.notification.NotificationBuilder
 import com.dmy.weather.platform.work_manager.AlertScheduler
+import com.dmy.weather.presentation.components.MyLoadingComponent
 import com.dmy.weather.presentation.my_app.NavScreens
 import com.dmy.weather.presentation.permissions.notification.PermissionResult
 import com.dmy.weather.presentation.permissions.notification.RequestNotificationPermission
@@ -30,7 +30,7 @@ fun SplashScreen(navController: NavController, modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Splash Screen")
+        MyLoadingComponent()
     }
 
     if (showPermissionRequest) {

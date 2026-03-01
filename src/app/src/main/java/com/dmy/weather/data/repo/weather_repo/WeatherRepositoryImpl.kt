@@ -6,7 +6,7 @@ import com.dmy.weather.data.mapper.filterBasedOnAlerts
 import com.dmy.weather.data.mapper.toLocationDetails
 import com.dmy.weather.data.mapper.toModel
 import com.dmy.weather.data.mapper.toNotificationModel
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 import com.dmy.weather.data.model.DailyForecastModel
 import com.dmy.weather.data.model.HourlyForecastModel
 import com.dmy.weather.data.model.LocationDetails
@@ -67,7 +67,7 @@ class WeatherRepositoryImpl(
         }.mapFailure()
     }
 
-    override suspend fun getWeatherAlerts(activeAlerts: List<AlertEntity>): Result<List<Pair<NotificationWeatherModel, AlertEntity>>> {
+    override suspend fun getWeatherAlerts(activeAlerts: List<AlertModel>): Result<List<Pair<NotificationWeatherModel, AlertModel>>> {
         return runCatching {
             val locationDetails =
                 locationService.getCurrentLocation()?.toLocationDetails()

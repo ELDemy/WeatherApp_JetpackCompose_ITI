@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.sp
 import com.dmy.weather.R
 import com.dmy.weather.data.enums.AlertType
 import com.dmy.weather.data.enums.NotificationType
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 
 @Composable
 fun ConditionAlertItem(
     type: AlertType,
-    alert: AlertEntity?,
+    alert: AlertModel?,
     onToggle: (Boolean) -> Unit,
     onMinutesChange: (Int) -> Unit,
     onNotificationTypeChange: (NotificationType) -> Unit

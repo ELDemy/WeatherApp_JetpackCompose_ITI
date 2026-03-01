@@ -70,18 +70,18 @@ class CityRepositoryImpl(
     override suspend fun addFav(locationDetails: LocationDetails): Result<Unit> {
         return runCatching {
             val city: CityModel = when {
-                locationDetails.city != null -> {
-                    getGeocodingCityInfoByCity(locationDetails.city).fold(
-                        onSuccess = { it },
-                        onFailure = { null }
-                    )
-                }
-
                 locationDetails.lat != null && locationDetails.long != null -> {
                     getGeocodingCityInfoByCoord(
                         locationDetails.long,
                         locationDetails.lat
                     ).fold(
+                        onSuccess = { it },
+                        onFailure = { null }
+                    )
+                }
+
+                locationDetails.city != null -> {
+                    getGeocodingCityInfoByCity(locationDetails.city).fold(
                         onSuccess = { it },
                         onFailure = { null }
                     )

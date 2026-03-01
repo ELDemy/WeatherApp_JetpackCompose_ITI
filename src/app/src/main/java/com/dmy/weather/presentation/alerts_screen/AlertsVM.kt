@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.dmy.weather.data.enums.AlertType
 import com.dmy.weather.data.enums.NotificationType
 import com.dmy.weather.data.enums.UnitSystem
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 import com.dmy.weather.data.repo.alert_repo.AlertRepository
 import com.dmy.weather.data.repo.settings_repo.SettingsRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,7 +29,7 @@ class AlertsVM(
     private val _events = MutableSharedFlow<AlertEvent>()
     val events = _events.asSharedFlow()
 
-    val alerts: StateFlow<List<AlertEntity>> = alertRepository
+    val alerts: StateFlow<List<AlertModel>> = alertRepository
         .getAlerts()
         .stateIn(
             viewModelScope,
@@ -49,7 +49,7 @@ class AlertsVM(
     fun toggleAlert(type: AlertType, enabled: Boolean) {
         viewModelScope.launch {
             val existing = alerts.value.find { it.alertType == type }
-            val updated = existing?.copy(status = enabled) ?: AlertEntity(
+            val updated = existing?.copy(status = enabled) ?: AlertModel(
                 type = type.name,
                 time = 15,
                 status = enabled,

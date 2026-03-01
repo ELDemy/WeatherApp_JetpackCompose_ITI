@@ -8,9 +8,9 @@ import com.dmy.weather.data.enums.AlertType.PRESSURE
 import com.dmy.weather.data.enums.AlertType.RAIN
 import com.dmy.weather.data.enums.AlertType.SNOW
 import com.dmy.weather.data.enums.AlertType.TEMP
-import com.dmy.weather.data.model.AlertEntity
+import com.dmy.weather.data.model.AlertModel
 
-fun HourlyForecastDTO.filterBasedOnAlerts(alert: AlertEntity): Pair<HourlyForecastItem, AlertEntity>? {
+fun HourlyForecastDTO.filterBasedOnAlerts(alert: AlertModel): Pair<HourlyForecastItem, AlertModel>? {
     this.list?.forEach { item ->
         val matchedAlert = when (alert.alertType) {
             TEMP ->
