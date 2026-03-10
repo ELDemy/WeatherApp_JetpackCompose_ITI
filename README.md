@@ -20,6 +20,13 @@
   <a href="#tech-stack">Tech Stack</a>
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Android-green"/>
+  <img src="https://img.shields.io/badge/Kotlin-2.3-blue"/>
+  <img src="https://img.shields.io/badge/Architecture-MVVM-orange"/>
+  <img src="https://img.shields.io/badge/UI-Jetpack%20Compose-purple"/>
+</p>
+
 ---
 
 ## 📋 Overview
@@ -58,36 +65,67 @@ It demonstrates:
 
 ## 📱 Screenshots
 
-### 🏠 Home
+### ⛅Weather
 
-<img width="350" src="https://github.com/user-attachments/assets/cba5a031-1eba-45bd-b020-c272bafca276"/>
+| | |
+|:--:|:--:|
+| <img width="400" src="https://github.com/user-attachments/assets/cba5a031-1eba-45bd-b020-c272bafca276"/>| ![Home](https://github.com/user-attachments/assets/053e26b0-900c-493b-8fbf-8c6bbac4d2ad) |
 
-### ⭐ Favorites
+### ⛅⚙  Weather with Different Settings
 
-<img width="350" src="screenshots/favorites.png"/>
+|        Fahrenheit with English Language           |       Kelvin with Spanish Language             |      Celsius with Arabic Language  (RTL)     |
+|:------------------------------------:|:--------------------------------------------------:|:------------------------------------------------------------------------:|
+| ![Mountain view](https://github.com/user-attachments/assets/2451b1e5-8780-43c3-9cb0-bbe45d295f28) | ![Spain](https://github.com/user-attachments/assets/56e5b7c7-4e57-437f-b60d-a04c0dcfd940)   |   ![Arabic](https://github.com/user-attachments/assets/b79e5d03-a113-40da-bbd2-ab9937e458f3)|
 
-### ⚙ Maps
 
-<img width="350" src="screenshots/maps.png"/>
+###  📍Maps & ❤️ Favorites
+
+| Maps | Favorite Locations |
+|:------------------:|:------------------:|
+| <img width="350" src="https://github.com/user-attachments/assets/5c90f859-c068-407a-bd0b-bc1ec14ccb17"/> | <img width="350" src="https://github.com/user-attachments/assets/c63592b7-5c58-4193-a607-9c08e4feffbf"/> |
+
 
 ### ⚙ Settings
 
-<img width="350" src="screenshots/settings.png"/>
+| English Settings | Arabic Settings |
+|:------------------:|:------------------:|
+|<img width="350" src="https://github.com/user-attachments/assets/84e576d7-2daf-432c-af8e-8abdc197ed9e"/>|<img width="350" src="https://github.com/user-attachments/assets/0e049d05-1598-428d-b97b-42e4ccad4ddf"/> |
 
-### ⏰ Alerts
+### 🌐 Languages & ⏰ Alerts
 
-<img width="350" src="screenshots/alerts.png"/>
+| Languages | Alerts | 
+|:------------------:|:------------------:|
+|<img width="350" src="https://github.com/user-attachments/assets/55b36937-1433-40a9-ba17-50934729600c"/>|<img width="350" src="https://github.com/user-attachments/assets/62c6ab83-f28c-4e44-8f92-519b1159b636"/>|
+
+### 🔔 Notifications
+
+| Notifications | Notifications | 
+|:------------------:|:------------------:|
+|<img width="350" src="https://github.com/user-attachments/assets/b406b3f2-0743-43c8-9f6c-19dd4e1618c5"/>|<img width="350" src="https://github.com/user-attachments/assets/f575503e-5bac-4bf4-bb09-0d227b19209b"/>|
+
+### 👌 Permissions, Error Handling
+
+| Warnings | Permission | 
+|:------------------:|:------------------:|
+|<img width="350" src="https://github.com/user-attachments/assets/2ee324b2-8812-4166-b0fc-0df75eee72a1"/>|<img width="350" src="https://github.com/user-attachments/assets/9dc55df6-e78a-4fde-8722-cd3781a5d760"/>|
 
 ---
+
 
 ## 🏗 Architecture
 
 This project implements **MVVM (Model–View–ViewModel)** with clear separation of concerns:
-Presentation Layer (Jetpack Compose UI + ViewModels)
-↓
-Repository Layer (Single Source of Truth)
-↓
-Local (Room) + Remote (Retrofit API)
+```
+Presentation Layer
+   (Compose UI + ViewModels)
+            │
+            ▼
+Repository Layer
+        │            │
+        ▼            ▼
+Local Database   Remote API
+(Room, DataStore) (Retrofit)
+```
 
 
 ### Architectural Highlights
@@ -156,7 +194,8 @@ com.dmy.weather
  
 ## 🌍 API Reference
 
-Weather data is fetched from:
+Weather data is fetched from **OpenWeather API**:
+
 https://api.openweathermap.org/data/2.5/forecast
 
 ### 📦 SDK Configuration
